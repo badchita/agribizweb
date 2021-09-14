@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "abribiz-web",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}
