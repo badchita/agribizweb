@@ -4,8 +4,7 @@
       <ion-content>
         <ion-list class="inbox-list">
           <ion-menu-toggle auto-hide="false">
-            <ion-item button>
-              <ion-icon name="mail" slot="start"></ion-icon>
+            <ion-item lines="none" button>
               <ion-label>Product</ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -29,15 +28,30 @@
 </template>
 
 <script>
+  import ProductAPI from '@/api/product'
   import {
     menuController
   } from '@ionic/core';
+  import {
+    onMounted
+  } from '@vue/runtime-core';
   export default {
     name: 'Home',
     components: {},
     setup() {
+      onMounted(() => {
+        loadProduct()
+      })
       async function openMenu() {
         await menuController.open();
+      }
+      async function loadProduct() {
+        ProductAPI.list()
+          .then((response) => {
+            console.log(response)
+          }).catch((err) => {
+            console.error(err);
+          })
       }
 
       return {
@@ -74,9 +88,5 @@
 
   #container a {
     text-decoration: none;
-  }
-
-  .ion-menu.md ion-list#inbox-list {
-    border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);
   }
 </style>
