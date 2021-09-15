@@ -68,8 +68,11 @@
                 description: '',
             })
 
-            function gotoBack() {
+            function goBack() {
                 router.go(-1)
+                setTimeout(() => {
+                    router.go()
+                }, 500)
             }
 
             async function onClickSave() {
@@ -83,7 +86,7 @@
                         console.error(err);
                     })
                     .finally(() => {
-                        gotoBack()
+                        goBack()
                     })
             }
             return {
