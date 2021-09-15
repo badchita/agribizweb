@@ -81,6 +81,7 @@ import {
   IonImg,
   IonAvatar,
   IonRouterOutlet,
+  IonTextarea,
 } from '@ionic/vue';
 
 /* Core CSS required for Ionic components to work properly */
@@ -99,12 +100,17 @@ import '@ionic/vue/css/text-transformation.css';
 import '@ionic/vue/css/flex-utils.css';
 import '@ionic/vue/css/display.css';
 
+import MenuFabButton from '@/components/MenuFabButton'
+import NavBar from '@/components/NavBar'
+
 /* Theme variables */
 import './theme/variables.css';
 
 const app = createApp(App)
   .use(IonicVue)
   .use(router);
+app.component('NavBar', NavBar)
+app.component('MenuFabButton', MenuFabButton)
 
 app.component('ion-badge', IonBadge)
 app.component('ion-button', IonButton)
@@ -181,6 +187,7 @@ app.component('ion-input', IonInput)
 app.component('ion-img', IonImg)
 app.component('ion-avatar', IonAvatar)
 app.component('ion-router-outlet', IonRouterOutlet)
+app.component('ion-textarea', IonTextarea)
 
 router.isReady().then(() => {
   app.mount('#app');

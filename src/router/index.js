@@ -2,7 +2,6 @@ import {
   createRouter,
   createWebHistory
 } from '@ionic/vue-router';
-import Home from '@/views/Pages/Home.vue'
 
 const routes = [{
     path: '/',
@@ -11,7 +10,25 @@ const routes = [{
   {
     path: '/home',
     name: 'Home',
-    component: Home
+    component: () => import('@/views/Pages/Home'),
+    // children: [{
+    //   path: '/dashboards/products',
+    //   name: 'Products',
+    //   component: () => import('@/views/Dashboards/Products')
+    // }]
+  },
+  {
+    path: '/dashboards/products',
+    name: 'Products',
+    component: () => import('@/views/Dashboards/Products/index'),
+    // children: [{
+    //   path: 'updateproduct',
+    //   component: () => import('@/views/Dashboards/Products/Update/UpdateProduct.vue')
+    // }]
+  },
+  {
+    path: '/dashboards/updateproduct',
+    component: () => import('@/views/Dashboards/Products/Update/UpdateProduct.vue')
   }
 ]
 
