@@ -66,7 +66,7 @@ import {
   IonSlides,
   IonSlide,
   IonTabs,
-  IonTab,
+  // IonTab,
   IonTabBar,
   IonTabButton,
   IonToggle,
@@ -167,7 +167,7 @@ app.component('ion-select-option', IonSelectOption)
 app.component('ion-slides', IonSlides)
 app.component('ion-slide', IonSlide)
 app.component('ion-tabs', IonTabs)
-app.component('ion-tab', IonTab)
+// app.component('ion-tab', IonTab)
 app.component('ion-tab-bar', IonTabBar)
 app.component('ion-tab-button', IonTabButton)
 app.component('ion-toogle', IonToggle)
