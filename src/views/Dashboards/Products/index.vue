@@ -10,7 +10,7 @@
                     <ion-label>
                         Product List
                     </ion-label>
-                    <ion-button slot="end" @click="onClickGoToUpdate">Add</ion-button>
+                    <ion-button slot="end" @click="onClickGoToUpdate()">Add</ion-button>
                 </ion-item>
                 <ion-card>
                     <ion-card-content>
@@ -41,7 +41,7 @@
                                         {{item.price}}
                                     </ion-col>
                                     <ion-col>
-                                        <ion-button>edit</ion-button>
+                                        <ion-button @click="onClickGoToUpdate(item.id)">edit</ion-button>
                                     </ion-col>
                                 </ion-row>
                             </div>
@@ -76,8 +76,11 @@
 
             let product = ref({})
 
-            function onClickGoToUpdate() {
-                router.push('/dashboards/updateproduct')
+            function onClickGoToUpdate(id) {
+                if (id)
+                    router.push(`/dashboards/updateproduct/${id}`)
+                else
+                    router.push(`/dashboards/updateproduct`)
             }
 
             async function loadProduct() {

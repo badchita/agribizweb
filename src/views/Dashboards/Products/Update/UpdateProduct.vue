@@ -8,7 +8,7 @@
             <div class="container">
                 <ion-grid>
                     <ion-row>
-                        <ion-label>Add Product</ion-label>
+                        <ion-label>{{pageTitle}}</ion-label>
                     </ion-row>
                     <ion-row>
                         <ion-col>
@@ -36,6 +36,9 @@
                         <ion-button @click="onClickSave">
                             Save
                         </ion-button>
+                        <ion-button @click="goBack">
+                            Cancel
+                        </ion-button>
                     </ion-row>
                 </ion-grid>
             </div>
@@ -47,52 +50,76 @@
     import ProductAPI from '@/api/product'
 
     import {
+        computed,
         reactive,
         ref
     } from '@vue/reactivity'
     import {
         useRouter
     } from 'vue-router'
+    import {
+        onMounted
+    } from '@vue/runtime-core'
     export default {
         name: 'UpdateProduct',
         setup() {
+            onMounted(() => {
+                loadProductDetails()
+                pageTitle
+            })
             const data = reactive({
-                price: ''
+                price: '',
             })
 
             const router = useRouter()
 
             const product = ref({
+                id: '',
                 name: '',
                 price: '',
                 description: '',
             })
 
+            const pageTitle = computed(() => {
+                if (router.currentRoute.value.params.id)
+                    return 'Update Product'
+                else
+                    return 'Add Product'
+            })
+
             function goBack() {
                 router.go(-1)
-                setTimeout(() => {
-                    router.go()
-                }, 500)
             }
 
+            async function loadProductDetails(id) {
+                id = router.currentRoute.value.params.id
+                if (id) {
+                    await ProductAPI.get(id)
+                        .then((response) => {
+                            product.value = response.data.data
+                        })
+                }
+            }
             async function onClickSave() {
                 product.value.price = +product.value.price
 
-                await ProductAPI.add(product.value)
-                    .then((response) => {
-                        console.log(response);
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                    })
-                    .finally(() => {
-                        goBack()
-                    })
+                const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
+
+                api.then(() => {
+                    goBack()
+                    setTimeout(() => {
+                        router.go()
+                    }, 100)
+                }).catch((err) => {
+                    console.error(err);
+                })
             }
             return {
                 product,
                 data,
-                onClickSave
+                onClickSave,
+                goBack,
+                pageTitle
             }
         }
     }

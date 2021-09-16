@@ -11,24 +11,21 @@ const routes = [{
     path: '/home',
     name: 'Home',
     component: () => import('@/views/Pages/Home'),
-    // children: [{
-    //   path: '/dashboards/products',
-    //   name: 'Products',
-    //   component: () => import('@/views/Dashboards/Products')
-    // }]
   },
   {
     path: '/dashboards/products',
     name: 'Products',
     component: () => import('@/views/Dashboards/Products/index'),
-    // children: [{
-    //   path: 'updateproduct',
-    //   component: () => import('@/views/Dashboards/Products/Update/UpdateProduct.vue')
-    // }]
   },
   {
-    path: '/dashboards/updateproduct',
-    component: () => import('@/views/Dashboards/Products/Update/UpdateProduct.vue')
+    // path: '/dashboards/updateproduct',
+    // component: () => import('@/views/Dashboards/Products/Update/UpdateProduct.vue')
+    path: `/dashboards/updateproduct`,
+    component: () => import('@/views/Dashboards/Products/Update/UpdateProduct')
+  },
+  {
+    path: `/dashboards/updateproduct/:id`,
+    component: () => import('@/views/Dashboards/Products/Update/UpdateProduct')
   }
 ]
 
