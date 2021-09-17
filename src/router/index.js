@@ -10,6 +10,9 @@ const routes = [{
   {
     path: '/login',
     name: 'Login',
+    meta: {
+      hideNavbar: true,
+    },
     component: () => import('@/views/Pages/LoginPage'),
   },
   {

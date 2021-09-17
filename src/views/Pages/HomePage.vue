@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-header>
+    <ion-header class="ion-no-border">
       <NavBar />
     </ion-header>
     <ion-content class="ion-padding">

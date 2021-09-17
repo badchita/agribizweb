@@ -1,15 +1,18 @@
 <template>
     <ion-page>
         <ion-header class="ion-no-border">
-            <ion-row>
+            <!-- <ion-row>
                 <ion-col size="4.4">
                     <ion-item class="logo-container" lines="none">
                         <ion-icon name="bag-handle" />
                         <ion-label class="title-label">Negros Agribiz</ion-label>
+                        <img src="@/assets/images/logo.jpg" />
                         <ion-label>Log In</ion-label>
                     </ion-item>
                 </ion-col>
-            </ion-row>
+            </ion-row> -->
+
+            <img src="@/assets/images/logo.png" />
         </ion-header>
         <ion-content>
             <ion-card>

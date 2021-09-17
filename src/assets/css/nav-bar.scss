@@ -1,7 +1,36 @@
-ion-label {
-    text-align: center;
+ion-toolbar {
+    --background: #58a89d;
 }
 
-ion-col {
-    margin: auto;
+.home-col {
+    ion-button {
+        font-size: 25px;
+        letter-spacing: 6px;
+        height: 100%;
+        margin: auto;
+        --color: white;
+
+        ion-icon {
+            margin-right: 10px;
+        }
+    }
+}
+
+ion-item {
+    --background: enherit;
+    --color: white;
+    font-size: 20px;
+
+    ion-button {
+        font-size: 14px;
+        height: 100%;
+        margin: auto;
+        margin-right: 40px;
+        --color: white;
+    }
+
+    ion-avatar {
+        margin-right: 10px;
+    }
+
 }

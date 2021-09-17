@@ -1,6 +1,6 @@
 <template>
     <ion-fab horizontal="end" vertical="top" slot="fixed" edge>
-        <ion-fab-button @click="onClickOpenMenu">
+        <ion-fab-button style="--background: #4c9069;" @click="onClickOpenMenu">
             <ion-icon name="menu" />
         </ion-fab-button>
     </ion-fab>

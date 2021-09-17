@@ -27,6 +27,8 @@
     logoGoogle,
     logoApple,
     eyeOff,
+    leaf,
+    notifications,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -41,6 +43,8 @@
     'logo-google': logoGoogle,
     'logo-apple': logoApple,
     'eye-off': eyeOff,
+    'leaf': leaf,
+    'notifications': notifications,
   })
   export default defineComponent({
     name: 'App',
@@ -65,7 +69,7 @@
       return {
         selectedItem,
         appPages,
-        selectedIndex
+        selectedIndex,
       }
     }
   });
