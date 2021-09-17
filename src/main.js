@@ -3,6 +3,7 @@ import {
 } from 'vue'
 import App from './App.vue'
 import router from './router';
+import store from './store/index.js'
 
 import {
   IonApp,
@@ -108,7 +109,8 @@ import './theme/variables.css';
 
 const app = createApp(App)
   .use(IonicVue)
-  .use(router);
+  .use(router)
+  .use(store)
 app.component('NavBar', NavBar)
 app.component('MenuFabButton', MenuFabButton)
 

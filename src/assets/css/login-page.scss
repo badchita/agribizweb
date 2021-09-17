@@ -32,7 +32,7 @@ ion-content {
         margin-left: auto;
         margin-right: auto;
         margin-top: 5%;
-        width: 50%;
+        width: 30%;
 
         ion-list {
             ion-list-header {
@@ -50,7 +50,9 @@ ion-content {
                 --highlight-color-valid: green !important;
                 --border-color: rgb(238, 77, 45);
 
-                ion-input {}
+                ion-icon {
+                    color: #898F9C;
+                }
             }
 
             .login-button {

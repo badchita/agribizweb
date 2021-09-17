@@ -26,6 +26,7 @@
     logoFacebook,
     logoGoogle,
     logoApple,
+    eyeOff,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -39,6 +40,7 @@
     'logo-facebook': logoFacebook,
     'logo-google': logoGoogle,
     'logo-apple': logoApple,
+    'eye-off': eyeOff,
   })
   export default defineComponent({
     name: 'App',

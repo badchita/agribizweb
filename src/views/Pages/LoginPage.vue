@@ -19,19 +19,25 @@
                             <ion-label>Login</ion-label>
                         </ion-list-header>
                         <ion-item class="input-item">
-                            <ion-input @ionFocus="onFocusCheckInput($event)" placeholder="Email"></ion-input>
+                            <ion-input v-model="auth.email" placeholder="Email"></ion-input>
                         </ion-item>
                         <ion-item class="input-item">
-                            <ion-input placeholder="Password" type="password">
+                            <ion-input v-model="auth.password" placeholder="Password" :type="passwordVisibility">
                             </ion-input>
                             <ion-buttons slot="end">
-                                <ion-button>
+                                <ion-button v-if="passwordVisibility === 'text'" @click="hidePassword()">
                                     <ion-icon name="eye" />
+                                </ion-button>
+                                <ion-button v-if="passwordVisibility === 'password'" @click="showPassword()">
+                                    <ion-icon name="eye-off" />
                                 </ion-button>
                             </ion-buttons>
                         </ion-item>
                         <ion-item lines="none">
-                            <ion-button class="login-button" expand="full" strong="true">LOG IN</ion-button>
+                            <ion-button class="login-button" expand="full" strong="true" @click="onClickLogin">
+                                <ion-spinner v-if="loadingStatus"></ion-spinner>
+                                <span v-else>LOG IN</span>
+                            </ion-button>
                         </ion-item>
                         <ion-item lines="none">
                             <ion-label><a style="text-decoration: none; font-size:14px;" href="">Forgot Password</a>
@@ -70,14 +76,62 @@
 </template>
 
 <script>
+    import AuthAPI from '@/api/auth'
+    import {
+        computed,
+        reactive,
+        ref
+    } from '@vue/reactivity';
+    import {
+        useRouter
+    } from 'vue-router';
+    import {
+        useStore
+    } from 'vuex'
     export default {
         setup() {
-            function onFocusCheckInput(ev) {
-                console.log(ev);
+            let auth = reactive({
+                email: '',
+                password: '',
+                password_confirmation: '',
+            })
+
+            const router = useRouter()
+            const store = useStore()
+            let passwordVisibility = ref('password')
+
+            let loadingStatus = computed(() => store.state.loading.status)
+
+            function showPassword() {
+                passwordVisibility.value = 'text'
             }
 
+            function hidePassword() {
+                passwordVisibility.value = 'password'
+            }
+
+            async function onClickLogin() {
+                auth.password_confirmation = auth.password
+                store.dispatch('loading/start')
+                await AuthAPI.login(auth)
+                    .then((response) => {
+                        console.log(response);
+                        router.push('/home')
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    })
+                    .finally(() => {
+                        store.dispatch('loading/finish')
+                    })
+            }
             return {
-                onFocusCheckInput
+                passwordVisibility,
+                showPassword,
+                hidePassword,
+                auth,
+                onClickLogin,
+                loadingStatus
             }
         }
     }
