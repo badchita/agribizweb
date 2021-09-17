@@ -34,7 +34,8 @@
                             <ion-button class="login-button" expand="full" strong="true">LOG IN</ion-button>
                         </ion-item>
                         <ion-item lines="none">
-                            <ion-label><a style="text-decoration: none; font-size:14px;" href="">Forgot Password</a></ion-label>
+                            <ion-label><a style="text-decoration: none; font-size:14px;" href="">Forgot Password</a>
+                            </ion-label>
                         </ion-item>
                         <ion-item lines="none">
                             <h5><span>OR</span></h5>
@@ -61,6 +62,9 @@
                     </ion-list>
                 </ion-card-content>
             </ion-card>
+            <div class="footer">
+                <ion-label>© 2021 Negros Agribiz. All Rights Reserved</ion-label>
+            </div>
         </ion-content>
     </ion-page>
 </template>
