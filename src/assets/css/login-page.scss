@@ -1,0 +1,37 @@
+ion-header {
+    ion-col {
+        color: #222;
+
+        .logo-container {
+            font-size: 1.5rem;
+            margin-left: 140px;
+            padding-bottom: 20px;
+        }
+
+        .title-label {
+            --color: rgb(238, 77, 45);
+        }
+
+        .title-label,
+        ion-label {
+            margin-top: 22px;
+        }
+
+        ion-icon {
+            font-size: 2.5rem;
+            color: rgb(238, 77, 45);
+        }
+    }
+}
+
+ion-content {
+    --background: rgb(238, 77, 45);
+
+    ion-card {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5%;
+        width: 50%;
+    }
+}

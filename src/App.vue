@@ -21,6 +21,8 @@
   import {
     menu,
     cube,
+    bagHandle,
+    eye,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -29,6 +31,8 @@
   addIcons({
     'menu': menu,
     'cube': cube,
+    'bag-handle': bagHandle,
+    'eye': eye,
   })
   export default defineComponent({
     name: 'App',
