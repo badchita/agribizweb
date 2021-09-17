@@ -5,12 +5,17 @@ import {
 
 const routes = [{
     path: '/',
-    redirect: '/home'
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/Pages/LoginPage'),
   },
   {
     path: '/home',
     name: 'Home',
-    component: () => import('@/views/Pages/Home'),
+    component: () => import('@/views/Pages/HomePage'),
   },
   {
     path: '/dashboards/products',

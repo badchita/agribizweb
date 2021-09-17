@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 let instance = axios.create({
-    baseURL: 'http://agribiz/api/',
-    resourceURL: 'http://agribiz/',
+    baseURL: 'http://localhost:8000/api/',
+    resourceURL: 'http://localhost:8000/',
     header: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
