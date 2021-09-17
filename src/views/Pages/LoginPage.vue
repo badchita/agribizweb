@@ -18,37 +18,44 @@
                         <ion-list-header>
                             <ion-label>Login</ion-label>
                         </ion-list-header>
-                        <ion-item lines="none">
-                            <ion-input placeholder="Email"></ion-input>
+                        <ion-item class="input-item">
+                            <ion-input @ionFocus="onFocusCheckInput($event)" placeholder="Email"></ion-input>
                         </ion-item>
-                        <ion-item lines="none">
-                            <ion-input placeholder="Password" type="password"></ion-input>
+                        <ion-item class="input-item">
+                            <ion-input placeholder="Password" type="password">
+                            </ion-input>
                             <ion-buttons slot="end">
                                 <ion-button>
                                     <ion-icon name="eye" />
                                 </ion-button>
                             </ion-buttons>
                         </ion-item>
-                        <ion-item lines="none" >
-                            <ion-button expand="full" strong="true">LOG IN</ion-button>
-                        </ion-item>
-                        <ion-item lines="none" button>
-                            <ion-label>Forgot Password</ion-label>
+                        <ion-item lines="none">
+                            <ion-button class="login-button" expand="full" strong="true">LOG IN</ion-button>
                         </ion-item>
                         <ion-item lines="none">
-                            <ion-buttons>
-                                <ion-button>
-                                    <ion-icon name="eye" /> Facebook
+                            <ion-label><a style="text-decoration: none; font-size:14px;" href="">Forgot Password</a></ion-label>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <h5><span>OR</span></h5>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-buttons class="social-buttons">
+                                <ion-button class="facebook-button">
+                                    <ion-icon name="logo-facebook" />
+                                    <ion-label>Facebook</ion-label>
                                 </ion-button>
-                                <ion-button>
-                                    <ion-icon name="eye" /> Google
+                                <ion-button class="google-button">
+                                    <ion-icon name="logo-google" />
+                                    <ion-label>Google</ion-label>
                                 </ion-button>
-                                <ion-button>
-                                    <ion-icon name="eye" /> Apple
+                                <ion-button class="apple-button">
+                                    <ion-icon name="logo-apple" />
+                                    <ion-label>Apple</ion-label>
                                 </ion-button>
                             </ion-buttons>
                         </ion-item>
-                        <ion-item lines="none">
+                        <ion-item class="signup-link" lines="none">
                             <ion-label>Don't have a account yet? <a href="">Sign Up Here</a></ion-label>
                         </ion-item>
                     </ion-list>
@@ -61,9 +68,13 @@
 <script>
     export default {
         setup() {
+            function onFocusCheckInput(ev) {
+                console.log(ev);
+            }
 
-
-            return {}
+            return {
+                onFocusCheckInput
+            }
         }
     }
 </script>

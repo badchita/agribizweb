@@ -33,5 +33,89 @@ ion-content {
         margin-right: auto;
         margin-top: 5%;
         width: 50%;
+
+        ion-list {
+            ion-list-header {
+                margin-top: -8px;
+                font-size: 1.25rem;
+                color: #222;
+                margin-bottom: 6px;
+            }
+
+            .input-item {
+                margin-left: 16px;
+                margin-right: 16px;
+                margin-top: 14px;
+                --padding-start: 0px;
+                --highlight-color-valid: green !important;
+                --border-color: rgb(238, 77, 45);
+
+                ion-input {}
+            }
+
+            .login-button {
+                width: 100%;
+                height: 2.5rem;
+                margin-top: 45px;
+                --background: #ee4d2d;
+                --box-shadow: none;
+            }
+
+            h5 {
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid #898F9C;
+                line-height: 0.1em;
+                margin: 0 0 20px;
+                margin-left: 0px;
+                font-size: 12px;
+                font-weight: 600;
+                color: #898F9C;
+
+                span {
+                    background: #fff;
+                    padding: 0 10px;
+                }
+            }
+
+            .social-buttons {
+                width: 100%;
+
+                .facebook-button,
+                .google-button,
+                .apple-button {
+                    height: 45px;
+                    width: 33.3%;
+                    --color: white;
+
+                    ion-label {
+                        margin-left: 6px;
+                    }
+                }
+
+                .facebook-button {
+                    --background: #1877f2;
+                }
+
+                .google-button {
+                    --background: #DB4437;
+                }
+
+                .apple-button {
+                    --background: rgb(28, 28, 30);
+                }
+            }
+
+            .signup-link {
+                text-align: center;
+                color: #898F9C;
+                font-size: 14px;
+
+                a {
+                    color: rgb(238, 77, 45);
+                    text-decoration: none;
+                }
+            }
+        }
     }
 }

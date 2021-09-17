@@ -23,6 +23,9 @@
     cube,
     bagHandle,
     eye,
+    logoFacebook,
+    logoGoogle,
+    logoApple,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -33,6 +36,9 @@
     'cube': cube,
     'bag-handle': bagHandle,
     'eye': eye,
+    'logo-facebook': logoFacebook,
+    'logo-google': logoGoogle,
+    'logo-apple': logoApple,
   })
   export default defineComponent({
     name: 'App',
