@@ -32,6 +32,8 @@
     cart,
     bus,
     checkmarkCircle,
+    refresh,
+    star,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -50,7 +52,9 @@
     'notifications': notifications,
     'cart': cart,
     'bus': bus,
-    'checkmark-circle': checkmarkCircle
+    'checkmark-circle': checkmarkCircle,
+    'refresh': refresh,
+    'star': star,
   })
   export default defineComponent({
     name: 'App',

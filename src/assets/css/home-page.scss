@@ -1,21 +1,58 @@
 ion-grid {
     background: #F5F5F5;
+}
 
-    .row-orders {
-        background: #F5F5F5;
+ion-row {
+    margin-bottom: 20px;
+}
 
-        ion-col {
-            margin-right: 10px;
-            background: white;
+ion-col {
+    border-radius: 8px;
+    margin-right: 20px;
+    background: white;
+}
 
-            ion-note {
-                font-size: 24px;
-            }
+strong {
+    font-size: 14px;
+}
 
-            ion-icon {
-                font-size: 20px;
-                color: black;
-            }
+ion-note {
+    font-size: 24px;
+}
+
+ion-icon {
+    font-size: 20px;
+    color: black;
+}
+
+.income-rating-col {
+    background: white;
+    height: 300px;
+    margin-right: 20px;
+
+    ion-note {
+        margin: auto;
+        text-align: center;
+        font-size: 70px;
+        margin-top: 70px;
+
+        .star-rating-icon {
+            color: var(--ion-color-warning);
+            text-align: center;
+            font-size: 45px;
+            margin: auto;
         }
+    }
+
+    ion-icon {
+        color: var(--ion-color-success);
+    }
+
+    .star-icon {
+        color: var(--ion-color-warning);
+    }
+
+    .rating-note {
+        margin-top: 30px;
     }
 }
