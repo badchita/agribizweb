@@ -48,11 +48,10 @@ ion-content {
     --background: #58a89d;
 
     ion-card {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 5%;
+        position: fixed;
         width: 30%;
+        margin-left: 35%;
+        margin-top: 4%;
 
         ion-list {
             ion-list-header {
@@ -143,11 +142,8 @@ ion-content {
     }
 }
 
-.footer {
-    margin-top: 50px;
+ion-footer {
     background: white;
     text-align: center;
-    height: 150px;
     font-size: 1.2rem;
-    padding-top: 4%;
 }

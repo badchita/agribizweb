@@ -29,6 +29,9 @@
     eyeOff,
     leaf,
     notifications,
+    cart,
+    bus,
+    checkmarkCircle,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -45,6 +48,9 @@
     'eye-off': eyeOff,
     'leaf': leaf,
     'notifications': notifications,
+    'cart': cart,
+    'bus': bus,
+    'checkmark-circle': checkmarkCircle
   })
   export default defineComponent({
     name: 'App',

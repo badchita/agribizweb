@@ -5,7 +5,33 @@
     </ion-header>
     <ion-content class="ion-padding">
       <MenuFabButton />
-      home
+      <div class="container">
+        <ion-grid>
+          <ion-row class="row-orders">
+            <ion-col>
+              <ion-label>New Order</ion-label><br />
+              <ion-item lines="none">
+                <ion-note color="primary">0</ion-note>
+                <ion-icon name="cart" slot="end"/>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-label>Ongoing Order</ion-label><br />
+              <ion-item lines="none">
+                <ion-note color="primary">0</ion-note>
+                <ion-icon name="bus" slot="end"/>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-label>Completed Order</ion-label><br />
+              <ion-item lines="none">
+                <ion-note color="primary">0</ion-note>
+                <ion-icon name="checkmark-circle" slot="end"/>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -32,4 +58,6 @@
 </script>
 
 <style lang="scss">
+  @import '@/assets/css/global.scss';
+  @import '@/assets/css/home-page.scss';
 </style>

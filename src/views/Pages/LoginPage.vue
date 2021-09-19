@@ -71,10 +71,12 @@
                     </ion-list>
                 </ion-card-content>
             </ion-card>
-            <div class="footer">
-                <ion-label>© 2021 Negros Agribiz. All Rights Reserved</ion-label>
-            </div>
         </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-label>© 2021 Negros Agribiz. All Rights Reserved</ion-label>
+            </ion-toolbar>
+        </ion-footer>
     </ion-page>
 </template>
 
