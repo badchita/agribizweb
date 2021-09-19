@@ -9,24 +9,30 @@
         <ion-grid>
           <ion-row class="row-orders">
             <ion-col>
-              <ion-label>New Order</ion-label><br />
+              <ion-item lines="none">
+                <strong>NEW ORDER</strong>
+              </ion-item>
               <ion-item lines="none">
                 <ion-note color="primary">0</ion-note>
-                <ion-icon name="cart" slot="end"/>
+                <ion-icon name="cart" slot="end" />
               </ion-item>
             </ion-col>
             <ion-col>
-              <ion-label>Ongoing Order</ion-label><br />
+              <ion-item lines="none">
+                <strong>ONGOING ORDER</strong>
+              </ion-item>
               <ion-item lines="none">
                 <ion-note color="primary">0</ion-note>
-                <ion-icon name="bus" slot="end"/>
+                <ion-icon name="bus" slot="end" />
               </ion-item>
             </ion-col>
             <ion-col>
-              <ion-label>Completed Order</ion-label><br />
+              <ion-item lines="none">
+                <strong>COMPLETED ORDER</strong>
+              </ion-item>
               <ion-item lines="none">
                 <ion-note color="primary">0</ion-note>
-                <ion-icon name="checkmark-circle" slot="end"/>
+                <ion-icon name="checkmark-circle" slot="end" />
               </ion-item>
             </ion-col>
           </ion-row>

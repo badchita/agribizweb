@@ -1,10 +1,21 @@
 ion-grid {
+    background: #F5F5F5;
 
     .row-orders {
+        background: #F5F5F5;
 
         ion-col {
-            border: 1px solid black;
             margin-right: 10px;
+            background: white;
+
+            ion-note {
+                font-size: 24px;
+            }
+
+            ion-icon {
+                font-size: 20px;
+                color: black;
+            }
         }
     }
 }
