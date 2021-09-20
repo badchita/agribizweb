@@ -40,6 +40,7 @@
     archiveOutline,
     create,
     add,
+    closeCircle,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -67,6 +68,7 @@
     'archive-outline': archiveOutline,
     'create': create,
     'add': add,
+    'close-circle': closeCircle,
   })
   export default defineComponent({
     name: 'App',

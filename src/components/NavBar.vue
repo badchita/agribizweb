@@ -12,12 +12,14 @@
                     <ion-button fill="clear">
                         <ion-icon slot="icon-only" name="notifications" />
                     </ion-button>
-                    <ion-avatar>
-                        <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
-                    </ion-avatar>
-                    <ion-label>
-                        {{userData.name}}
-                    </ion-label>
+                    <ion-item lines="none" button>
+                        <ion-avatar>
+                            <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
+                        </ion-avatar>
+                        <ion-label>
+                            {{userData.name}}
+                        </ion-label>
+                    </ion-item>
                 </ion-item>
             </ion-col>
         </ion-row>

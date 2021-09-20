@@ -27,7 +27,7 @@
                         </ion-item>
                         <ion-item v-if="showError" class="error-message-item" lines="none">
                             <ion-button fill="clear" slot="end" @click="onClickCloseErrorIcon"> 
-                                <ion-icon name="close-circle-outline" />
+                                <ion-icon name="close-circle" />
                             </ion-button>
                             <span>{{errorMessage}}</span>
                         </ion-item>
