@@ -26,15 +26,18 @@
                     </ion-row>
                     <ion-row>
                         <ion-col>
-                            <ion-item lines="none">
+                            <ion-item class="ion-margin-top" lines="none">
                                 <ion-label class="label-style" position="floating">Category</ion-label>
-                                <ion-select multiple="true" cancelText="Cancel" okText="Ok">
-                                    <ion-select-option value="apple">Apple</ion-select-option>
-                                    <ion-select-option value="banana">Banana</ion-select-option>
-                                    <ion-select-option value="cherry">Cherry</ion-select-option>
-                                    <ion-select-option value="orange">Orange</ion-select-option>
-                                    <ion-select-option value="strawberry">Strawberry</ion-select-option>
+                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok" @ionChange="onIonChangeGetSelected($event)">
+                                    <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
+                                        {{item.value}}</ion-select-option>
                                 </ion-select>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label class="label-style" mode="ios" position="floating">Quantity</ion-label>
+                                <ion-input class="input-style" type="number"></ion-input>
                             </ion-item>
                         </ion-col>
                     </ion-row>
@@ -44,12 +47,12 @@
                         </ion-item>
                     </ion-row>
                     <div class="editor">
-                        <QuillEditor class="quill-editor-style" v-html="product.description"
-                            v-model="product.description" />
+                        <QuillEditor class="quill-editor-style"
+                            v-model:value="product.description" />
                     </div>
                     <ion-row class="ion-margin-top ion-margin-bottomA">
                         <ion-buttons class="ion-margin-start">
-                            <ion-button class="save-button" @click="onClickSave">
+                            <ion-button class="save-button" @click="test">
                                 Save
                             </ion-button>
                             <ion-button class="cancel-button" @click="goBack">
@@ -86,9 +89,28 @@
                 loadProductDetails()
                 pageTitle
             })
+
             const data = reactive({
                 price: '',
             })
+
+            const categories = [{
+                value: 'Fruit',
+            }, {
+                value: 'Vegetable',
+            }, {
+                value: 'Sugarcane',
+            }, {
+                value: 'Rice',
+            }, {
+                value: 'Dairy',
+            }, {
+                value: 'Poultry',
+            }, {
+                value: 'Livestock',
+            }]
+
+            let selectedCategories = ref([])
 
             const router = useRouter()
 
@@ -111,6 +133,10 @@
                 router.go(-1)
             }
 
+            function onIonChangeGetSelected(ev) {
+                selectedCategories.value = ev.detail.value
+            }
+
             async function loadProductDetails(id) {
                 id = router.currentRoute.value.params.id
                 if (id) {
@@ -119,6 +145,11 @@
                             product.value = response.data.data
                         })
                 }
+            }
+
+            function test() {
+                console.log(product.value);
+                console.log(selectedCategories.value);
             }
             async function onClickSave() {
                 product.value.price = +product.value.price
@@ -139,7 +170,11 @@
                 data,
                 onClickSave,
                 goBack,
-                pageTitle
+                pageTitle,
+                categories,
+                test,
+                selectedCategories,
+                onIonChangeGetSelected
             }
         }
     }
