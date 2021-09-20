@@ -7,7 +7,7 @@
             <MenuFabButton />
             <div class="container">
                 <ion-item lines="none">
-                    <ion-label class="list-headers">
+                    <ion-label class="header-title">
                         Product List
                     </ion-label>
                     <ion-button class="add-button" slot="end" @click="onClickGoToUpdate()">
@@ -31,6 +31,7 @@
                                     Action
                                 </ion-col>
                             </ion-row>
+                            <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
                             <div class="data-list">
                                 <ion-row v-for="(item,i) in product" :key="i">
                                     <ion-col class="data-col">
@@ -84,6 +85,7 @@
             const router = useRouter()
 
             let product = ref({})
+            const isLoading = ref(false)
 
             function onClickGoToUpdate(id) {
                 if (id)
@@ -95,15 +97,19 @@
             async function loadProduct() {
                 await ProductAPI.list()
                     .then((response) => {
+                        isLoading.value = true;
                         product.value = response.data.data
                     }).catch((err) => {
                         console.error(err);
+                    }).finally(() => {
+                        isLoading.value = false;
                     })
             }
 
             return {
                 product,
-                onClickGoToUpdate
+                onClickGoToUpdate,
+                isLoading
             }
         }
     }

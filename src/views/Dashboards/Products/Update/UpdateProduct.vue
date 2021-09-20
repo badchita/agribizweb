@@ -7,20 +7,20 @@
             <MenuFabButton />
             <div class="container">
                 <ion-grid>
-                    <ion-row>
-                        <ion-label>{{pageTitle}}</ion-label>
-                    </ion-row>
+                    <ion-item lines="none">
+                        <ion-label class="header-title">{{pageTitle}}</ion-label>
+                    </ion-item>
                     <ion-row>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label position="floating">Name</ion-label>
-                                <ion-input v-model="product.name"></ion-input>
+                                <ion-label class="label-style" mode="ios" position="floating">Name</ion-label>
+                                <ion-input class="input-style" v-model="product.name"></ion-input>
                             </ion-item>
                         </ion-col>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label position="floating">Price</ion-label>
-                                <ion-input v-model="product.price"></ion-input>
+                                <ion-label class="label-style" mode="ios" position="floating">Price</ion-label>
+                                <ion-input class="input-style" v-model="product.price" type="number"></ion-input>
                             </ion-item>
                         </ion-col>
                     </ion-row>

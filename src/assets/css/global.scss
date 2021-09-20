@@ -37,11 +37,23 @@ ion-content {
     }
 }
 
-.list-headers {
+.header-title {
     font-size: 35px;
 }
 
 .add-button {
     font-size: 14px;
     height: 35px;
+}
+
+.input-style {
+    border: 1px solid rgb(128, 128, 128, .7);
+    border-radius: 8px;
+    --padding-start: 10px;
+    --padding-end: 10px;
+}
+
+.label-style {
+    --color: rgb(128, 128, 128);
+    margin-left: 10px;
 }
