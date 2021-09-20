@@ -7,10 +7,12 @@
             <MenuFabButton />
             <div class="container">
                 <ion-item lines="none">
-                    <ion-label>
+                    <ion-label class="list-headers">
                         Product List
                     </ion-label>
-                    <ion-button slot="end" @click="onClickGoToUpdate()">Add</ion-button>
+                    <ion-button class="add-button" slot="end" @click="onClickGoToUpdate()">
+                        <ion-icon name="add" />Add
+                    </ion-button>
                 </ion-item>
                 <ion-card>
                     <ion-card-content>
@@ -31,17 +33,24 @@
                             </ion-row>
                             <div class="data-list">
                                 <ion-row v-for="(item,i) in product" :key="i">
-                                    <ion-col>
+                                    <ion-col class="data-col">
                                         {{item.name}}
                                     </ion-col>
-                                    <ion-col>
+                                    <ion-col class="data-col">
                                         {{item.description}}
                                     </ion-col>
-                                    <ion-col>
+                                    <ion-col class="data-col">
                                         {{item.price}}
                                     </ion-col>
-                                    <ion-col>
-                                        <ion-button @click="onClickGoToUpdate(item.id)">edit</ion-button>
+                                    <ion-col class="data-col">
+                                        <ion-buttons>
+                                            <ion-button class="update-button" @click="onClickGoToUpdate(item.id)">
+                                                <ion-icon size="small" name="create" />
+                                            </ion-button>
+                                            <ion-button class="archive-button" @click="onClickGoToUpdate(item.id)">
+                                                <ion-icon size="small" name="archive" />
+                                            </ion-button>
+                                        </ion-buttons>
                                     </ion-col>
                                 </ion-row>
                             </div>

@@ -10,3 +10,38 @@
 ion-content {
     --background: #F5F5F5;
 }
+
+.row-header {
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 10px;
+}
+
+.data-col {
+    color: black;
+
+    ion-buttons {
+        color: white;
+
+        ion-button {
+            text-align: center;
+            --border-radius: 4px;
+        }
+
+        .update-button {
+            --background: var(--ion-color-primary);
+        }
+
+        .archive-button {
+            --background: var(--ion-color-danger);
+        }
+    }
+}
+
+.list-headers {
+    font-size: 35px;
+}
+
+.add-button {
+    font-size: 18px;
+    height: 35px;
+}

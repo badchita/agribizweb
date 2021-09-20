@@ -35,6 +35,11 @@
     refresh,
     star,
     closeCircleOutline,
+    createOutline,
+    archive,
+    archiveOutline,
+    create,
+    add,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -57,6 +62,11 @@
     'refresh': refresh,
     'star': star,
     'close-circle-outline': closeCircleOutline,
+    'create-outline': createOutline,
+    'archive': archive,
+    'archive-outline': archiveOutline,
+    'create': create,
+    'add': add,
   })
   export default defineComponent({
     name: 'App',
