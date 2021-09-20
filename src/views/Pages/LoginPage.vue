@@ -81,7 +81,7 @@
 </template>
 
 <script>
-    import AuthAPI from '@/api/auth'
+    // import AuthAPI from '@/api/auth'
     import {
         computed,
         reactive,
@@ -118,17 +118,27 @@
             async function onClickLogin() {
                 auth.password_confirmation = auth.password
                 store.dispatch('loading/start')
-                await AuthAPI.login(auth)
+                store.dispatch('auth/login', auth)
                     .then((response) => {
                         console.log(response);
                         router.push('/home')
-                    })
-                    .catch((err) => {
+                    }).catch((err) => {
                         console.error(err);
                     })
                     .finally(() => {
                         store.dispatch('loading/finish')
                     })
+                // await AuthAPI.login(auth)
+                //     .then((response) => {
+                //         console.log(response.data.token);
+                //         router.push('/home')
+                //     })
+                //     .catch((err) => {
+                //         console.error(err);
+                //     })
+                //     .finally(() => {
+                //         store.dispatch('loading/finish')
+                //     })
             }
             return {
                 passwordVisibility,
