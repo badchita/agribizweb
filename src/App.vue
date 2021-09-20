@@ -34,6 +34,7 @@
     checkmarkCircle,
     refresh,
     star,
+    closeCircleOutline,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -55,6 +56,7 @@
     'checkmark-circle': checkmarkCircle,
     'refresh': refresh,
     'star': star,
+    'close-circle-outline': closeCircleOutline,
   })
   export default defineComponent({
     name: 'App',

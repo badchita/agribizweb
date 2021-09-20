@@ -81,7 +81,8 @@ export default {
           else if (errorMsg.status === 402 || errorMsg.status === 403)
             commit('SET_ERROR_MESSAGE', errorMsg.data.message)
           else if (errorMsg.status === 401) {
-            commit('SET_ERROR_MESSAGE', !errorMsg.data.errors[1] ? errorMsg.data.errors[0] : errorMsg.data.errors[0] + errorMsg.data.errors[1])
+            const requiredError = errorMsg.data.errors[0] + errorMsg.data.errors[1]
+            commit('SET_ERROR_MESSAGE', !errorMsg.data.errors[1] ? errorMsg.data.errors[0] : requiredError)
           }
           return Promise.reject(err)
         })

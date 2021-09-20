@@ -25,7 +25,10 @@
                                 </ion-button>
                             </ion-buttons>
                         </ion-item>
-                        <ion-item lines="none">
+                        <ion-item v-if="showError" class="error-message-item" lines="none">
+                            <ion-button fill="clear" slot="end" @click="onClickCloseErrorIcon"> 
+                                <ion-icon name="close-circle-outline" />
+                            </ion-button>
                             <span>{{errorMessage}}</span>
                         </ion-item>
                         <ion-item lines="none">
@@ -96,6 +99,7 @@
             const router = useRouter()
             const store = useStore()
             let passwordVisibility = ref('password')
+            let showError = ref(false)
 
             let loadingStatus = computed(() => store.state.loading.status)
             let errorMessage = computed(() => store.state.auth.errorMessage)
@@ -108,6 +112,10 @@
                 passwordVisibility.value = 'password'
             }
 
+            function onClickCloseErrorIcon() {
+                showError.value = false
+            }
+
             async function onClickLogin() {
                 auth.password_confirmation = auth.password
                 store.dispatch('loading/start')
@@ -116,6 +124,7 @@
                         router.push('/home')
                     }).catch((err) => {
                         console.error(err);
+                        showError.value = true
                     })
                     .finally(() => {
                         store.dispatch('loading/finish')
@@ -128,7 +137,9 @@
                 auth,
                 onClickLogin,
                 loadingStatus,
-                errorMessage
+                errorMessage,
+                onClickCloseErrorIcon,
+                showError
             }
         }
     }
