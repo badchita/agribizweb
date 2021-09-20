@@ -16,31 +16,40 @@
                         <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
                     </ion-avatar>
                     <ion-label>
-                        Name
+                        {{userData.name}}
                     </ion-label>
                 </ion-item>
             </ion-col>
         </ion-row>
-        <!-- <ion-row>
-            <ion-col v-for="(item, i) in navDetails" :key="i" :size="item.col_size">
-                <ion-item lines="none" button @click="item.handler">
-                    <ion-label>{{item.label}}</ion-label>
-                </ion-item>
-            </ion-col>
-        </ion-row> -->
     </ion-toolbar>
 </template>
 
 <script>
+    import UserAPI from '@/api/user'
     import {
         useRouter
     } from 'vue-router'
+    import {
+        computed,
+        onMounted,
+        ref
+    } from '@vue/runtime-core'
+    import {
+        useStore
+    } from 'vuex'
 
     export default {
         name: 'NavBar',
         components: {},
         setup() {
+            onMounted(() => {
+                loadUserData()
+            })
             const router = useRouter()
+            const store = useStore()
+            const userId = computed(() => store.state.auth.userId)
+
+            const userData = ref({})
 
             const navDetails = [{
                     label: 'Home',
@@ -67,9 +76,18 @@
                 router.push(`/home`)
             }
 
+            async function loadUserData() {
+                await UserAPI.get(userId.value)
+                    .then((response) => {
+
+                        userData.value = response.data
+                    })
+            }
+
             return {
                 navDetails,
-                onClickHoneCol
+                onClickHoneCol,
+                userData
             }
         }
     }

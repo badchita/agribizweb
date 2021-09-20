@@ -119,8 +119,7 @@
                 auth.password_confirmation = auth.password
                 store.dispatch('loading/start')
                 store.dispatch('auth/login', auth)
-                    .then((response) => {
-                        console.log(response);
+                    .then(() => {
                         router.push('/home')
                     }).catch((err) => {
                         console.error(err);
@@ -128,17 +127,6 @@
                     .finally(() => {
                         store.dispatch('loading/finish')
                     })
-                // await AuthAPI.login(auth)
-                //     .then((response) => {
-                //         console.log(response.data.token);
-                //         router.push('/home')
-                //     })
-                //     .catch((err) => {
-                //         console.error(err);
-                //     })
-                //     .finally(() => {
-                //         store.dispatch('loading/finish')
-                //     })
             }
             return {
                 passwordVisibility,

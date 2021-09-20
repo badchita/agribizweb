@@ -103,7 +103,6 @@
             }
             async function onClickSave() {
                 product.value.price = +product.value.price
-                console.log(product.value)
 
                 const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
 

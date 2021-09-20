@@ -18,6 +18,9 @@ const routes = [{
   {
     path: '/home',
     name: 'Home',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('@/views/Pages/HomePage'),
   },
   {
@@ -29,10 +32,18 @@ const routes = [{
     // path: '/dashboards/updateproduct',
     // component: () => import('@/views/Dashboards/Products/Update/UpdateProduct.vue')
     path: `/dashboards/updateproduct`,
+    name: 'IndexProduct',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('@/views/Dashboards/Products/Update/UpdateProduct')
   },
   {
     path: `/dashboards/updateproduct/:id`,
+    name: 'UpdateProduct',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('@/views/Dashboards/Products/Update/UpdateProduct')
   }
 ]
@@ -41,5 +52,19 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+import store from '../store/index.js'
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters['auth/isAuthenticated']) {
+      next();
+      return;
+    }
+    next('/login');
+  } else {
+    next();
+  }
+});
 
 export default router
