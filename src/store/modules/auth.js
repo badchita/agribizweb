@@ -36,6 +36,7 @@ export default {
     AUTHENTICATING_SUCCESS(state, payload) {
       AuthAPI.setToken(payload.token)
       state.userId = payload.user_id
+      localStorage.setItem('token', payload.token)
       if (process.browser) {
         localStorage.setItem('userId', payload.user_id)
       }
@@ -70,14 +71,18 @@ export default {
           commit('SET_ERROR_MESSAGE', '')
         })
         .catch((err) => {
-          const errorMsg = err.message
+          const errorMsg = err.response
+          const networkError = err.message
+          console.log(errorMsg);
+          console.log(networkError);
           commit('AUTHENTICATING_ERROR')
-          if (errorMsg == 'Network Error')
-            commit('SET_ERROR_MESSAGE', errorMsg)
-          else if (errorMsg == 'Request failed with status code 401')
-            commit('SET_ERROR_MESSAGE', 'Invalid Username or Password')
-          else
-            commit('SET_ERROR_MESSAGE', 'Internal Server Error')
+          if (networkError == 'Request failed with status code 500')
+            commit('SET_ERROR_MESSAGE', 'Network Error')
+          else if (errorMsg.status === 402 || errorMsg.status === 403)
+            commit('SET_ERROR_MESSAGE', errorMsg.data.message)
+          else if (errorMsg.status === 401) {
+            commit('SET_ERROR_MESSAGE', !errorMsg.data.errors[1] ? errorMsg.data.errors[0] : errorMsg.data.errors[0] + errorMsg.data.errors[1])
+          }
           return Promise.reject(err)
         })
     },

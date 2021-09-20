@@ -7,41 +7,6 @@ ion-header {
         margin-bottom: -40px;
         margin-top: -20px;
     }
-
-    ion-col {
-        color: #222;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-
-        // .logo-container {
-        //     font-size: 1.5rem;
-        //     height: 200px;
-        //     border: 1px solid black;
-        //     // margin-left: 140px;
-        //     // padding-bottom: 20px;
-        // }
-
-        img {
-            margin-left: 35%;
-            height: 100%;
-            width: 100%;
-        }
-
-        .title-label {
-            --color: rgb(238, 77, 45);
-        }
-
-        .title-label,
-        ion-label {
-            margin-top: 22px;
-        }
-
-        ion-icon {
-            font-size: 2.5rem;
-            color: rgb(238, 77, 45);
-        }
-    }
 }
 
 ion-content {

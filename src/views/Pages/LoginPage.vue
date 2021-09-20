@@ -1,17 +1,6 @@
 <template>
     <ion-page>
         <ion-header class="ion-no-border">
-            <!-- <ion-row>
-                <ion-col size="4.4">
-                    <ion-item class="logo-container" lines="none">
-                        <ion-icon name="bag-handle" />
-                        <ion-label class="title-label">Negros Agribiz</ion-label>
-                        <img src="@/assets/images/logo.jpg" />
-                        <ion-label>Log In</ion-label>
-                    </ion-item>
-                </ion-col>
-            </ion-row> -->
-
             <img src="@/assets/images/logo.png" />
         </ion-header>
         <ion-content>
@@ -35,6 +24,9 @@
                                     <ion-icon name="eye-off" />
                                 </ion-button>
                             </ion-buttons>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <span>{{errorMessage}}</span>
                         </ion-item>
                         <ion-item lines="none">
                             <ion-button class="login-button" expand="full" strong="true" @click="onClickLogin">
@@ -106,6 +98,7 @@
             let passwordVisibility = ref('password')
 
             let loadingStatus = computed(() => store.state.loading.status)
+            let errorMessage = computed(() => store.state.auth.errorMessage)
 
             function showPassword() {
                 passwordVisibility.value = 'text'
@@ -134,7 +127,8 @@
                 hidePassword,
                 auth,
                 onClickLogin,
-                loadingStatus
+                loadingStatus,
+                errorMessage
             }
         }
     }
