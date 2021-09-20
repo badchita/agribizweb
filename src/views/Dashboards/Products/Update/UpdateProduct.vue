@@ -27,18 +27,35 @@
                     <ion-row>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label position="floating">Description</ion-label>
-                                <ion-textarea v-model="product.description"></ion-textarea>
+                                <ion-label class="label-style" position="floating">Category</ion-label>
+                                <ion-select multiple="true" cancelText="Cancel" okText="Ok">
+                                    <ion-select-option value="apple">Apple</ion-select-option>
+                                    <ion-select-option value="banana">Banana</ion-select-option>
+                                    <ion-select-option value="cherry">Cherry</ion-select-option>
+                                    <ion-select-option value="orange">Orange</ion-select-option>
+                                    <ion-select-option value="strawberry">Strawberry</ion-select-option>
+                                </ion-select>
                             </ion-item>
                         </ion-col>
                     </ion-row>
-                    <ion-row>
-                        <ion-button @click="onClickSave">
-                            Save
-                        </ion-button>
-                        <ion-button @click="goBack">
-                            Cancel
-                        </ion-button>
+                    <ion-row class="ion-margin-top">
+                        <ion-item lines="none">
+                            <ion-label class="label-style">Description</ion-label>
+                        </ion-item>
+                    </ion-row>
+                    <div class="editor">
+                        <QuillEditor class="quill-editor-style" v-html="product.description"
+                            v-model="product.description" />
+                    </div>
+                    <ion-row class="ion-margin-top ion-margin-bottomA">
+                        <ion-buttons class="ion-margin-start">
+                            <ion-button class="save-button" @click="onClickSave">
+                                Save
+                            </ion-button>
+                            <ion-button class="cancel-button" @click="goBack">
+                                Cancel
+                            </ion-button>
+                        </ion-buttons>
                     </ion-row>
                 </ion-grid>
             </div>
@@ -48,6 +65,7 @@
 
 <script>
     import ProductAPI from '@/api/product'
+    import 'quill/dist/quill.snow.css'
 
     import {
         computed,
@@ -62,6 +80,7 @@
     } from '@vue/runtime-core'
     export default {
         name: 'UpdateProduct',
+        components: {},
         setup() {
             onMounted(() => {
                 loadProductDetails()

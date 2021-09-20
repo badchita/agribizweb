@@ -104,6 +104,10 @@ import '@ionic/vue/css/display.css';
 import MenuFabButton from '@/components/MenuFabButton'
 import NavBar from '@/components/NavBar'
 
+import {
+  quillEditor
+} from 'vue3-quill'
+
 /* Theme variables */
 import './theme/variables.css';
 
@@ -113,6 +117,7 @@ const app = createApp(App)
   .use(store)
 app.component('NavBar', NavBar)
 app.component('MenuFabButton', MenuFabButton)
+app.component('QuillEditor', quillEditor)
 
 app.component('ion-badge', IonBadge)
 app.component('ion-button', IonButton)

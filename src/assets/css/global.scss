@@ -37,8 +37,10 @@ ion-content {
     }
 }
 
+.input-row {}
+
 .header-title {
-    font-size: 35px;
+    font-size: 30px;
 }
 
 .add-button {
@@ -54,6 +56,26 @@ ion-content {
 }
 
 .label-style {
-    --color: rgb(128, 128, 128);
     margin-left: 10px;
+    --color: rgb(128, 128, 128);
+}
+
+.editor {
+    height: 300px;
+    margin-right: 20px;
+    margin-left: 20px;
+
+    .quill-editor-style {
+        height: 86%;
+    }
+}
+
+.save-button {
+    --background: var(--ion-color-success);
+    --color: white;
+}
+
+.cancel-button {
+    --background: var(--ion-color-danger);
+    --color: white;
 }
