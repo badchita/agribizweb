@@ -12,7 +12,7 @@
                     <ion-button fill="clear">
                         <ion-icon slot="icon-only" name="notifications" />
                     </ion-button>
-                    <ion-item lines="none" button>
+                    <ion-item lines="none" button @click="onClickItemUser($event)">
                         <ion-avatar>
                             <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
                         </ion-avatar>
@@ -28,6 +28,8 @@
 
 <script>
     import UserAPI from '@/api/user'
+
+    import UserPopover from '@/popovers/UserPopover'
     import {
         useRouter
     } from 'vue-router'
@@ -39,6 +41,9 @@
     import {
         useStore
     } from 'vuex'
+    import {
+        popoverController
+    } from '@ionic/core'
 
     export default {
         name: 'NavBar',
@@ -86,10 +91,23 @@
                     })
             }
 
+
+            async function onClickItemUser(ev) {
+                let popover = await popoverController.create({
+                    component: UserPopover,
+                    componentProps: {},
+                    showBackdrop: false,
+                    event: ev
+                })
+
+                await popover.present();
+            }
+
             return {
                 navDetails,
                 onClickHoneCol,
-                userData
+                userData,
+                onClickItemUser
             }
         }
     }
