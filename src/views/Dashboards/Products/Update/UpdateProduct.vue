@@ -52,7 +52,7 @@
                     </div>
                     <ion-row class="ion-margin-top ion-margin-bottomA">
                         <ion-buttons class="ion-margin-start">
-                            <ion-button class="save-button" @click="test">
+                            <ion-button class="save-button" @click="onClickSave">
                                 Save
                             </ion-button>
                             <ion-button class="cancel-button" @click="goBack">

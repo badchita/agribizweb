@@ -37,8 +37,7 @@
                                     <ion-col class="data-col">
                                         {{item.name}}
                                     </ion-col>
-                                    <ion-col class="data-col">
-                                        {{item.description}}
+                                    <ion-col class="data-col" v-html="item.description">
                                     </ion-col>
                                     <ion-col class="data-col">
                                         {{item.price}}
