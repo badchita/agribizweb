@@ -7,7 +7,8 @@ const state = {
   userId: 0,
   isUserLoggedIn: false,
   userData: [],
-  errorMessage: ''
+  errorMessage: '',
+  logoutMessage: ''
 }
 
 export default {
@@ -56,6 +57,9 @@ export default {
     },
     SET_IS_USER_LOGGED_IN(state, isUserLoggedIn) {
       state.isUserLoggedIn = isUserLoggedIn
+    },
+    SET_LOGOUT_MESSAGE(state, logoutMessage) {
+      state.logoutMessage = logoutMessage
     }
   },
   actions: {
@@ -91,7 +95,8 @@ export default {
       commit
     }) {
       return AuthAPI.logout()
-        .then(() => {
+        .then((response) => {
+          commit('SET_LOGOUT_MESSAGE', response.data.message)
           commit('SET_IS_USER_LOGGED_IN', false)
           commit('AUTHENTICATING_ERROR')
         })
