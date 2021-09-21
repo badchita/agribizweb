@@ -24,6 +24,7 @@ ion-content {
 
         ion-button {
             text-align: center;
+            --text-transform: none;
             --border-radius: 4px;
         }
 
@@ -46,6 +47,10 @@ ion-content {
 .add-button {
     font-size: 14px;
     height: 35px;
+
+    ion-label {
+        text-transform: none;
+    }
 }
 
 .input-style {
@@ -75,12 +80,20 @@ ion-content {
     --color: white;
 }
 
-.cancel-button {
-    --background: var(--ion-color-danger);
-    --color: white;
-}
-
 .select-style {
     --padding-start: 10px;
     --padding-end: 10px;
+}
+
+.picker-label {
+    border: 1px solid black;
+    margin-top: 10px;
+
+    background: grey;
+}
+
+.vue-picker {
+    border: 1px solid black;
+    width: 100px;
+    overflow: visible;
 }

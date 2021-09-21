@@ -29,8 +29,6 @@ const routes = [{
     component: () => import('@/views/Dashboards/Products/index'),
   },
   {
-    // path: '/dashboards/updateproduct',
-    // component: () => import('@/views/Dashboards/Products/Update/UpdateProduct.vue')
     path: `/dashboards/updateproduct`,
     name: 'IndexProduct',
     meta: {
@@ -45,7 +43,12 @@ const routes = [{
       requiresAuth: true
     },
     component: () => import('@/views/Dashboards/Products/Update/UpdateProduct')
-  }
+  },
+  {
+    path: '/dashboards/orders',
+    name: 'Orders',
+    component: () => import('@/views/Dashboards/Orders/index'),
+  },
 ]
 
 const router = createRouter({

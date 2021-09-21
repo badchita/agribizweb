@@ -35,6 +35,11 @@
                 title: 'Products',
                 url: '/dashboards/products',
                 iosIcon: 'cube'
+            },
+            {
+                title: 'Orders',
+                url: '/dashboards/orders',
+                iosIcon: 'receipt'
             }]
 
             function selectedItem(url) {

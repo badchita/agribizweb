@@ -10,6 +10,7 @@
                     <ion-item lines="none">
                         <ion-label class="header-title">{{pageTitle}}</ion-label>
                     </ion-item>
+                    <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
                     <ion-row>
                         <ion-col>
                             <ion-item lines="none">
@@ -28,7 +29,8 @@
                         <ion-col>
                             <ion-item class="ion-margin-top" lines="none">
                                 <ion-label class="label-style" position="floating">Category</ion-label>
-                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok" @ionChange="onIonChangeGetSelected($event)">
+                                <ion-select class="select-style" multiple="true"
+                                    cancelText="Cancel" okText="Ok" :value="product.category" @ionChange="onIonChangeGetSelected($event)">
                                     <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
                                         {{item.value}}</ion-select-option>
                                 </ion-select>
@@ -37,7 +39,7 @@
                         <ion-col>
                             <ion-item lines="none">
                                 <ion-label class="label-style" mode="ios" position="floating">Quantity</ion-label>
-                                <ion-input class="input-style" type="number"></ion-input>
+                                <ion-input class="input-style" v-model="product.quantity" type="number"></ion-input>
                             </ion-item>
                         </ion-col>
                     </ion-row>
@@ -47,15 +49,14 @@
                         </ion-item>
                     </ion-row>
                     <div class="editor">
-                        <QuillEditor class="quill-editor-style"
-                            v-model:value="product.description" />
+                        <QuillEditor class="quill-editor-style" v-model:value="product.description" />
                     </div>
-                    <ion-row class="ion-margin-top ion-margin-bottomA">
+                    <ion-row class="ion-margin-top ion-margin-bottom">
                         <ion-buttons class="ion-margin-start">
                             <ion-button class="save-button" @click="onClickSave">
                                 Save
                             </ion-button>
-                            <ion-button class="cancel-button" @click="goBack">
+                            <ion-button color="danger" @click="goBack">
                                 Cancel
                             </ion-button>
                         </ion-buttons>
@@ -110,17 +111,10 @@
                 value: 'Livestock',
             }]
 
-            let selectedCategories = ref([])
-
             const router = useRouter()
 
-            const product = ref({
-                id: '',
-                name: '',
-                price: '',
-                description: '',
-                status: 'O'
-            })
+            const product = ref({})
+            const isLoading = ref(false)
 
             const pageTitle = computed(() => {
                 if (router.currentRoute.value.params.id)
@@ -129,34 +123,44 @@
                     return 'Add Product'
             })
 
+            function clearForm() {
+                product.value = {}
+            }
+
             function goBack() {
+                // clearForm()
                 router.go(-1)
             }
 
             function onIonChangeGetSelected(ev) {
-                selectedCategories.value = ev.detail.value
+                product.value.category = ev.detail.value
             }
 
             async function loadProductDetails(id) {
+                isLoading.value = true;
                 id = router.currentRoute.value.params.id
                 if (id) {
                     await ProductAPI.get(id)
                         .then((response) => {
                             product.value = response.data.data
                         })
+                        .finally(() => {
+                            isLoading.value = false;
+                        })
                 }
             }
 
             function test() {
                 console.log(product.value);
-                console.log(selectedCategories.value);
             }
             async function onClickSave() {
                 product.value.price = +product.value.price
+                product.value.category = product.value.category.toString()
 
                 const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
 
                 api.then(() => {
+                    clearForm()
                     goBack()
                     setTimeout(() => {
                         router.go()
@@ -173,8 +177,8 @@
                 pageTitle,
                 categories,
                 test,
-                selectedCategories,
-                onIonChangeGetSelected
+                onIonChangeGetSelected,
+                isLoading
             }
         }
     }
