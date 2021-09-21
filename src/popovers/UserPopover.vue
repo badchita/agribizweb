@@ -6,8 +6,8 @@
         <h2>name</h2>
         <h3>email</h3>
     </ion-label>
-    <ion-button fill="clear" expand="block">Manage Your Account</ion-button>
-    <ion-button fill="clear" expand="block">Sign Out</ion-button>
+    <ion-button class="manage-account-button" fill="clear" expand="block">Manage Your Account</ion-button>
+    <ion-button class="signout-button" fill="clear" expand="block">Sign Out</ion-button>
 </template>
 
 <script>
@@ -21,5 +21,5 @@
 </script>
 
 <style lang="scss" scoped>
-
+    @import '@/assets/css/user-popover.scss';
 </style>

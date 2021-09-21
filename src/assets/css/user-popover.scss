@@ -1,0 +1,39 @@
+ion-avatar {
+    margin: auto;
+    margin-top: 16px;
+}
+
+ion-label {
+    text-align: center;
+
+    h2 {
+        font-weight: 700;
+    }
+
+    h3 {
+        color: grey;
+    }
+}
+
+ion-button {
+    text-transform: none;
+    border: 1px solid rgb(128, 128, 128, .5);
+    font-weight: 700;
+    margin: auto;
+    margin-top: 16px;
+    --color: grey;
+}
+
+.manage-account-button {
+    border-radius: 20px;
+    width: 200px;
+    margin-top: 16px;
+    --border-radius: 20px;
+}
+
+.signout-button {
+    border-radius: 6px;
+    width: 100px;
+    margin-bottom: 16px;
+    --border-radius: 6px;
+}
