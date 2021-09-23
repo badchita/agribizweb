@@ -49,6 +49,14 @@ const routes = [{
     name: 'Orders',
     component: () => import('@/views/Dashboards/Orders/index'),
   },
+  {
+    path: `/dashboards/detailsproduct/:id`,
+    name: 'DetailsProduct',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Products/Details/DetailsProduct')
+  },
 ]
 
 const router = createRouter({

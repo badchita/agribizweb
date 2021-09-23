@@ -11,7 +11,17 @@ ion-content {
     --background: #F5F5F5;
 }
 
-.row-header {
+.data-list .data-row:hover {
+    background-color: rgb(220, 220, 220, .6);
+}
+
+.data-row {
+    position: relative;
+    overflow: hidden;
+}
+
+
+.header-row {
     border-bottom: 1px solid lightgrey;
     margin-bottom: 10px;
 }
@@ -96,4 +106,29 @@ ion-content {
     border: 1px solid black;
     width: 100px;
     overflow: visible;
+}
+
+.details-header-label {
+    margin-left: 6px;
+
+    font-size: 1.5rem;
+}
+
+.details-col {
+    padding-left: 12px;
+}
+
+.details-label {
+    font-weight: 700;
+}
+
+.details-grid {
+    color: grey;
+}
+
+.details-buttons {
+    .details-update-button {
+        background: var(--ion-color-medium);
+        color: white;
+    }
 }

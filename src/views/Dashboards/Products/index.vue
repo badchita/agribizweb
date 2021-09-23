@@ -19,7 +19,7 @@
                 <ion-card style="overflow: visible">
                     <ion-card-content>
                         <ion-grid>
-                            <ion-row class="row-header">
+                            <ion-row class="header-row">
                                 <ion-col>
                                     Name
                                 </ion-col>
@@ -35,7 +35,7 @@
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
                             <div class="data-list">
-                                <ion-row v-for="(item,i) in product" :key="i">
+                                <ion-row class="data-row" v-for="(item,i) in product" :key="i" @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
                                         {{item.name}}
                                     </ion-col>
@@ -46,10 +46,10 @@
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
-                                            <ion-button class="update-button" @click="onClickGoToUpdate(item.id)">
+                                            <ion-button class="update-button" @click="onClickGoToUpdate(item.id, $event)">
                                                 <ion-icon size="small" name="create" />
                                             </ion-button>
-                                            <ion-button class="archive-button" @click="onClickGoToUpdate(item.id)">
+                                            <ion-button class="archive-button" @click="onClickGoToUpdate(item.id, $event)">
                                                 <ion-icon size="small" name="archive" />
                                             </ion-button>
                                         </ion-buttons>
@@ -92,11 +92,17 @@
             let product = ref({})
             const isLoading = ref(false)
 
-            function onClickGoToUpdate(id) {
+            function onClickGoToUpdate(id, ev) {
+                ev.stopPropagation();
+                
                 if (id)
                     router.push(`/dashboards/updateproduct/${id}`)
                 else
                     router.push(`/dashboards/updateproduct`)
+            }
+
+            function onClickRowDetails(id) {
+                router.push(`/dashboards/detailsproduct/${id}`)
             }
 
             async function loadProduct() {
@@ -114,7 +120,8 @@
             return {
                 product,
                 onClickGoToUpdate,
-                isLoading
+                isLoading,
+                onClickRowDetails
             }
         }
     }

@@ -83,6 +83,7 @@ import {
   IonAvatar,
   IonRouterOutlet,
   IonTextarea,
+  IonRippleEffect,
 } from '@ionic/vue';
 
 /* Core CSS required for Ionic components to work properly */
@@ -180,7 +181,7 @@ app.component('ion-select-option', IonSelectOption)
 app.component('ion-slides', IonSlides)
 app.component('ion-slide', IonSlide)
 app.component('ion-tabs', IonTabs)
-// app.component('ion-tab', IonTab)
+app.component('ion-ripple-effect', IonRippleEffect)
 app.component('ion-tab-bar', IonTabBar)
 app.component('ion-tab-button', IonTabButton)
 app.component('ion-toogle', IonToggle)

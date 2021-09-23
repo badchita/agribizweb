@@ -11,7 +11,7 @@
                         <ion-label class="header-title">{{pageTitle}}</ion-label>
                     </ion-item>
                     <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
-                    
+
                     <ion-row>
                         <ion-col>
                             <ion-item lines="none">
@@ -159,9 +159,10 @@
             }
 
             async function loadProductDetails(id) {
+                id = router.currentRoute.value.params.id
                 if (id)
                     isLoading.value = true;
-                id = router.currentRoute.value.params.id
+                    
                 if (id) {
                     await ProductAPI.get(id)
                         .then((response) => {
