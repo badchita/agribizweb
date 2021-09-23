@@ -11,6 +11,7 @@
                         <ion-label class="header-title">{{pageTitle}}</ion-label>
                     </ion-item>
                     <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
+                    
                     <ion-row>
                         <ion-col>
                             <ion-item lines="none">
@@ -20,29 +21,50 @@
                         </ion-col>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">Price</ion-label>
-                                <ion-input class="input-style" v-model="product.price" type="number"></ion-input>
+                                <ion-label class="label-style" mode="ios" position="floating">Location</ion-label>
+                                <ion-input class="input-style"></ion-input>
                             </ion-item>
                         </ion-col>
                     </ion-row>
+
                     <ion-row>
-                        <ion-col>
-                            <ion-item class="ion-margin-top" lines="none">
-                                <ion-label class="label-style" position="floating">Category</ion-label>
-                                <ion-select class="select-style" multiple="true"
-                                    cancelText="Cancel" okText="Ok" :value="product.category" @ionChange="onIonChangeGetSelected($event)">
-                                    <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
-                                        {{item.value}}</ion-select-option>
-                                </ion-select>
-                            </ion-item>
-                        </ion-col>
                         <ion-col>
                             <ion-item lines="none">
                                 <ion-label class="label-style" mode="ios" position="floating">Quantity</ion-label>
                                 <ion-input class="input-style" v-model="product.quantity" type="number"></ion-input>
                             </ion-item>
                         </ion-col>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label class="label-style" mode="ios" position="floating">Price</ion-label>
+                                <ion-input class="input-style" v-model="product.price" type="number"></ion-input>
+                            </ion-item>
+                        </ion-col>
                     </ion-row>
+
+                    <ion-row>
+                        <ion-col>
+                            <ion-item class="ion-margin-top" lines="none">
+                                <ion-label class="label-style" position="floating">Category</ion-label>
+                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok"
+                                    :value="product.category" @ionChange="onIonChangeGetSelected($event)">
+                                    <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
+                                        {{item.value}}</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col>
+                            <ion-item class="ion-margin-top" lines="none">
+                                <ion-label class="label-style" position="floating">Status</ion-label>
+                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok"
+                                    :value="product.category" @ionChange="onIonChangeGetSelected($event)">
+                                    <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
+                                        {{item.value}}</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+
                     <ion-row class="ion-margin-top">
                         <ion-item lines="none">
                             <ion-label class="label-style">Description</ion-label>
@@ -137,7 +159,8 @@
             }
 
             async function loadProductDetails(id) {
-                isLoading.value = true;
+                if (id)
+                    isLoading.value = true;
                 id = router.currentRoute.value.params.id
                 if (id) {
                     await ProductAPI.get(id)
