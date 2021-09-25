@@ -6,7 +6,8 @@
         <h2>{{userData.name}}</h2>
         <h3>{{userData.email}}</h3>
     </ion-label>
-    <ion-button class="manage-account-button" fill="clear" expand="block">Manage Your Account</ion-button>
+    <ion-button class="manage-account-button" fill="clear" expand="block" @click="onClickManageAccount">Manage Your
+        Account</ion-button>
     <ion-button class="signout-button" fill="clear" expand="block" @click="onClickSignOut">Sign Out</ion-button>
 </template>
 
@@ -28,14 +29,20 @@
         props: {
             userData: {
                 type: Object,
-                default: function (){}
+                default: function () {}
             },
         },
-        setup() {
+        setup(props) {
             const router = useRouter()
             const store = useStore()
 
             let logoutMessage = computed(() => store.state.auth.logoutMessage)
+
+            function onClickManageAccount(id) {
+                id = props.userData.id
+                router.push(`/profile/${id}`)
+                popoverController.dismiss()
+            }
 
             async function onClickSignOut() {
                 store.dispatch('auth/logout')
@@ -58,7 +65,8 @@
                 return toast.present();
             }
             return {
-                onClickSignOut
+                onClickSignOut,
+                onClickManageAccount
             }
         }
     }

@@ -3,6 +3,7 @@
         <ion-header>
             <NavBar />
         </ion-header>
+        
         <ion-content>
             <MenuFabButton />
             <div class="container">

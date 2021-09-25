@@ -57,6 +57,14 @@ const routes = [{
     },
     component: () => import('@/views/Dashboards/Products/Details/DetailsProduct')
   },
+  {
+    path: `/profile/:id`,
+    name: 'Profile',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Pages/ProfilePage')
+  },
 ]
 
 const router = createRouter({
