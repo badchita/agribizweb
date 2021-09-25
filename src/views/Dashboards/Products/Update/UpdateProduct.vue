@@ -47,7 +47,7 @@
                             <ion-item class="ion-margin-top" lines="none">
                                 <ion-label class="label-style" position="floating">Category</ion-label>
                                 <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok"
-                                    :value="product.category" @ionChange="onIonChangeGetSelected($event)">
+                                    :value="product.category" @ionChange="onIonChangeGetSelectedCategories($event)">
                                     <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
                                         {{item.value}}</ion-select-option>
                                 </ion-select>
@@ -56,9 +56,10 @@
                         <ion-col>
                             <ion-item class="ion-margin-top" lines="none">
                                 <ion-label class="label-style" position="floating">Status</ion-label>
-                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok"
-                                    :value="product.category" @ionChange="onIonChangeGetSelected($event)">
-                                    <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
+                                <ion-select class="select-style" cancelText="Cancel" okText="Ok"
+                                    :value="product.product_status"
+                                    @ionChange="onIonChangeGetSelectedProductStatus($event)">
+                                    <ion-select-option v-for="(item, i) in product_status" :key="i" :value="item.value">
                                         {{item.value}}</ion-select-option>
                                 </ion-select>
                             </ion-item>
@@ -133,6 +134,12 @@
                 value: 'Livestock',
             }]
 
+            const product_status = [{
+                value: 'Available',
+            }, {
+                value: 'Out Of Stocks',
+            }]
+
             const router = useRouter()
 
             const product = ref({})
@@ -154,15 +161,19 @@
                 router.go(-1)
             }
 
-            function onIonChangeGetSelected(ev) {
+            function onIonChangeGetSelectedCategories(ev) {
                 product.value.category = ev.detail.value
+            }
+
+            function onIonChangeGetSelectedProductStatus(ev) {
+                product.value.product_status = ev.detail.value
             }
 
             async function loadProductDetails(id) {
                 id = router.currentRoute.value.params.id
                 if (id)
                     isLoading.value = true;
-                    
+
                 if (id) {
                     await ProductAPI.get(id)
                         .then((response) => {
@@ -201,8 +212,10 @@
                 pageTitle,
                 categories,
                 test,
-                onIonChangeGetSelected,
-                isLoading
+                onIonChangeGetSelectedCategories,
+                onIonChangeGetSelectedProductStatus,
+                isLoading,
+                product_status
             }
         }
     }
