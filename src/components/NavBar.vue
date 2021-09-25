@@ -86,7 +86,6 @@
             async function loadUserData() {
                 await UserAPI.get(userId.value)
                     .then((response) => {
-
                         userData.value = response.data
                     })
             }
@@ -95,7 +94,9 @@
             async function onClickItemUser(ev) {
                 let popover = await popoverController.create({
                     component: UserPopover,
-                    componentProps: {},
+                    componentProps: {
+                        userData: userData.value
+                    },
                     showBackdrop: false,
                     event: ev
                 })

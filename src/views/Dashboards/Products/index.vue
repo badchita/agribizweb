@@ -35,7 +35,8 @@
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
                             <div class="data-list">
-                                <ion-row class="data-row" v-for="(item,i) in product" :key="i" @click="onClickRowDetails(item.id)">
+                                <ion-row class="data-row" v-for="(item,i) in product" :key="i"
+                                    @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
                                         {{item.name}}
                                     </ion-col>
@@ -46,10 +47,12 @@
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
-                                            <ion-button class="update-button" @click="onClickGoToUpdate(item.id, $event)">
+                                            <ion-button class="update-button"
+                                                @click="onClickGoToUpdate(item.id, $event)">
                                                 <ion-icon size="small" name="create" />
                                             </ion-button>
-                                            <ion-button class="archive-button" @click="onClickGoToUpdate(item.id, $event)">
+                                            <ion-button class="archive-button"
+                                                @click="onClickGoToUpdate(item.id, $event)">
                                                 <ion-icon size="small" name="archive" />
                                             </ion-button>
                                         </ion-buttons>
@@ -93,11 +96,10 @@
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id, ev) {
-                ev.stopPropagation();
-                
-                if (id)
+                if (id) {
+                    ev.stopPropagation();
                     router.push(`/dashboards/updateproduct/${id}`)
-                else
+                } else
                     router.push(`/dashboards/updateproduct`)
             }
 
@@ -106,9 +108,9 @@
             }
 
             async function loadProduct() {
+                isLoading.value = true;
                 await ProductAPI.list()
                     .then((response) => {
-                        isLoading.value = true;
                         product.value = response.data.data
                     }).catch((err) => {
                         console.error(err);

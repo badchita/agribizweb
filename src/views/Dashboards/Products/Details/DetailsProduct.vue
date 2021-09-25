@@ -57,7 +57,8 @@
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Status</ion-label> <br>
-                            <ion-label class="details-label">{{product.product_status}}</ion-label>
+                            <!-- <ion-label class="details-label">{{product.product_status}}</ion-label> -->
+                            <ion-badge color="secondary">Available</ion-badge>
                         </ion-col>
                         <ion-col class="details-col" />
                         <ion-col class="details-col" />
