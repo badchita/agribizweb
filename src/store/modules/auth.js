@@ -6,7 +6,6 @@ import {
 const state = {
   userId: 0,
   isUserLoggedIn: false,
-  userData: [],
   errorMessage: '',
   logoutMessage: ''
 }
@@ -49,9 +48,6 @@ export default {
         localStorage.clear()
       }
     },
-    SET_USER_DATA(state, userData) {
-      state.userData = userData
-    },
     SET_ERROR_MESSAGE(state, errorMessage) {
       state.errorMessage = errorMessage
     },
@@ -70,7 +66,6 @@ export default {
       return AuthAPI.login(payload)
         .then((res) => {
           commit('AUTHENTICATING_SUCCESS', res.data)
-          commit('SET_USER_DATA', res.data)
           commit('SET_IS_USER_LOGGED_IN', true)
           commit('SET_ERROR_MESSAGE', '')
         })

@@ -130,8 +130,12 @@
   import MenuFabButton from '@/components/MenuFabButton'
   import NavBar from '@/components/NavBar'
   import {
+    computed,
     onMounted,
   } from '@vue/runtime-core';
+  import {
+    useStore
+  } from 'vuex';
 
   export default {
     name: 'Home',
@@ -140,7 +144,13 @@
       NavBar,
     },
     setup() {
-      onMounted(() => {})
+      onMounted(() => {
+        store.dispatch('user/loadUserData', userId.value)
+      })
+
+      const store = useStore()
+
+      const userId = computed(() => store.state.auth.userId)
 
       return {}
     }

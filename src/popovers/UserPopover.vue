@@ -32,15 +32,14 @@
                 default: function () {}
             },
         },
-        setup(props) {
+        setup() {
             const router = useRouter()
             const store = useStore()
 
             let logoutMessage = computed(() => store.state.auth.logoutMessage)
 
-            function onClickManageAccount(id) {
-                id = props.userData.id
-                router.push(`/profile/${id}`)
+            function onClickManageAccount() {
+                router.push(`/profile`)
                 popoverController.dismiss()
             }
 

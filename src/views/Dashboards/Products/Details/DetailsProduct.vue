@@ -33,26 +33,26 @@
 
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
-                            <ion-label>Name</ion-label> <br>
+                            <ion-label>Name</ion-label>
                             <div class="details-label">{{product.name}}</div>
                         </ion-col>
                         <ion-col class="details-col">
-                            <ion-label>Location</ion-label> <br><br>
+                            <ion-label>Location</ion-label>
                             <div class="details-label">{{product.location}}</div>
                         </ion-col>
                         <ion-col class="details-col">
-                            <ion-label>Price</ion-label> <br>
+                            <ion-label>Price</ion-label>
                             <div class="details-label">{{product.price}}</div>
                         </ion-col>
                         <ion-col class="details-col">
-                            <ion-label>Quantity</ion-label> <br>
+                            <ion-label>Quantity</ion-label> 
                             <div class="details-label">{{product.quantity}}</div>
                         </ion-col>
                     </ion-row>
 
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
-                            <ion-label>Category</ion-label> <br>
+                            <ion-label>Category</ion-label> 
                             <div class="details-label">{{product.category}}</div>
                         </ion-col>
                         <ion-col class="details-col">
@@ -65,7 +65,7 @@
 
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
-                            <ion-label>Description</ion-label> <br>
+                            <ion-label>Description</ion-label> 
                             <div class="details-label" v-html="product.description"></div>
                         </ion-col>
                     </ion-row>

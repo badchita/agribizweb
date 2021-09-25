@@ -58,7 +58,7 @@ const routes = [{
     component: () => import('@/views/Dashboards/Products/Details/DetailsProduct')
   },
   {
-    path: `/profile/:id`,
+    path: `/profile`,
     name: 'Profile',
     meta: {
       requiresAuth: true

@@ -2,7 +2,7 @@
     <ion-toolbar>
         <ion-row>
             <ion-col class="home-col" size="9">
-                <ion-button fill="clear" @click="onClickHoneCol">
+                <ion-button fill="clear" @click="onClickHomeCol">
                     <ion-icon name="leaf" />
                     <ion-label>Home</ion-label>
                 </ion-button>
@@ -27,8 +27,6 @@
 </template>
 
 <script>
-    import UserAPI from '@/api/user'
-
     import UserPopover from '@/popovers/UserPopover'
     import {
         useRouter
@@ -36,7 +34,6 @@
     import {
         computed,
         onMounted,
-        ref
     } from '@vue/runtime-core'
     import {
         useStore
@@ -49,14 +46,11 @@
         name: 'NavBar',
         components: {},
         setup() {
-            onMounted(() => {
-                loadUserData()
-            })
+            onMounted(() => {})
             const router = useRouter()
             const store = useStore()
-            const userId = computed(() => store.state.auth.userId)
 
-            const userData = ref({})
+            const userData = computed(() => store.state.user.userData)
 
             const navDetails = [{
                     label: 'Home',
@@ -79,17 +73,9 @@
                 },
             ]
 
-            function onClickHoneCol() {
+            function onClickHomeCol() {
                 router.push(`/home`)
             }
-
-            async function loadUserData() {
-                await UserAPI.get(userId.value)
-                    .then((response) => {
-                        userData.value = response.data
-                    })
-            }
-
 
             async function onClickItemUser(ev) {
                 let popover = await popoverController.create({
@@ -106,9 +92,9 @@
 
             return {
                 navDetails,
-                onClickHoneCol,
+                onClickHomeCol,
                 userData,
-                onClickItemUser
+                onClickItemUser,
             }
         }
     }
