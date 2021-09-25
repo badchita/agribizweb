@@ -34,31 +34,30 @@
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
                             <ion-label>Name</ion-label> <br>
-                            <ion-label class="details-label">{{product.name}}</ion-label>
+                            <div class="details-label">{{product.name}}</div>
                         </ion-col>
                         <ion-col class="details-col">
-                            <ion-label>Location</ion-label> <br>
-                            <ion-label class="details-label">{{product.location}}</ion-label>
+                            <ion-label>Location</ion-label> <br><br>
+                            <div class="details-label">{{product.location}}</div>
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Price</ion-label> <br>
-                            <ion-label class="details-label">{{product.price}}</ion-label>
+                            <div class="details-label">{{product.price}}</div>
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Quantity</ion-label> <br>
-                            <ion-label class="details-label">{{product.quantity}}</ion-label>
+                            <div class="details-label">{{product.quantity}}</div>
                         </ion-col>
                     </ion-row>
 
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
                             <ion-label>Category</ion-label> <br>
-                            <ion-label class="details-label">{{product.category}}</ion-label>
+                            <div class="details-label">{{product.category}}</div>
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Status</ion-label> <br>
-                            <!-- <ion-label class="details-label">{{product.product_status}}</ion-label> -->
-                            <ion-badge color="secondary">Available</ion-badge>
+                            <ProductStatus :status="product.product_status" />
                         </ion-col>
                         <ion-col class="details-col" />
                         <ion-col class="details-col" />
@@ -67,7 +66,7 @@
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
                             <ion-label>Description</ion-label> <br>
-                            <ion-label class="details-label" v-html="product.description"></ion-label>
+                            <div class="details-label" v-html="product.description"></div>
                         </ion-col>
                     </ion-row>
                 </ion-grid>
@@ -78,6 +77,8 @@
 
 <script>
     import ProductAPI from '@/api/product'
+
+    import ProductStatus from '@/components/ProductStatus'
     import {
         ref
     } from '@vue/reactivity'
@@ -88,6 +89,10 @@
         useRouter
     } from 'vue-router'
     export default {
+        name: 'DetailProduct',
+        components: {
+            ProductStatus,
+        },
         setup() {
             onMounted(() => {
                 loadProduct()

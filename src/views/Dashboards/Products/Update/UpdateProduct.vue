@@ -93,7 +93,7 @@
 <script>
     import ProductAPI from '@/api/product'
     import 'quill/dist/quill.snow.css'
-
+    
     import {
         computed,
         reactive,
