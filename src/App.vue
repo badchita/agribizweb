@@ -42,6 +42,7 @@
     add,
     closeCircle,
     receipt,
+    business,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -71,6 +72,7 @@
     'add': add,
     'close-circle': closeCircle,
     'receipt': receipt,
+    'business': business
   })
   export default defineComponent({
     name: 'App',

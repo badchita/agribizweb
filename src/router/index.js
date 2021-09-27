@@ -45,6 +45,11 @@ const routes = [{
     component: () => import('@/views/Dashboards/Products/Update/UpdateProduct')
   },
   {
+    path: '/dashboards/addresses',
+    name: 'Addresses',
+    component: () => import('@/views/Dashboards/Addresses/index'),
+  },
+  {
     path: '/dashboards/orders',
     name: 'Orders',
     component: () => import('@/views/Dashboards/Orders/index'),

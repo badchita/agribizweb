@@ -37,6 +37,11 @@
                 iosIcon: 'cube'
             },
             {
+                title: 'Addresses',
+                url: '/dashboards/addresses',
+                iosIcon: 'business'
+            },
+            {
                 title: 'Orders',
                 url: '/dashboards/orders',
                 iosIcon: 'receipt'
