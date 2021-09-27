@@ -45,6 +45,14 @@ const routes = [{
     component: () => import('@/views/Dashboards/Products/Update/UpdateProduct')
   },
   {
+    path: `/dashboards/detailsproduct/:id`,
+    name: 'DetailsProduct',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Products/Details/DetailsProduct')
+  },
+  {
     path: '/dashboards/addresses',
     name: 'Addresses',
     component: () => import('@/views/Dashboards/Addresses/index'),
@@ -57,7 +65,7 @@ const routes = [{
     },
     component: () => import('@/views/Dashboards/Addresses/Update/UpdateAddresses')
   }, {
-    path: `/dashboards/updateAddresses/:id`,
+    path: `/dashboards/updateaddresses/:id`,
     name: 'UpdateAddresses',
     meta: {
       requiresAuth: true
@@ -65,17 +73,17 @@ const routes = [{
     component: () => import('@/views/Dashboards/Addresses/Update/UpdateAddresses')
   },
   {
-    path: '/dashboards/orders',
-    name: 'Orders',
-    component: () => import('@/views/Dashboards/Orders/index'),
-  },
-  {
-    path: `/dashboards/detailsproduct/:id`,
-    name: 'DetailsProduct',
+    path: `/dashboards/detailsaddresses/:id`,
+    name: 'DetailsAddresses',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Products/Details/DetailsProduct')
+    component: () => import('@/views/Dashboards/Addresses/Details/DetailsAddress')
+  },
+  {
+    path: '/dashboards/orders',
+    name: 'Orders',
+    component: () => import('@/views/Dashboards/Orders/index'),
   },
   {
     path: `/profile`,

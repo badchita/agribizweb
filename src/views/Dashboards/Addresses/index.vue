@@ -112,7 +112,7 @@
             }
 
             function onClickRowDetails(id) {
-                router.push(`/dashboards/detailsproduct/${id}`)
+                router.push(`/dashboards/detailsaddresses/${id}`)
             }
 
             async function loadAddresses() {
