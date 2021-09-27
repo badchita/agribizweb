@@ -42,7 +42,7 @@
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Price</ion-label>
-                            <div class="details-label">{{product.price}}</div>
+                            <div class="details-label">₱{{product.price}}</div>
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Quantity</ion-label> 
