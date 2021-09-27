@@ -22,7 +22,7 @@
                         <ion-col>
                             <ion-item class="ion-margin-top" lines="none">
                                 <ion-label class="label-style" position="floating">Location</ion-label>
-                                <ion-select class="select-style" cancelText="Cancel" okText="Ok" value="25 Bonifacio Street Barangay 3, Kabankalan City, Negros Occidental"
+                                <ion-select class="select-style" cancelText="Cancel" okText="Ok" :value="initialLocation[0]"
                                     @ionChange="onIonChangeGetSelectedLocation($event)">
                                     <ion-select-option v-for="(item, i) in location" :key="i" :value="item">
                                         {{item.street_building}} {{item.barangay}}, {{item.city}}, {{item.province}}
@@ -52,7 +52,7 @@
                             <ion-item class="ion-margin-top" lines="none">
                                 <ion-label class="label-style" position="floating">Category</ion-label>
                                 <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok"
-                                    @ionChange="onIonChangeGetSelectedCategories($event)">
+                                    :value="categories" @ionChange="onIonChangeGetSelectedCategories($event)">
                                     <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
                                         {{item.value}}</ion-select-option>
                                 </ion-select>
@@ -161,6 +161,12 @@
                     return 'Add Product'
             })
 
+            const initialLocation = computed(() => {
+                return location.value.filter(function (l) {
+                    return l.id == product.value.product_location_id
+                })
+            })
+
             function clearForm() {
                 product.value = {}
             }
@@ -184,6 +190,7 @@
                 const city = ev.detail.value.city
                 const province = ev.detail.value.province
                 product.value.product_location = street_building + ' ' + barangay + ', ' + city + ', ' + province
+                product.value.product_location_id = ev.detail.value.id
             }
 
             async function loadAddressesDetails(id) {
@@ -244,7 +251,8 @@
                 isLoading,
                 product_status,
                 location,
-                onIonChangeGetSelectedLocation
+                onIonChangeGetSelectedLocation,
+                initialLocation
             }
         }
     }

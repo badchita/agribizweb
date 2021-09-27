@@ -45,7 +45,7 @@
                                         {{item.quantity}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.price}}
+                                        ₱{{item.price}}
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
