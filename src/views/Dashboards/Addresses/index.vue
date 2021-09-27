@@ -9,7 +9,7 @@
             <div class="container">
                 <ion-item lines="none">
                     <ion-label class="header-title">
-                        Product List
+                        Addresses List
                     </ion-label>
                     <ion-button class="add-button" slot="end" @click="onClickGoToUpdate()">
                         <ion-icon name="add" />
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-    import ProductAPI from '@/api/product'
+    import AddressesAPI from '@/api/addresses'
 
     import SearchShowStatusListing from '@/components/SearchShowStatusListing'
 
@@ -110,7 +110,7 @@
 
             async function loadProduct() {
                 isLoading.value = true;
-                await ProductAPI.list()
+                await AddressesAPI.list()
                     .then((response) => {
                         product.value = response.data.data
                     }).catch((err) => {
