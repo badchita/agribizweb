@@ -42,12 +42,16 @@
                                 <ion-row class="data-row" v-for="(item,i) in addresses" :key="i"
                                     @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
-                                        {{item.name}}
-                                    </ion-col>
-                                    <ion-col class="data-col" v-html="item.quantity">
+                                        {{item.street_building}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.price}}
+                                        {{item.barangay}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        {{item.city}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        {{item.province}}
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
@@ -102,7 +106,7 @@
             function onClickGoToUpdate(id, ev) {
                 if (id) {
                     ev.stopPropagation();
-                    router.push(`/dashboards/updateaddresses${id}`)
+                    router.push(`/dashboards/updateaddresses/${id}`)
                 } else
                     router.push(`/dashboards/updateaddresses`)
             }

@@ -15,14 +15,14 @@
                     <ion-row>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">Name</ion-label>
-                                <ion-input class="input-style" v-model="product.name"></ion-input>
+                                <ion-label class="label-style" mode="ios" position="floating">Street/Building</ion-label>
+                                <ion-input class="input-style" v-model="address.street_building"></ion-input>
                             </ion-item>
                         </ion-col>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">Location</ion-label>
-                                <ion-input class="input-style"></ion-input>
+                                <ion-label class="label-style" mode="ios" position="floating">Brangay</ion-label>
+                                <ion-input class="input-style" v-model="address.barangay"></ion-input>
                             </ion-item>
                         </ion-col>
                     </ion-row>
@@ -30,50 +30,21 @@
                     <ion-row>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">Quantity</ion-label>
-                                <ion-input class="input-style" v-model="product.quantity" type="number"></ion-input>
+                                <ion-label class="label-style" mode="ios" position="floating">City</ion-label>
+                                <ion-input class="input-style" v-model="address.city"></ion-input>
                             </ion-item>
                         </ion-col>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">Price</ion-label>
-                                <ion-input class="input-style" v-model="product.price" type="number"></ion-input>
+                                <ion-label class="label-style" mode="ios" position="floating">Province</ion-label>
+                                <ion-input class="input-style" v-model="address.province"></ion-input>
                             </ion-item>
                         </ion-col>
                     </ion-row>
 
                     <ion-row>
-                        <ion-col>
-                            <ion-item class="ion-margin-top" lines="none">
-                                <ion-label class="label-style" position="floating">Category</ion-label>
-                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok"
-                                    :value="product.category" @ionChange="onIonChangeGetSelectedCategories($event)">
-                                    <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
-                                        {{item.value}}</ion-select-option>
-                                </ion-select>
-                            </ion-item>
-                        </ion-col>
-                        <ion-col>
-                            <ion-item class="ion-margin-top" lines="none">
-                                <ion-label class="label-style" position="floating">Status</ion-label>
-                                <ion-select class="select-style" cancelText="Cancel" okText="Ok"
-                                    :value="product.product_status"
-                                    @ionChange="onIonChangeGetSelectedProductStatus($event)">
-                                    <ion-select-option v-for="(item, i) in product_status" :key="i" :value="item.value">
-                                        {{item.value}}</ion-select-option>
-                                </ion-select>
-                            </ion-item>
-                        </ion-col>
                     </ion-row>
 
-                    <ion-row class="ion-margin-top">
-                        <ion-item lines="none">
-                            <ion-label class="label-style">Description</ion-label>
-                        </ion-item>
-                    </ion-row>
-                    <div class="editor">
-                        <QuillEditor class="quill-editor-style" v-model:value="product.description" />
-                    </div>
                     <ion-row class="ion-margin-top ion-margin-bottom">
                         <ion-buttons class="ion-margin-start">
                             <ion-button class="save-button" @click="onClickSave">
@@ -91,12 +62,11 @@
 </template>
 
 <script>
-    import ProductAPI from '@/api/product'
+    import AddressesAPI from '@/api/addresses'
     import 'quill/dist/quill.snow.css'
-    
+
     import {
         computed,
-        reactive,
         ref
     } from '@vue/reactivity'
     import {
@@ -106,54 +76,28 @@
         onMounted
     } from '@vue/runtime-core'
     export default {
-        name: 'UpdateProduct',
+        name: 'UpdateAddresses',
         components: {},
         setup() {
             onMounted(() => {
-                loadProductDetails()
+                loadAddressDetails()
                 pageTitle
             })
 
-            const data = reactive({
-                price: '',
-            })
-
-            const categories = [{
-                value: 'Fruit',
-            }, {
-                value: 'Vegetable',
-            }, {
-                value: 'Sugarcane',
-            }, {
-                value: 'Rice',
-            }, {
-                value: 'Dairy',
-            }, {
-                value: 'Poultry',
-            }, {
-                value: 'Livestock',
-            }]
-
-            const product_status = [{
-                value: 'Available',
-            }, {
-                value: 'Out Of Stocks',
-            }]
-
             const router = useRouter()
 
-            const product = ref({})
+            const address = ref({})
             const isLoading = ref(false)
 
             const pageTitle = computed(() => {
                 if (router.currentRoute.value.params.id)
-                    return 'Update Product'
+                    return 'Update Address'
                 else
-                    return 'Add Product'
+                    return 'Add Address'
             })
 
             function clearForm() {
-                product.value = {}
+                address.value = {}
             }
 
             function goBack() {
@@ -161,23 +105,15 @@
                 router.go(-1)
             }
 
-            function onIonChangeGetSelectedCategories(ev) {
-                product.value.category = ev.detail.value
-            }
-
-            function onIonChangeGetSelectedProductStatus(ev) {
-                product.value.product_status = ev.detail.value
-            }
-
-            async function loadProductDetails(id) {
+            async function loadAddressDetails(id) {
                 id = router.currentRoute.value.params.id
                 if (id)
                     isLoading.value = true;
 
                 if (id) {
-                    await ProductAPI.get(id)
+                    await AddressesAPI.get(id)
                         .then((response) => {
-                            product.value = response.data.data
+                            address.value = response.data.data
                         })
                         .finally(() => {
                             isLoading.value = false;
@@ -186,13 +122,12 @@
             }
 
             function test() {
-                console.log(product.value);
+                console.log(address.value);
             }
-            async function onClickSave() {
-                product.value.price = +product.value.price
-                product.value.category = product.value.category.toString()
 
-                const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
+            async function onClickSave() {
+
+                const api = address.value.id ? AddressesAPI.update(address.value) : AddressesAPI.add(address.value)
 
                 api.then(() => {
                     clearForm()
@@ -205,17 +140,12 @@
                 })
             }
             return {
-                product,
-                data,
+                address,
                 onClickSave,
                 goBack,
                 pageTitle,
-                categories,
                 test,
-                onIonChangeGetSelectedCategories,
-                onIonChangeGetSelectedProductStatus,
                 isLoading,
-                product_status
             }
         }
     }
@@ -223,5 +153,4 @@
 
 <style lang="scss" scoped>
     @import '@/assets/css/global.scss';
-    @import '@/assets/css/update-product.scss';
 </style>

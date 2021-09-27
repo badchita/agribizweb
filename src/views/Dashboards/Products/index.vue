@@ -3,7 +3,7 @@
         <ion-header>
             <NavBar />
         </ion-header>
-        
+
         <ion-content>
             <MenuFabButton />
             <div class="container">
@@ -41,7 +41,8 @@
                                     <ion-col class="data-col">
                                         {{item.name}}
                                     </ion-col>
-                                    <ion-col class="data-col" v-html="item.quantity">
+                                    <ion-col class="data-col">
+                                        {{item.quantity}}
                                     </ion-col>
                                     <ion-col class="data-col">
                                         {{item.price}}
