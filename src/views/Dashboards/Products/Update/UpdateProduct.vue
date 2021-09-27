@@ -20,9 +20,14 @@
                             </ion-item>
                         </ion-col>
                         <ion-col>
-                            <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">Location</ion-label>
-                                <ion-input class="input-style"></ion-input>
+                            <ion-item class="ion-margin-top" lines="none">
+                                <ion-label class="label-style" position="floating">Location</ion-label>
+                                <ion-select class="select-style" cancelText="Cancel" okText="Ok" value="25 Bonifacio Street Barangay 3, Kabankalan City, Negros Occidental"
+                                    @ionChange="onIonChangeGetSelectedLocation($event)">
+                                    <ion-select-option v-for="(item, i) in location" :key="i" :value="item">
+                                        {{item.street_building}} {{item.barangay}}, {{item.city}}, {{item.province}}
+                                    </ion-select-option>
+                                </ion-select>
                             </ion-item>
                         </ion-col>
                     </ion-row>
@@ -47,7 +52,7 @@
                             <ion-item class="ion-margin-top" lines="none">
                                 <ion-label class="label-style" position="floating">Category</ion-label>
                                 <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok"
-                                    :value="product.category" @ionChange="onIonChangeGetSelectedCategories($event)">
+                                    @ionChange="onIonChangeGetSelectedCategories($event)">
                                     <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
                                         {{item.value}}</ion-select-option>
                                 </ion-select>
@@ -92,8 +97,9 @@
 
 <script>
     import ProductAPI from '@/api/product'
+    import AddressesAPI from '@/api/addresses'
     import 'quill/dist/quill.snow.css'
-    
+
     import {
         computed,
         reactive,
@@ -111,12 +117,15 @@
         setup() {
             onMounted(() => {
                 loadProductDetails()
+                loadAddressesDetails()
                 pageTitle
             })
 
             const data = reactive({
                 price: '',
             })
+
+            const location = ref([])
 
             const categories = [{
                 value: 'Fruit',
@@ -169,6 +178,24 @@
                 product.value.product_status = ev.detail.value
             }
 
+            function onIonChangeGetSelectedLocation(ev) {
+                const street_building = ev.detail.value.street_building
+                const barangay = ev.detail.value.barangay
+                const city = ev.detail.value.city
+                const province = ev.detail.value.province
+                product.value.product_location = street_building + ' ' + barangay + ', ' + city + ', ' + province
+            }
+
+            async function loadAddressesDetails(id) {
+                id = router.currentRoute.value.params.id
+                if (id) {
+                    await AddressesAPI.list()
+                        .then((response) => {
+                            location.value = response.data.data
+                        })
+                }
+            }
+
             async function loadProductDetails(id) {
                 id = router.currentRoute.value.params.id
                 if (id)
@@ -215,7 +242,9 @@
                 onIonChangeGetSelectedCategories,
                 onIonChangeGetSelectedProductStatus,
                 isLoading,
-                product_status
+                product_status,
+                location,
+                onIonChangeGetSelectedLocation
             }
         }
     }
