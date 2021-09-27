@@ -30,7 +30,7 @@ const routes = [{
   },
   {
     path: `/dashboards/updateproduct`,
-    name: 'IndexProduct',
+    name: 'AddProduct',
     meta: {
       requiresAuth: true
     },
@@ -48,6 +48,21 @@ const routes = [{
     path: '/dashboards/addresses',
     name: 'Addresses',
     component: () => import('@/views/Dashboards/Addresses/index'),
+  },
+  {
+    path: `/dashboards/updateaddresses`,
+    name: 'AddAddresses',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Addresses/Update/UpdateAddresses')
+  }, {
+    path: `/dashboards/updateAddresses/:id`,
+    name: 'UpdateAddresses',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Addresses/Update/UpdateAddresses')
   },
   {
     path: '/dashboards/orders',

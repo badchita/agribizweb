@@ -1,0 +1,227 @@
+<template>
+    <ion-page>
+        <ion-header>
+            <NavBar />
+        </ion-header>
+        <ion-content>
+            <MenuFabButton />
+            <div class="container">
+                <ion-grid>
+                    <ion-item lines="none">
+                        <ion-label class="header-title">{{pageTitle}}</ion-label>
+                    </ion-item>
+                    <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
+
+                    <ion-row>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label class="label-style" mode="ios" position="floating">Name</ion-label>
+                                <ion-input class="input-style" v-model="product.name"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label class="label-style" mode="ios" position="floating">Location</ion-label>
+                                <ion-input class="input-style"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label class="label-style" mode="ios" position="floating">Quantity</ion-label>
+                                <ion-input class="input-style" v-model="product.quantity" type="number"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label class="label-style" mode="ios" position="floating">Price</ion-label>
+                                <ion-input class="input-style" v-model="product.price" type="number"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                        <ion-col>
+                            <ion-item class="ion-margin-top" lines="none">
+                                <ion-label class="label-style" position="floating">Category</ion-label>
+                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok"
+                                    :value="product.category" @ionChange="onIonChangeGetSelectedCategories($event)">
+                                    <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
+                                        {{item.value}}</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col>
+                            <ion-item class="ion-margin-top" lines="none">
+                                <ion-label class="label-style" position="floating">Status</ion-label>
+                                <ion-select class="select-style" cancelText="Cancel" okText="Ok"
+                                    :value="product.product_status"
+                                    @ionChange="onIonChangeGetSelectedProductStatus($event)">
+                                    <ion-select-option v-for="(item, i) in product_status" :key="i" :value="item.value">
+                                        {{item.value}}</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row class="ion-margin-top">
+                        <ion-item lines="none">
+                            <ion-label class="label-style">Description</ion-label>
+                        </ion-item>
+                    </ion-row>
+                    <div class="editor">
+                        <QuillEditor class="quill-editor-style" v-model:value="product.description" />
+                    </div>
+                    <ion-row class="ion-margin-top ion-margin-bottom">
+                        <ion-buttons class="ion-margin-start">
+                            <ion-button class="save-button" @click="onClickSave">
+                                Save
+                            </ion-button>
+                            <ion-button color="danger" @click="goBack">
+                                Cancel
+                            </ion-button>
+                        </ion-buttons>
+                    </ion-row>
+                </ion-grid>
+            </div>
+        </ion-content>
+    </ion-page>
+</template>
+
+<script>
+    import ProductAPI from '@/api/product'
+    import 'quill/dist/quill.snow.css'
+    
+    import {
+        computed,
+        reactive,
+        ref
+    } from '@vue/reactivity'
+    import {
+        useRouter
+    } from 'vue-router'
+    import {
+        onMounted
+    } from '@vue/runtime-core'
+    export default {
+        name: 'UpdateProduct',
+        components: {},
+        setup() {
+            onMounted(() => {
+                loadProductDetails()
+                pageTitle
+            })
+
+            const data = reactive({
+                price: '',
+            })
+
+            const categories = [{
+                value: 'Fruit',
+            }, {
+                value: 'Vegetable',
+            }, {
+                value: 'Sugarcane',
+            }, {
+                value: 'Rice',
+            }, {
+                value: 'Dairy',
+            }, {
+                value: 'Poultry',
+            }, {
+                value: 'Livestock',
+            }]
+
+            const product_status = [{
+                value: 'Available',
+            }, {
+                value: 'Out Of Stocks',
+            }]
+
+            const router = useRouter()
+
+            const product = ref({})
+            const isLoading = ref(false)
+
+            const pageTitle = computed(() => {
+                if (router.currentRoute.value.params.id)
+                    return 'Update Product'
+                else
+                    return 'Add Product'
+            })
+
+            function clearForm() {
+                product.value = {}
+            }
+
+            function goBack() {
+                // clearForm()
+                router.go(-1)
+            }
+
+            function onIonChangeGetSelectedCategories(ev) {
+                product.value.category = ev.detail.value
+            }
+
+            function onIonChangeGetSelectedProductStatus(ev) {
+                product.value.product_status = ev.detail.value
+            }
+
+            async function loadProductDetails(id) {
+                id = router.currentRoute.value.params.id
+                if (id)
+                    isLoading.value = true;
+
+                if (id) {
+                    await ProductAPI.get(id)
+                        .then((response) => {
+                            product.value = response.data.data
+                        })
+                        .finally(() => {
+                            isLoading.value = false;
+                        })
+                }
+            }
+
+            function test() {
+                console.log(product.value);
+            }
+            async function onClickSave() {
+                product.value.price = +product.value.price
+                product.value.category = product.value.category.toString()
+
+                const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
+
+                api.then(() => {
+                    clearForm()
+                    goBack()
+                    setTimeout(() => {
+                        router.go()
+                    }, 100)
+                }).catch((err) => {
+                    console.error(err);
+                })
+            }
+            return {
+                product,
+                data,
+                onClickSave,
+                goBack,
+                pageTitle,
+                categories,
+                test,
+                onIonChangeGetSelectedCategories,
+                onIonChangeGetSelectedProductStatus,
+                isLoading,
+                product_status
+            }
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    @import '@/assets/css/global.scss';
+    @import '@/assets/css/update-product.scss';
+</style>

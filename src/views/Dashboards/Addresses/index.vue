@@ -22,13 +22,16 @@
                         <ion-grid>
                             <ion-row class="header-row">
                                 <ion-col>
-                                    Name
+                                    Street/Building
                                 </ion-col>
                                 <ion-col>
-                                    Quantity
+                                    Barangay
                                 </ion-col>
                                 <ion-col>
-                                    Price
+                                    City
+                                </ion-col>
+                                <ion-col>
+                                    Province
                                 </ion-col>
                                 <ion-col>
                                     Action
@@ -36,7 +39,7 @@
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
                             <div class="data-list">
-                                <ion-row class="data-row" v-for="(item,i) in product" :key="i"
+                                <ion-row class="data-row" v-for="(item,i) in addresses" :key="i"
                                     @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
                                         {{item.name}}
@@ -88,31 +91,31 @@
         },
         setup() {
             onMounted(() => {
-                loadProduct()
+                loadAddresses()
             })
 
             const router = useRouter()
 
-            let product = ref({})
+            let addresses = ref({})
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id, ev) {
                 if (id) {
                     ev.stopPropagation();
-                    router.push(`/dashboards/updateproduct/${id}`)
+                    router.push(`/dashboards/updateaddresses${id}`)
                 } else
-                    router.push(`/dashboards/updateproduct`)
+                    router.push(`/dashboards/updateaddresses`)
             }
 
             function onClickRowDetails(id) {
                 router.push(`/dashboards/detailsproduct/${id}`)
             }
 
-            async function loadProduct() {
+            async function loadAddresses() {
                 isLoading.value = true;
                 await AddressesAPI.list()
                     .then((response) => {
-                        product.value = response.data.data
+                        addresses.value = response.data.data
                     }).catch((err) => {
                         console.error(err);
                     }).finally(() => {
@@ -121,7 +124,7 @@
             }
 
             return {
-                product,
+                addresses,
                 onClickGoToUpdate,
                 isLoading,
                 onClickRowDetails
@@ -132,5 +135,4 @@
 
 <style lang="scss" scoped>
     @import '@/assets/css/global.scss';
-    @import '@/assets/css/products.scss';
 </style>
