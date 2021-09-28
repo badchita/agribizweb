@@ -22,8 +22,8 @@
                         <ion-col>
                             <ion-item class="ion-margin-top" lines="none">
                                 <ion-label class="label-style" position="floating">Location</ion-label>
-                                <ion-select class="select-style" cancelText="Cancel" okText="Ok" :value="initialLocation[0]"
-                                    @ionChange="onIonChangeGetSelectedLocation($event)">
+                                <ion-select class="select-style" cancelText="Cancel" okText="Ok"
+                                    :value="initialLocation[0]" @ionChange="onIonChangeGetSelectedLocation($event)">
                                     <ion-select-option v-for="(item, i) in location" :key="i" :value="item">
                                         {{item.street_building}} {{item.barangay}}, {{item.city}}, {{item.province}}
                                     </ion-select-option>
@@ -51,8 +51,8 @@
                         <ion-col>
                             <ion-item class="ion-margin-top" lines="none">
                                 <ion-label class="label-style" position="floating">Category</ion-label>
-                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok"
-                                    :value="categories" @ionChange="onIonChangeGetSelectedCategories($event)">
+                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok" v-model="categories"
+                                    @ionChange="onIonChangeGetSelectedCategories($event)">
                                     <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
                                         {{item.value}}</ion-select-option>
                                 </ion-select>
@@ -193,6 +193,10 @@
                 product.value.product_location_id = ev.detail.value.id
             }
 
+            function test() {
+                console.log(product.value);
+            }
+
             async function loadAddressesDetails(id) {
                 id = router.currentRoute.value.params.id
                 if (id) {
@@ -202,7 +206,6 @@
                         })
                 }
             }
-
             async function loadProductDetails(id) {
                 id = router.currentRoute.value.params.id
                 if (id)
@@ -217,10 +220,6 @@
                             isLoading.value = false;
                         })
                 }
-            }
-
-            function test() {
-                console.log(product.value);
             }
             async function onClickSave() {
                 product.value.price = +product.value.price
@@ -252,7 +251,7 @@
                 product_status,
                 location,
                 onIonChangeGetSelectedLocation,
-                initialLocation
+                initialLocation,
             }
         }
     }

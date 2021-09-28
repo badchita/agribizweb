@@ -15,7 +15,8 @@
                     <ion-row>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">Street/Building</ion-label>
+                                <ion-label class="label-style" mode="ios" position="floating">Street/Building
+                                </ion-label>
                                 <ion-input class="input-style" v-model="address.street_building"></ion-input>
                             </ion-item>
                         </ion-col>
@@ -105,6 +106,11 @@
                 router.go(-1)
             }
 
+
+            function test() {
+                console.log(address.value);
+            }
+
             async function loadAddressDetails(id) {
                 id = router.currentRoute.value.params.id
                 if (id)
@@ -120,13 +126,7 @@
                         })
                 }
             }
-
-            function test() {
-                console.log(address.value);
-            }
-
             async function onClickSave() {
-
                 const api = address.value.id ? AddressesAPI.update(address.value) : AddressesAPI.add(address.value)
 
                 api.then(() => {
