@@ -3,7 +3,7 @@
         <ion-header>
             <NavBar />
         </ion-header>
-        
+
         <ion-content>
             <MenuFabButton />
             <div class="container">
@@ -16,7 +16,32 @@
                         <ion-label style="">Add</ion-label>
                     </ion-button>
                 </ion-item>
-                <SearchShowStatusListing />
+                <ion-row>
+                    <ion-col size="6">
+                        <ion-searchbar></ion-searchbar>
+                    </ion-col>
+                    <ion-col size="1.8">
+                        <ion-item lines="none">
+                            <ion-label>Show</ion-label>
+                            <ion-select value="10">
+                                <ion-select-option value="10">10</ion-select-option>
+                                <ion-select-option value="25">25</ion-select-option>
+                                <ion-select-option value="50">50</ion-select-option>
+                                <ion-select-option value="100">100</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="2.1">
+                        <ion-item lines="none">
+                            <ion-label>Status</ion-label>
+                            <ion-select value="Open" @ionChange="onIonChangeGetSelectedStatus($event)">
+                                <ion-select-option value="All">All</ion-select-option>
+                                <ion-select-option value="Open">Open</ion-select-option>
+                                <ion-select-option value="Archived">Archived</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
                 <ion-card style="overflow: visible">
                     <ion-card-content>
                         <ion-grid>
@@ -78,8 +103,6 @@
 <script>
     import AddressesAPI from '@/api/addresses'
 
-    import SearchShowStatusListing from '@/components/SearchShowStatusListing'
-
     import {
         onMounted,
         ref
@@ -90,17 +113,17 @@
     } from 'vue-router'
     export default {
         name: 'Addresses',
-        components: {
-            SearchShowStatusListing
-        },
+        components: {},
         setup() {
             onMounted(() => {
-                loadAddresses()
+                loadAddresses(status.value)
             })
 
             const router = useRouter()
 
             let addresses = ref({})
+            let status = ref('O')
+
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id, ev) {
@@ -115,11 +138,24 @@
                 router.push(`/dashboards/detailsaddresses/${id}`)
             }
 
-            async function loadAddresses() {
+            function onIonChangeGetSelectedStatus(ev) {
+                if (ev.detail.value === 'Archived') {
+                    status.value = 'V'
+                    return loadAddresses(status.value)
+                } else if (ev.detail.value === 'Open') {
+                    status.value = 'O'
+                    return loadAddresses(status.value)
+                } else {
+                    status.value = ''
+                    return loadAddresses(status.value)
+                }
+            }
+
+            async function loadAddresses(s) {
                 isLoading.value = true;
-                await AddressesAPI.list()
+                await AddressesAPI.list(s)
                     .then((response) => {
-                        addresses.value = response.data.data
+                        addresses.value = response.data
                     }).catch((err) => {
                         console.error(err);
                     }).finally(() => {
@@ -131,7 +167,8 @@
                 addresses,
                 onClickGoToUpdate,
                 isLoading,
-                onClickRowDetails
+                onClickRowDetails,
+                onIonChangeGetSelectedStatus
             }
         }
     }

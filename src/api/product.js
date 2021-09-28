@@ -10,9 +10,14 @@ export default {
     update(product) {
         return api.put('product', product)
     },
-    async list(params) {
-        const response = await api.get('products', params)
-        return response
+    async list(status) {
+        if (status === 'O') {
+            return await api.get(`products/${status}`)
+        } else if (status === 'V') {
+            return await api.get(`products/${status}`)
+        } else {
+            return await api.get(`products`)
+        }
     },
     delete(id) {
         return api.delete('product', id)

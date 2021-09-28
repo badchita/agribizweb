@@ -45,6 +45,10 @@ ion-content {
         .archive-button {
             --background: var(--ion-color-danger);
         }
+
+        .restore-button {
+            --background: var(--ion-color-success);
+        }
     }
 }
 

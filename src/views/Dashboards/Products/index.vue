@@ -16,7 +16,32 @@
                         <ion-label style="">Add</ion-label>
                     </ion-button>
                 </ion-item>
-                <SearchShowStatusListing />
+                <ion-row>
+                    <ion-col size="6">
+                        <ion-searchbar></ion-searchbar>
+                    </ion-col>
+                    <ion-col size="1.8">
+                        <ion-item lines="none">
+                            <ion-label>Show</ion-label>
+                            <ion-select value="10">
+                                <ion-select-option value="10">10</ion-select-option>
+                                <ion-select-option value="25">25</ion-select-option>
+                                <ion-select-option value="50">50</ion-select-option>
+                                <ion-select-option value="100">100</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="2.1">
+                        <ion-item lines="none">
+                            <ion-label>Status</ion-label>
+                            <ion-select :value="activeSelect" @ionChange="onIonChangeGetSelectedStatus($event)">
+                                <ion-select-option value="All">All</ion-select-option>
+                                <ion-select-option value="Open">Open</ion-select-option>
+                                <ion-select-option value="Archived">Archived</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
                 <ion-card style="overflow: visible">
                     <ion-card-content>
                         <ion-grid>
@@ -49,13 +74,17 @@
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
-                                            <ion-button class="update-button"
+                                            <ion-button v-if="item.status === 'O'" class="update-button"
                                                 @click="onClickGoToUpdate(item.id, $event)">
                                                 <ion-icon size="small" name="create" />
                                             </ion-button>
-                                            <ion-button class="archive-button"
-                                                @click="onClickGoToUpdate(item.id, $event)">
+                                            <ion-button v-if="item.status === 'O'" class="archive-button"
+                                                @click="onClickArchive(item, $event, i)">
                                                 <ion-icon size="small" name="archive" />
+                                            </ion-button>
+                                            <ion-button v-if="item.status === 'V'" class="restore-button"
+                                                @click="onClickArchive(item, $event, i)">
+                                                <ion-icon size="small" name="refresh" />
                                             </ion-button>
                                         </ion-buttons>
                                     </ion-col>
@@ -72,8 +101,6 @@
 <script>
     import ProductAPI from '@/api/product'
 
-    import SearchShowStatusListing from '@/components/SearchShowStatusListing'
-
     import {
         onMounted,
         ref
@@ -84,17 +111,18 @@
     } from 'vue-router'
     export default {
         name: 'Products',
-        components: {
-            SearchShowStatusListing
-        },
+        components: {},
         setup() {
             onMounted(() => {
-                loadProduct()
+                loadProduct(status.value)
             })
 
             const router = useRouter()
 
             let product = ref({})
+            let status = ref('O')
+            let activeSelect = ref('Open')
+
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id, ev) {
@@ -109,23 +137,55 @@
                 router.push(`/dashboards/detailsproduct/${id}`)
             }
 
-            async function loadProduct() {
+            function onIonChangeGetSelectedStatus(ev) {
+                if (ev.detail.value === 'Archived') {
+                    status.value = 'V'
+                    activeSelect.value = 'Archived'
+                    loadProduct(status.value)
+                } else if (ev.detail.value === 'Open') {
+                    status.value = 'O'
+                    activeSelect.value = 'Open'
+                    loadProduct(status.value)
+                } else {
+                    status.value = ''
+                    activeSelect.value = 'All'
+                    loadProduct(status.value)
+                }
+            }
+
+            async function onClickArchive(item, ev, i) {
+                ev.stopPropagation();
                 isLoading.value = true;
-                await ProductAPI.list()
-                    .then((response) => {
-                        product.value = response.data.data
-                    }).catch((err) => {
-                        console.error(err);
-                    }).finally(() => {
-                        isLoading.value = false;
-                    })
+                item.status === 'O' ? item.status = 'V' : item.status = 'O'
+
+                activeSelect.value !== 'All' ? product.value.splice(i, 1) : ''
+
+                await ProductAPI.update(item).catch((err) => {
+                    console.error(err);
+                }).finally(() => {
+                    isLoading.value = false;
+                })
+            }
+            async function loadProduct(s) {
+                isLoading.value = true;
+                await ProductAPI.list(s).then((response) => {
+                    product.value = response.data
+                }).catch((err) => {
+                    console.error(err);
+                }).finally(() => {
+                    isLoading.value = false;
+                })
             }
 
             return {
                 product,
                 onClickGoToUpdate,
                 isLoading,
-                onClickRowDetails
+                onClickRowDetails,
+                onIonChangeGetSelectedStatus,
+                status,
+                onClickArchive,
+                activeSelect
             }
         }
     }

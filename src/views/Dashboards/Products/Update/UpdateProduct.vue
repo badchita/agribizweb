@@ -51,8 +51,8 @@
                         <ion-col>
                             <ion-item class="ion-margin-top" lines="none">
                                 <ion-label class="label-style" position="floating">Category</ion-label>
-                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok" v-model="categories"
-                                    @ionChange="onIonChangeGetSelectedCategories($event)">
+                                <ion-select class="select-style" multiple="true" cancelText="Cancel" okText="Ok"
+                                    v-model="categories" @ionChange="onIonChangeGetSelectedCategories($event)">
                                     <ion-select-option v-for="(item, i) in categories" :key="i" :value="item.value">
                                         {{item.value}}</ion-select-option>
                                 </ion-select>
@@ -197,14 +197,11 @@
                 console.log(product.value);
             }
 
-            async function loadAddressesDetails(id) {
-                id = router.currentRoute.value.params.id
-                if (id) {
-                    await AddressesAPI.list()
-                        .then((response) => {
-                            location.value = response.data.data
-                        })
-                }
+            async function loadAddressesDetails() {
+                await AddressesAPI.list('O')
+                    .then((response) => {
+                        location.value = response.data
+                    })
             }
             async function loadProductDetails(id) {
                 id = router.currentRoute.value.params.id
@@ -224,6 +221,7 @@
             async function onClickSave() {
                 product.value.price = +product.value.price
                 product.value.category = product.value.category.toString()
+                product.value.status = 'O'
 
                 const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
 

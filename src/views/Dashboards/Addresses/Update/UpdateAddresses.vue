@@ -127,6 +127,8 @@
                 }
             }
             async function onClickSave() {
+                address.value.status = 'O'
+
                 const api = address.value.id ? AddressesAPI.update(address.value) : AddressesAPI.add(address.value)
 
                 api.then(() => {

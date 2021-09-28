@@ -10,9 +10,15 @@ export default {
     update(addresses) {
         return api.put('address', addresses)
     },
-    async list(params) {
-        const response = await api.get('addresses', params)
-        return response
+    async list(status) {
+        if (status === 'O') {
+            return await api.get(`addresses/${status}`)
+        } else if (status === 'V') {
+            console.log(status);
+            return await api.get(`addresses/${status}`)
+        } else {
+            return await api.get(`addresses`)
+        }
     },
     delete(id) {
         return api.delete('address', id)
