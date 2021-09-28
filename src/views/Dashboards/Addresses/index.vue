@@ -89,7 +89,7 @@
                                                 <ion-icon size="small" name="archive" />
                                             </ion-button>
                                             <ion-button v-if="item.status === 'V'" class="restore-button"
-                                                @click="onClickArchive(item, $event, i)">
+                                                @click="onClickArchiveRestore(item, $event, i)">
                                                 <ion-icon size="small" name="refresh" />
                                             </ion-button>
                                         </ion-buttons>
@@ -115,6 +115,9 @@
     import {
         useRouter
     } from 'vue-router'
+    import {
+        alertController
+    } from '@ionic/core'
     export default {
         name: 'Addresses',
         components: {},
@@ -161,6 +164,24 @@
 
             async function onClickArchive(item, ev, i) {
                 ev.stopPropagation();
+                const alert = await alertController.create({
+                    header: 'Archive',
+                    message: '<strong>Are you sure you want to Archive this Address?</strong>',
+                    buttons: [{
+                        text: 'Yes',
+                        handler: () => {
+                            onClickArchiveRestore(item, ev, i)
+                        }
+                    }, {
+                        text: 'No',
+                        role: 'cancel'
+                    }]
+                })
+
+                return alert.present();
+            }
+            async function onClickArchiveRestore(item, ev, i) {
+                ev.stopPropagation();
                 isLoading.value = true;
                 item.status === 'O' ? item.status = 'V' : item.status = 'O'
 
@@ -191,6 +212,7 @@
                 onClickRowDetails,
                 onIonChangeGetSelectedStatus,
                 onClickArchive,
+                onClickArchiveRestore,
                 activeSelect
             }
         }
