@@ -34,7 +34,7 @@
                     <ion-col size="2.1">
                         <ion-item lines="none">
                             <ion-label>Status</ion-label>
-                            <ion-select value="Open" @ionChange="onIonChangeGetSelectedStatus($event)">
+                            <ion-select :value="activeSelect" @ionChange="onIonChangeGetSelectedStatus($event)">
                                 <ion-select-option value="All">All</ion-select-option>
                                 <ion-select-option value="Open">Open</ion-select-option>
                                 <ion-select-option value="Archived">Archived</ion-select-option>
@@ -80,13 +80,17 @@
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
-                                            <ion-button class="update-button"
+                                            <ion-button v-if="item.status === 'O'" class="update-button"
                                                 @click="onClickGoToUpdate(item.id, $event)">
                                                 <ion-icon size="small" name="create" />
                                             </ion-button>
-                                            <ion-button class="archive-button"
-                                                @click="onClickGoToUpdate(item.id, $event)">
+                                            <ion-button v-if="item.status === 'O'" class="archive-button"
+                                                @click="onClickArchive(item, $event, i)">
                                                 <ion-icon size="small" name="archive" />
+                                            </ion-button>
+                                            <ion-button v-if="item.status === 'V'" class="restore-button"
+                                                @click="onClickArchive(item, $event, i)">
+                                                <ion-icon size="small" name="refresh" />
                                             </ion-button>
                                         </ion-buttons>
                                     </ion-col>
@@ -123,6 +127,7 @@
 
             let addresses = ref({})
             let status = ref('O')
+            let activeSelect = ref('Open')
 
             const isLoading = ref(false)
 
@@ -141,16 +146,32 @@
             function onIonChangeGetSelectedStatus(ev) {
                 if (ev.detail.value === 'Archived') {
                     status.value = 'V'
-                    return loadAddresses(status.value)
+                    activeSelect.value = 'Archived'
+                    loadAddresses(status.value)
                 } else if (ev.detail.value === 'Open') {
                     status.value = 'O'
-                    return loadAddresses(status.value)
+                    activeSelect.value = 'Open'
+                    loadAddresses(status.value)
                 } else {
                     status.value = ''
-                    return loadAddresses(status.value)
+                    activeSelect.value = 'All'
+                    loadAddresses(status.value)
                 }
             }
 
+            async function onClickArchive(item, ev, i) {
+                ev.stopPropagation();
+                isLoading.value = true;
+                item.status === 'O' ? item.status = 'V' : item.status = 'O'
+
+                activeSelect.value !== 'All' ? addresses.value.splice(i, 1) : ''
+
+                await AddressesAPI.update(item).catch((err) => {
+                    console.error(err);
+                }).finally(() => {
+                    isLoading.value = false;
+                })
+            }
             async function loadAddresses(s) {
                 isLoading.value = true;
                 await AddressesAPI.list(s)
@@ -168,7 +189,9 @@
                 onClickGoToUpdate,
                 isLoading,
                 onClickRowDetails,
-                onIonChangeGetSelectedStatus
+                onIonChangeGetSelectedStatus,
+                onClickArchive,
+                activeSelect
             }
         }
     }
