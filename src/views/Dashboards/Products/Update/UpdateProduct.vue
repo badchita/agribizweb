@@ -221,7 +221,13 @@
             async function onClickSave() {
                 product.value.price = +product.value.price
                 product.value.category = product.value.category.toString()
-                product.value.status = 'O'
+
+                if (product.value.product_status == 'Available')
+                    product.value.status = 'O'
+                else if (product.value.product_status == 'Out Of Stocks')
+                    product.value.status = 'V'
+                else
+                    product.value.status = 'O'
 
                 const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
 
