@@ -22,7 +22,7 @@
                     </ion-col>
                     <ion-col size="1.8">
                         <ion-item lines="none">
-                            <ion-label>Show</ion-label>
+                            <ion-label position="floating">Show</ion-label>
                             <ion-select value="10">
                                 <ion-select-option value="10">10</ion-select-option>
                                 <ion-select-option value="25">25</ion-select-option>
@@ -33,7 +33,7 @@
                     </ion-col>
                     <ion-col size="2.1">
                         <ion-item lines="none">
-                            <ion-label>Status</ion-label>
+                            <ion-label position="floating">Status</ion-label>
                             <ion-select :value="activeSelect" @ionChange="onIonChangeGetSelectedStatus($event)">
                                 <ion-select-option value="All">All</ion-select-option>
                                 <ion-select-option value="Open">Open</ion-select-option>
