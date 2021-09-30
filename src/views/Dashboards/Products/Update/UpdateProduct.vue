@@ -111,6 +111,9 @@
     import {
         onMounted
     } from '@vue/runtime-core'
+    import {
+        toastController
+    } from '@ionic/core'
     export default {
         name: 'UpdateProduct',
         components: {},
@@ -181,7 +184,7 @@
             }
 
             function onIonChangeGetSelectedProductStatus(ev) {
-                product.value.product_status = ev.detail.value
+                return product.value.product_status = ev.detail.value
             }
 
             function onIonChangeGetSelectedLocation(ev) {
@@ -197,6 +200,17 @@
                 console.log(product.value);
             }
 
+            async function presentToast(m) {
+                const toast = await toastController.create({
+                    header: 'Warning',
+                    message: m,
+                    position: 'top',
+                    color: 'danger',
+                    duration: 2500,
+                })
+
+                await toast.present()
+            }
             async function loadAddressesDetails() {
                 await AddressesAPI.list('O')
                     .then((response) => {
@@ -219,27 +233,36 @@
                 }
             }
             async function onClickSave() {
-                product.value.price = +product.value.price
-                product.value.category = product.value.category.toString()
+                const message = 'Status must be <strong>Out of Stocks</strong> if <strong>Quantity</strong> is <strong>0</strong>'
 
-                if (product.value.product_status == 'Available')
-                    product.value.status = 'O'
-                else if (product.value.product_status == 'Out Of Stocks')
-                    product.value.status = 'V'
-                else
-                    product.value.status = 'O'
+                if (+product.value.quantity === 0 && product.value.product_status === 'Available') {
+                    presentToast(message)
+                } else {
+                    product.value.price = +product.value.price
+                    product.value.quantity = +product.value.quantity
+                    product.value.category = product.value.category.toString()
 
-                const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
+                    console.log('product status', product.value.product_status);
 
-                api.then(() => {
-                    clearForm()
-                    goBack()
-                    setTimeout(() => {
-                        router.go()
-                    }, 100)
-                }).catch((err) => {
-                    console.error(err);
-                })
+                    if (product.value.product_status == 'Available')
+                        product.value.status = 'O'
+                    else if (product.value.product_status == 'Out Of Stocks')
+                        product.value.status = 'V'
+                    else
+                        product.value.status = 'O'
+
+                    const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
+
+                    api.then(() => {
+                        clearForm()
+                        goBack()
+                        setTimeout(() => {
+                            router.go()
+                        }, 100)
+                    }).catch((err) => {
+                        console.error(err);
+                    })
+                }
             }
             return {
                 product,
