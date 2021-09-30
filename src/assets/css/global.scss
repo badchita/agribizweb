@@ -141,4 +141,6 @@ ion-content {
 
 .description-text {
     color: black;
+    max-height: 250px;
+    overflow-x: hidden;
 }
