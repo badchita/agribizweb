@@ -10,16 +10,19 @@ export default {
     update(product) {
         return api.put('product', product)
     },
-    async list(status) {
+    list(status) {
         if (status === 'O') {
-            return await api.get(`products/${status}`)
+            return api.get(`products/` + status)
         } else if (status === 'V') {
-            return await api.get(`products/${status}`)
+            return api.get(`products/` + status)
         } else {
-            return await api.get(`products`)
+            return api.get(`products`)
         }
     },
     delete(id) {
         return api.delete('product', id)
+    },
+    search(name) {
+        return api.get('product/search/' + name)
     }
 }

@@ -18,7 +18,7 @@
                 </ion-item>
                 <ion-row>
                     <ion-col size="6">
-                        <ion-searchbar></ion-searchbar>
+                        <ion-searchbar @ionInput="onInputSearch($event)"></ion-searchbar>
                     </ion-col>
                     <ion-col size="1.8">
                         <ion-item lines="none">
@@ -60,7 +60,42 @@
                                 </ion-col>
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
-                            <div class="data-list">
+                            <div v-if="searchInput.length !== 0 && productSearch.length !== 0" class="data-list">
+                                <ion-row class="data-row" v-for="(item,i) in productSearch" :key="i"
+                                    @click="onClickRowDetails(item.id)">
+                                    <ion-col class="data-col">
+                                        {{item.name}}
+                                    </ion-col>
+                                    <ion-col v-if="item.quantity ===  0" style="color: #eb445a;" class="data-col">
+                                        {{item.quantity}}
+                                    </ion-col>
+                                    <ion-col v-else class="data-col">
+                                        {{item.quantity}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        ₱{{item.price}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        <ion-buttons>
+                                            <ion-button v-if="item.status === 'O'" class="update-button"
+                                                @click="onClickGoToUpdate(item.id, $event)">
+                                                <ion-icon size="small" name="create" />
+                                            </ion-button>
+                                            <ion-button v-if="item.status === 'O'" class="archive-button"
+                                                @click="onClickArchive(item, $event, i)">
+                                                <ion-icon size="small" name="archive" />
+                                            </ion-button>
+                                            <ion-button
+                                                v-if="item.status === 'V' && item.product_status === 'Available'"
+                                                class="restore-button" @click="onClickArchiveRestore(item, $event, i)">
+                                                <ion-icon size="small" name="refresh" />
+                                            </ion-button>
+                                        </ion-buttons>
+                                    </ion-col>
+                                </ion-row>
+                            </div>
+
+                            <div v-else class="data-list">
                                 <ion-row class="data-row" v-for="(item,i) in product" :key="i"
                                     @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
@@ -85,8 +120,9 @@
                                                 @click="onClickArchive(item, $event, i)">
                                                 <ion-icon size="small" name="archive" />
                                             </ion-button>
-                                            <ion-button v-if="item.status === 'V' && item.product_status === 'Available'" class="restore-button"
-                                                @click="onClickArchiveRestore(item, $event, i)">
+                                            <ion-button
+                                                v-if="item.status === 'V' && item.product_status === 'Available'"
+                                                class="restore-button" @click="onClickArchiveRestore(item, $event, i)">
                                                 <ion-icon size="small" name="refresh" />
                                             </ion-button>
                                         </ion-buttons>
@@ -126,8 +162,10 @@
             const router = useRouter()
 
             let product = ref({})
+            let productSearch = ref({})
             let status = ref('O')
             let activeSelect = ref('Open')
+            let searchInput = ref('')
 
             const isLoading = ref(false)
 
@@ -200,6 +238,18 @@
                     isLoading.value = false;
                 })
             }
+            async function onInputSearch(ev) {
+                isLoading.value = true;
+                searchInput.value = ev.target.value
+                await ProductAPI.search(searchInput.value).then((response) => {
+                    productSearch.value = response.data
+                    console.log(productSearch.value);
+                }).catch((err) => {
+                    console.error(err);
+                }).finally(() => {
+                    isLoading.value = false;
+                })
+            }
 
             return {
                 product,
@@ -210,7 +260,10 @@
                 status,
                 onClickArchive,
                 onClickArchiveRestore,
-                activeSelect
+                activeSelect,
+                searchInput,
+                onInputSearch,
+                productSearch
             }
         }
     }
