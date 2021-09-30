@@ -66,7 +66,10 @@
                                     <ion-col class="data-col">
                                         {{item.name}}
                                     </ion-col>
-                                    <ion-col class="data-col">
+                                    <ion-col v-if="item.quantity ===  0" style="color: #eb445a;" class="data-col">
+                                        {{item.quantity}}
+                                    </ion-col>
+                                    <ion-col v-else class="data-col">
                                         {{item.quantity}}
                                     </ion-col>
                                     <ion-col class="data-col">
