@@ -66,7 +66,7 @@
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
                             <ion-label>Description</ion-label> 
-                            <div class="details-label" v-html="product.description"></div>
+                            <div class="description-text" v-html="product.description"></div>
                         </ion-col>
                     </ion-row>
                 </ion-grid>

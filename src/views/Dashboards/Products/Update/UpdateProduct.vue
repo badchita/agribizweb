@@ -233,6 +233,7 @@
                 }
             }
             async function onClickSave() {
+                console.log(product.value.description);
                 const message = 'Status must be <strong>Out of Stocks</strong> if <strong>Quantity</strong> is <strong>0</strong>'
 
                 if (+product.value.quantity === 0 && product.value.product_status === 'Available') {
