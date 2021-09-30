@@ -10,17 +10,19 @@ export default {
     update(addresses) {
         return api.put('address', addresses)
     },
-    async list(status) {
+    list(status) {
         if (status === 'O') {
-            return await api.get(`addresses/${status}`)
+            return api.get(`addresses/` + status)
         } else if (status === 'V') {
-            console.log(status);
-            return await api.get(`addresses/${status}`)
+            return api.get(`addresses/` + status)
         } else {
-            return await api.get(`addresses`)
+            return api.get(`addresses`)
         }
     },
     delete(id) {
         return api.delete('address', id)
+    },
+    search(name) {
+        return api.get('address/search/' + name)
     }
 }

@@ -18,7 +18,7 @@
                 </ion-item>
                 <ion-row>
                     <ion-col size="6">
-                        <ion-searchbar @ionInput="onInputSearch($event)"></ion-searchbar>
+                        <ion-searchbar placeholder="Search by Name" @ionInput="onInputSearch($event)"></ion-searchbar>
                     </ion-col>
                     <ion-col size="1.8">
                         <ion-item lines="none">
@@ -243,7 +243,6 @@
                 searchInput.value = ev.target.value
                 await ProductAPI.search(searchInput.value).then((response) => {
                     productSearch.value = response.data
-                    console.log(productSearch.value);
                 }).catch((err) => {
                     console.error(err);
                 }).finally(() => {
