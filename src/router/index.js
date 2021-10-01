@@ -86,6 +86,21 @@ const routes = [{
     component: () => import('@/views/Dashboards/Orders/index'),
   },
   {
+    path: `/dashboards/updateorder`,
+    name: 'AddOrder',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Orders/Update/UpdateOrder')
+  }, {
+    path: `/dashboards/updateorder/:id`,
+    name: 'UpdateOrder',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Orders/Update/UpdateOrder')
+  },
+  {
     path: `/profile`,
     name: 'Profile',
     meta: {

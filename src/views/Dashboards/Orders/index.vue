@@ -120,9 +120,9 @@
 
             function onClickGoToUpdate(id) {
                 if (id)
-                    router.push(`/dashboards/updateproduct/${id}`)
+                    router.push(`/dashboards/updateorder/${id}`)
                 else
-                    router.push(`/dashboards/updateproduct`)
+                    router.push(`/dashboards/updateorder`)
             }
 
             async function loadOrder(s) {
