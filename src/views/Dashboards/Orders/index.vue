@@ -8,26 +8,54 @@
             <div class="container">
                 <ion-item lines="none">
                     <ion-label class="header-title">
-                        Product List
+                        Order List
                     </ion-label>
                     <ion-button class="add-button" slot="end" @click="onClickGoToUpdate()">
                         <ion-icon name="add" />
                         <ion-label style="">Add</ion-label>
                     </ion-button>
                 </ion-item>
-                <SearchShowStatusListing />
+                <ion-row>
+                    <ion-col size="6">
+                        <ion-searchbar placeholder="Search by Order Number"></ion-searchbar>
+                    </ion-col>
+                    <ion-col size="1.8">
+                        <ion-item lines="none">
+                            <ion-label position="floating">Show</ion-label>
+                            <ion-select value="10">
+                                <ion-select-option value="10">10</ion-select-option>
+                                <ion-select-option value="25">25</ion-select-option>
+                                <ion-select-option value="50">50</ion-select-option>
+                                <ion-select-option value="100">100</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="2.1">
+                        <ion-item lines="none">
+                            <ion-label position="floating">Status</ion-label>
+                            <ion-select :value="activeSelect" @ionChange="onIonChangeGetSelectedStatus($event)">
+                                <ion-select-option value="All">All</ion-select-option>
+                                <ion-select-option value="Open">Open</ion-select-option>
+                                <ion-select-option value="Archived">Archived</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
                 <ion-card style="overflow: visible">
                     <ion-card-content>
                         <ion-grid>
                             <ion-row class="row-header">
                                 <ion-col>
-                                    Name
+                                    Order Number
                                 </ion-col>
                                 <ion-col>
-                                    Quantity
+                                    Shipp From
                                 </ion-col>
                                 <ion-col>
-                                    Price
+                                    Shipp To
+                                </ion-col>
+                                <ion-col>
+                                    Total Price
                                 </ion-col>
                                 <ion-col>
                                     Action
@@ -35,7 +63,7 @@
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
                             <div class="data-list">
-                                <ion-row v-for="(item,i) in product" :key="i">
+                                <ion-row v-for="(item,i) in order" :key="i">
                                     <ion-col class="data-col">
                                         {{item.name}}
                                     </ion-col>
@@ -65,9 +93,7 @@
 </template>
 
 <script>
-    import ProductAPI from '@/api/product'
-
-    import SearchShowStatusListing from '@/components/SearchShowStatusListing'
+    import OrderAPI from '@/api/orders'
 
     import {
         onMounted,
@@ -78,18 +104,18 @@
         useRouter
     } from 'vue-router'
     export default {
-        name: 'Products',
-        components: {
-            SearchShowStatusListing
-        },
+        name: 'Order',
+        components: {},
         setup() {
             onMounted(() => {
-                loadProduct()
+                loadOrder(status.value)
             })
 
             const router = useRouter()
 
-            let product = ref({})
+            let order = ref({})
+            let status = ref('O')
+            let activeSelect = ref('Open')
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id) {
@@ -99,11 +125,11 @@
                     router.push(`/dashboards/updateproduct`)
             }
 
-            async function loadProduct() {
-                await ProductAPI.list()
+            async function loadOrder(s) {
+                isLoading.value = true;
+                await OrderAPI.list(s)
                     .then((response) => {
-                        isLoading.value = true;
-                        product.value = response.data.data
+                        order.value = response.data.data
                     }).catch((err) => {
                         console.error(err);
                     }).finally(() => {
@@ -112,9 +138,10 @@
             }
 
             return {
-                product,
+                order,
                 onClickGoToUpdate,
-                isLoading
+                isLoading,
+                activeSelect
             }
         }
     }
@@ -122,5 +149,4 @@
 
 <style lang="scss" scoped>
     @import '@/assets/css/global.scss';
-    @import '@/assets/css/products.scss';
 </style>
