@@ -166,7 +166,6 @@
             let status = ref('O')
             let activeSelect = ref('Open')
             let searchInput = ref('')
-
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id, ev) {

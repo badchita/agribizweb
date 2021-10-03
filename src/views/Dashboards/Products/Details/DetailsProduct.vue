@@ -45,8 +45,9 @@
                             <div class="details-label">₱{{product.price}}</div>
                         </ion-col>
                         <ion-col class="details-col">
-                            <ion-label>Quantity</ion-label> 
-                            <div class="details-label">{{product.quantity}}</div>
+                            <ion-label>Quantity</ion-label>
+                            <div v-if="product.quantity === 0" style="color: #eb445a" class="details-label">{{product.quantity}}</div>
+                            <div v-else class="details-label">{{product.quantity}}</div>
                         </ion-col>
                     </ion-row>
 
