@@ -44,6 +44,7 @@
     receipt,
     business,
     chatbubbleEllipses,
+    ellipsisVertical,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -75,6 +76,7 @@
     'receipt': receipt,
     'business': business,
     'chatbubble-ellipses': chatbubbleEllipses,
+    'ellipsis-vertical': ellipsisVertical
   })
   export default defineComponent({
     name: 'App',

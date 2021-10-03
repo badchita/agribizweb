@@ -14,7 +14,9 @@
         name: 'MenuFabButton',
         setup() {
             async function onClickOpenMenu() {
-                await menuController.open();
+                // await menuController.enable(false, 'chat-menu')
+                await menuController.enable(true, 'main-menu')
+                await menuController.open('main-menu')
             }
 
             return {

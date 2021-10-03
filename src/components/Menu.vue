@@ -1,11 +1,11 @@
 <template>
-    <ion-menu content-id="main-content" type="overlay">
+    <ion-menu content-id="main-content" type="overlay" menu-id="main-menu">
         <ion-content>
             <ion-list id="inbox-list">
                 <ion-list-header>Menu</ion-list-header>
                 <ion-note>negrosagribiz.com</ion-note>
 
-                <ion-menu-toggle auto-hide="false" v-for="(item, i) in appPages" :key="i">
+                <ion-menu-toggle v-for="(item, i) in appPages" :key="i">
                     <ion-item class="hydrated" router-direction="root" :router-link="item.url" lines="none"
                         detail="false" :class="{ selected: selectedIndex === i }" button @click="selectedIndex = i">
                         <ion-icon slot="start" :ios="item.iosIcon" :md="item.mdIcon"></ion-icon>
@@ -25,6 +25,7 @@
     import {
         useRoute
     } from 'vue-router'
+
     export default {
         name: 'Menu',
         setup() {
@@ -56,6 +57,7 @@
             function selectedItem(url) {
                 url === router.path ? 'selected' : ''
             }
+
             return {
                 selectedItem,
                 appPages,

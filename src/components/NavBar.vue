@@ -39,6 +39,7 @@
         useStore
     } from 'vuex'
     import {
+        menuController,
         popoverController
     } from '@ionic/core'
 
@@ -89,12 +90,16 @@
 
                 await popover.present();
             }
+            async function onClickOpenMenu() {
+                await menuController.open();
+            }
 
             return {
                 navDetails,
                 onClickHomeCol,
                 userData,
                 onClickItemUser,
+                onClickOpenMenu
             }
         }
     }
