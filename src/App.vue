@@ -43,6 +43,7 @@
     closeCircle,
     receipt,
     business,
+    chatbubbleEllipses,
   } from 'ionicons/icons';
   import {
     useRoute
@@ -72,7 +73,8 @@
     'add': add,
     'close-circle': closeCircle,
     'receipt': receipt,
-    'business': business
+    'business': business,
+    'chatbubble-ellipses': chatbubbleEllipses,
   })
   export default defineComponent({
     name: 'App',

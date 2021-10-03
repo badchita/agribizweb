@@ -32,20 +32,26 @@
             const selectedIndex = ref(0);
 
             const appPages = [{
-                title: 'Products',
-                url: '/dashboards/products',
-                iosIcon: 'cube'
-            },
-            {
-                title: 'Addresses',
-                url: '/dashboards/addresses',
-                iosIcon: 'business'
-            },
-            {
-                title: 'Orders',
-                url: '/dashboards/orders',
-                iosIcon: 'receipt'
-            }]
+                    title: 'Products',
+                    url: '/dashboards/products',
+                    iosIcon: 'cube'
+                },
+                {
+                    title: 'Addresses',
+                    url: '/dashboards/addresses',
+                    iosIcon: 'business'
+                },
+                {
+                    title: 'Orders',
+                    url: '/dashboards/orders',
+                    iosIcon: 'receipt'
+                },
+                {
+                    title: 'Chats',
+                    url: '/dashboards/chats',
+                    iosIcon: 'chatbubble-ellipses'
+                }
+            ]
 
             function selectedItem(url) {
                 url === router.path ? 'selected' : ''

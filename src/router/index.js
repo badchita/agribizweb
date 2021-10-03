@@ -101,6 +101,14 @@ const routes = [{
     component: () => import('@/views/Dashboards/Orders/Update/UpdateOrder')
   },
   {
+    path: `/dashboards/chats`,
+    name: 'Chats',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Chats/index')
+  },
+  {
     path: `/profile`,
     name: 'Profile',
     meta: {
