@@ -7,7 +7,7 @@
         <ion-content>
             <MenuFabButton />
             <div class="container">
-                <ListHeader headerTitle="Notifications List" routerUrl="/dashboards/updatenotificationsusers" />
+                <ListHeader headerTitle="Notifications List" routerUrl="/dashboards/updatenotification" />
                 
                 <ion-row>
                     <ion-col size="6">
@@ -157,11 +157,11 @@
 
             function onClickGoToUpdate(id, ev) {
                 ev.stopPropagation();
-                router.push(`/dashboards/updatenotificationsusers/${id}`)
+                router.push(`/dashboards/updatenotification/${id}`)
             }
 
             function onClickRowDetails(id) {
-                router.push(`/dashboards/detailsaddresses/${id}`)
+                router.push(`/dashboards/detailsnotification/${id}`)
             }
 
             function onIonChangeGetSelectedStatus(ev) {

@@ -165,6 +165,7 @@
                         })
                 }
             }
+            
             return {
                 product,
                 isLoading,

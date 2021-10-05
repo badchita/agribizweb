@@ -6,14 +6,15 @@
 
         <ion-content>
             <MenuFabButton />
-            
+
             <div class="container">
                 <ion-item lines="none">
                     <ion-label class="header-title">
-                        Address Details
+                        Notification Details
                     </ion-label>
                     <ion-buttons class="details-buttons">
-                        <ion-button class="details-update-button" slot="end" @click="onClickGoToUpdate(address.id)">
+                        <ion-button class="details-update-button" slot="end"
+                            @click="onClickGoToUpdate(noitification.id)">
                             <ion-label>Update</ion-label>
                         </ion-button>
                         <ion-button color="danger" slot="end" @click="goBack()">
@@ -27,30 +28,34 @@
                     <ion-row class="ion-margin-top">
                         <ion-col>
                             <ion-label class="details-header-label">
-                                Address Information
+                                Notification Information
                             </ion-label>
                         </ion-col>
                     </ion-row>
 
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
-                            <ion-label>Street/Building</ion-label>
-                            <div class="details-label">{{address.street_building}}</div>
+                            <ion-label>Title</ion-label>
+                            <div class="details-label">{{noitification.title}}</div>
                         </ion-col>
                         <ion-col class="details-col">
-                            <ion-label>Barangay</ion-label>
-                            <div class="details-label">{{address.barangay}}</div>
+                            <ion-label>Description</ion-label>
+                            <div class="details-label">{{noitification.description}}</div>
                         </ion-col>
                     </ion-row>
 
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
-                            <ion-label>City</ion-label> 
-                            <div class="details-label">{{address.city}}</div>
+                            <ion-label>Subject</ion-label>
+                            <div class="details-label">{{noitification.subject}}</div>
                         </ion-col>
+                        <ion-col class="details-col" />
+                    </ion-row>
+
+                    <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
-                            <ion-label>Province</ion-label> 
-                            <div class="details-label">{{address.province}}</div>
+                            <ion-label>Content</ion-label>
+                            <div class="description-text" v-html="noitification.content"></div>
                         </ion-col>
                     </ion-row>
                 </ion-grid>
@@ -60,57 +65,56 @@
 </template>
 
 <script>
-    import AddressesAPI from '@/api/addresses'
+    import NotificationsUsersAPI from '@/api/notifications_users'
 
     import {
         ref
     } from '@vue/reactivity'
     import {
-        onMounted
-    } from '@vue/runtime-core'
-    import {
         useRouter
     } from 'vue-router'
+    import {
+        onMounted
+    } from '@vue/runtime-core'
     export default {
-        name: 'DetailProduct',
-        components: {
-        },
+        name: 'DetailsNotification',
         setup() {
             onMounted(() => {
-                loadAddress()
+                loadNotification()
             })
 
             const router = useRouter()
 
-            let address = ref({})
+            let noitification = ref({})
             const isLoading = ref(false)
-
-            function onClickGoToUpdate(id) {
-                router.push(`/dashboards/updateaddresses/${id}`)
-            }
 
             function goBack() {
                 router.go(-1)
             }
 
-            async function loadAddress(id) {
+            function onClickGoToUpdate(id) {
+                router.push(`/dashboards/updatenotification/${id}`)
+            }
+
+            async function loadNotification(id) {
                 isLoading.value = true;
                 id = router.currentRoute.value.params.id
                 if (id) {
-                    await AddressesAPI.get(id)
+                    await NotificationsUsersAPI.get(id)
                         .then((response) => {
-                            address.value = response.data.data
+                            noitification.value = response.data.data
                         })
                         .finally(() => {
                             isLoading.value = false;
                         })
                 }
             }
+
             return {
-                address,
-                isLoading,
                 onClickGoToUpdate,
-                goBack
+                noitification,
+                goBack,
+                isLoading
             }
         }
     }

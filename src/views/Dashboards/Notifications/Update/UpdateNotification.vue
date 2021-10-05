@@ -76,6 +76,7 @@
         useRouter
     } from 'vue-router'
     export default {
+        name:'UpdateNotification',
         setup() {
             onMounted(() => {
                 loadNotificationsDetails()

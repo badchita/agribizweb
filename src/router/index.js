@@ -110,19 +110,28 @@ const routes = [{
     component: () => import('@/views/Dashboards/Notifications/index')
   },
   {
-    path: `/dashboards/updatenotificationsusers`,
-    name: 'AddNotificationsUsers',
+    path: `/dashboards/updatenotification`,
+    name: 'AddNotification',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Notifications/Update/UpdateNotificationsUsers')
-  }, {
-    path: `/dashboards/updatenotificationsusers/:id`,
-    name: 'UpdateNotificationsUsers',
+    component: () => import('@/views/Dashboards/Notifications/Update/UpdateNotification')
+  },
+  {
+    path: `/dashboards/updatenotification/:id`,
+    name: 'UpdateNotification',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Notifications/Update/UpdateNotificationsUsers')
+    component: () => import('@/views/Dashboards/Notifications/Update/UpdateNotification')
+  },
+  {
+    path: `/dashboards/detailsnotification/:id`,
+    name: 'DetailsNotification',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Notifications/Details/DetailsNotification')
   },
   {
     path: `/dashboards/chats`,
