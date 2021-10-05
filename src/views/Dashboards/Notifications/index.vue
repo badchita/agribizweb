@@ -7,11 +7,11 @@
         <ion-content>
             <MenuFabButton />
             <div class="container">
-                <ListHeader headerTitle="Addresses List" routerUrl="/dashboards/updateaddresses" />
+                <ListHeader headerTitle="Notifications List" routerUrl="/dashboards/updateaddresses" />
                 
                 <ion-row>
                     <ion-col size="6">
-                        <ion-searchbar placeholder="Search by City" @ionInput="onInputSearch($event)"></ion-searchbar>
+                        <ion-searchbar placeholder="Search by Title" @ionInput="onInputSearch($event)"></ion-searchbar>
                     </ion-col>
                     <ion-col size="1.8">
                         <ion-item lines="none">
@@ -35,21 +35,22 @@
                         </ion-item>
                     </ion-col>
                 </ion-row>
+
                 <ion-card style="overflow: visible">
                     <ion-card-content>
                         <ion-grid>
                             <ion-row class="header-row">
                                 <ion-col>
-                                    Street/Building
+                                    Title
                                 </ion-col>
                                 <ion-col>
-                                    Barangay
+                                    Content
                                 </ion-col>
                                 <ion-col>
-                                    City
+                                    Description
                                 </ion-col>
                                 <ion-col>
-                                    Province
+                                    Subject
                                 </ion-col>
                                 <ion-col>
                                     Action
