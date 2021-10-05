@@ -7,7 +7,7 @@
         <ion-content>
             <MenuFabButton />
             <div class="container">
-                <ListHeader headerTitle="Notifications List" routerUrl="/dashboards/updateaddresses" />
+                <ListHeader headerTitle="Notifications List" routerUrl="/dashboards/updatenotificationsusers" />
                 
                 <ion-row>
                     <ion-col size="6">
@@ -44,9 +44,6 @@
                                     Title
                                 </ion-col>
                                 <ion-col>
-                                    Content
-                                </ion-col>
-                                <ion-col>
                                     Description
                                 </ion-col>
                                 <ion-col>
@@ -57,20 +54,17 @@
                                 </ion-col>
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
-                            <div v-if="searchInput.length !== 0 && addressesSearch.length !== 0" class="data-list">
-                                <ion-row class="data-row" v-for="(item,i) in addressesSearch" :key="i"
+                            <div v-if="searchInput.length !== 0 && notifications_users_search.length !== 0" class="data-list">
+                                <ion-row class="data-row" v-for="(item,i) in notifications_users_search" :key="i"
                                     @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
-                                        {{item.street_building}}
+                                        {{item.title}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.barangay}}
+                                        {{item.description}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.city}}
-                                    </ion-col>
-                                    <ion-col class="data-col">
-                                        {{item.province}}
+                                        {{item.subject}}
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
@@ -92,19 +86,16 @@
                             </div>
 
                             <div v-else class="data-list">
-                                <ion-row class="data-row" v-for="(item,i) in addresses" :key="i"
+                                <ion-row class="data-row" v-for="(item,i) in notifications_users" :key="i"
                                     @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
-                                        {{item.street_building}}
+                                        {{item.title}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.barangay}}
+                                        {{item.description}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.city}}
-                                    </ion-col>
-                                    <ion-col class="data-col">
-                                        {{item.province}}
+                                        {{item.subject}}
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
@@ -133,7 +124,7 @@
 </template>
 
 <script>
-    import AddressesAPI from '@/api/addresses'
+    import NotificationsUsersAPI from '@/api/notifications_users'
 
     import {
         onMounted,
@@ -147,17 +138,17 @@
         alertController
     } from '@ionic/core'
     export default {
-        name: 'Addresses',
+        name: 'NotificationsUser',
         components: {},
         setup() {
             onMounted(() => {
-                loadAddresses(status.value)
+                loadNotificationsUsers(status.value)
             })
 
             const router = useRouter()
 
-            let addresses = ref({})
-            let addressesSearch = ref({})
+            let notifications_users = ref({})
+            let notifications_users_search = ref({})
             let status = ref('O')
             let activeSelect = ref('Open')
             let searchInput = ref('')
@@ -166,7 +157,7 @@
 
             function onClickGoToUpdate(id, ev) {
                 ev.stopPropagation();
-                router.push(`/dashboards/updateaddresses/${id}`)
+                router.push(`/dashboards/updatenotificationsusers/${id}`)
             }
 
             function onClickRowDetails(id) {
@@ -177,15 +168,15 @@
                 if (ev.detail.value === 'Archived') {
                     status.value = 'V'
                     activeSelect.value = 'Archived'
-                    loadAddresses(status.value)
+                    loadNotificationsUsers(status.value)
                 } else if (ev.detail.value === 'Open') {
                     status.value = 'O'
                     activeSelect.value = 'Open'
-                    loadAddresses(status.value)
+                    loadNotificationsUsers(status.value)
                 } else {
                     status.value = ''
                     activeSelect.value = 'All'
-                    loadAddresses(status.value)
+                    loadNotificationsUsers(status.value)
                 }
             }
 
@@ -193,7 +184,7 @@
                 ev.stopPropagation();
                 const alert = await alertController.create({
                     header: 'Archive',
-                    message: '<strong>Are you sure you want to Archive this Address?</strong>',
+                    message: '<strong>Are you sure you want to Archive this Notification?</strong>',
                     buttons: [{
                         text: 'Yes',
                         handler: () => {
@@ -212,19 +203,19 @@
                 isLoading.value = true;
                 item.status === 'O' ? item.status = 'V' : item.status = 'O'
 
-                activeSelect.value !== 'All' ? addresses.value.splice(i, 1) : ''
+                activeSelect.value !== 'All' ? notifications_users.value.splice(i, 1) : ''
 
-                await AddressesAPI.update(item).catch((err) => {
+                await NotificationsUsersAPI.update(item).catch((err) => {
                     console.error(err);
                 }).finally(() => {
                     isLoading.value = false;
                 })
             }
-            async function loadAddresses(s) {
+            async function loadNotificationsUsers(s) {
                 isLoading.value = true;
-                await AddressesAPI.list(s)
+                await NotificationsUsersAPI.list(s)
                     .then((response) => {
-                        addresses.value = response.data
+                        notifications_users.value = response.data
                     }).catch((err) => {
                         console.error(err);
                     }).finally(() => {
@@ -234,8 +225,8 @@
             async function onInputSearch(ev) {
                 isLoading.value = true;
                 searchInput.value = ev.target.value
-                await AddressesAPI.search(searchInput.value).then((response) => {
-                    addressesSearch.value = response.data
+                await NotificationsUsersAPI.search(searchInput.value).then((response) => {
+                    notifications_users_search.value = response.data
                 }).catch((err) => {
                     console.error(err);
                 }).finally(() => {
@@ -244,7 +235,7 @@
             }
 
             return {
-                addresses,
+                notifications_users,
                 onClickGoToUpdate,
                 isLoading,
                 onClickRowDetails,
@@ -252,7 +243,7 @@
                 onClickArchive,
                 onClickArchiveRestore,
                 activeSelect,
-                addressesSearch,
+                notifications_users_search,
                 searchInput,
                 onInputSearch
             }

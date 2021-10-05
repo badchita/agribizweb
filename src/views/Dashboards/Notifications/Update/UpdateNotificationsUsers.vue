@@ -6,7 +6,7 @@
 
         <ion-content>
             <MenuFabButton />
-            
+
             <div class="container">
                 <ion-grid>
                     <ion-item lines="none">
@@ -17,15 +17,14 @@
                     <ion-row>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">Street/Building
-                                </ion-label>
-                                <ion-input class="input-style" v-model="address.street_building"></ion-input>
+                                <ion-label class="label-style" mode="ios" position="floating">Title</ion-label>
+                                <ion-input class="input-style" v-model="notification.title"></ion-input>
                             </ion-item>
                         </ion-col>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">Brangay</ion-label>
-                                <ion-input class="input-style" v-model="address.barangay"></ion-input>
+                                <ion-label class="label-style" mode="ios" position="floating">Description</ion-label>
+                                <ion-input class="input-style" v-model="notification.description"></ion-input>
                             </ion-item>
                         </ion-col>
                     </ion-row>
@@ -33,20 +32,21 @@
                     <ion-row>
                         <ion-col>
                             <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">City</ion-label>
-                                <ion-input class="input-style" v-model="address.city"></ion-input>
+                                <ion-label class="label-style" mode="ios" position="floating">Subject</ion-label>
+                                <ion-input class="input-style" v-model="notification.subject"></ion-input>
                             </ion-item>
                         </ion-col>
-                        <ion-col>
-                            <ion-item lines="none">
-                                <ion-label class="label-style" mode="ios" position="floating">Province</ion-label>
-                                <ion-input class="input-style" v-model="address.province"></ion-input>
-                            </ion-item>
-                        </ion-col>
+                        <ion-col />
                     </ion-row>
 
-                    <ion-row>
+                    <ion-row class="ion-margin-top">
+                        <ion-item lines="none">
+                            <ion-label class="label-style">Content</ion-label>
+                        </ion-item>
                     </ion-row>
+                    <div class="editor">
+                        <QuillEditor class="quill-editor-style" v-model:value="notification.content" />
+                    </div>
 
                     <ion-row class="ion-margin-top ion-margin-bottom">
                         <ion-buttons class="ion-margin-start">
@@ -65,42 +65,37 @@
 </template>
 
 <script>
-    import AddressesAPI from '@/api/addresses'
-    import 'quill/dist/quill.snow.css'
+    import NotificationsUsersAPI from '@/api/notifications_users'
 
     import {
         computed,
+        onMounted,
         ref
-    } from '@vue/reactivity'
+    } from '@vue/runtime-core'
     import {
         useRouter
     } from 'vue-router'
-    import {
-        onMounted
-    } from '@vue/runtime-core'
     export default {
-        name: 'UpdateAddresses',
-        components: {},
         setup() {
             onMounted(() => {
-                loadAddressDetails()
+                loadNotificationsDetails()
                 pageTitle
             })
 
             const router = useRouter()
 
-            const address = ref({})
+            const notification = ref({})
             const isLoading = ref(false)
 
             const pageTitle = computed(() => {
                 if (router.currentRoute.value.params.id)
-                    return 'Update Address'
+                    return 'Update Notifications'
                 else
-                    return 'Add Address'
+                    return 'Add Notifications'
             })
 
             function clearForm() {
-                address.value = {}
+                notification.value = {}
             }
 
             function goBack() {
@@ -108,20 +103,15 @@
                 router.go(-1)
             }
 
-
-            function test() {
-                console.log(address.value);
-            }
-
-            async function loadAddressDetails(id) {
+            async function loadNotificationsDetails(id) {
                 id = router.currentRoute.value.params.id
                 if (id)
                     isLoading.value = true;
 
                 if (id) {
-                    await AddressesAPI.get(id)
+                    await NotificationsUsersAPI.get(id)
                         .then((response) => {
-                            address.value = response.data.data
+                            notification.value = response.data.data
                         })
                         .finally(() => {
                             isLoading.value = false;
@@ -129,9 +119,9 @@
                 }
             }
             async function onClickSave() {
-                address.value.status = 'O'
+                notification.value.status = 'O'
 
-                const api = address.value.id ? AddressesAPI.update(address.value) : AddressesAPI.add(address.value)
+                const api = notification.value.id ? NotificationsUsersAPI.update(notification.value) : NotificationsUsersAPI.add(notification.value)
 
                 api.then(() => {
                     clearForm()
@@ -143,13 +133,13 @@
                     console.error(err);
                 })
             }
+
             return {
-                address,
-                onClickSave,
-                goBack,
                 pageTitle,
-                test,
                 isLoading,
+                notification,
+                goBack,
+                onClickSave
             }
         }
     }

@@ -110,6 +110,21 @@ const routes = [{
     component: () => import('@/views/Dashboards/Notifications/index')
   },
   {
+    path: `/dashboards/updatenotificationsusers`,
+    name: 'AddNotificationsUsers',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Notifications/Update/UpdateNotificationsUsers')
+  }, {
+    path: `/dashboards/updatenotificationsusers/:id`,
+    name: 'UpdateNotificationsUsers',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Notifications/Update/UpdateNotificationsUsers')
+  },
+  {
     path: `/dashboards/chats`,
     name: 'Chats',
     meta: {
