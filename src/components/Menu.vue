@@ -51,6 +51,11 @@
                     title: 'Chats',
                     url: '/dashboards/chats',
                     iosIcon: 'chatbubble-ellipses'
+                },
+                {
+                    title: 'Notifications',
+                    url: '/dashboards/notifications',
+                    iosIcon: 'notifications'
                 }
             ]
 

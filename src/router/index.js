@@ -92,13 +92,22 @@ const routes = [{
       requiresAuth: true
     },
     component: () => import('@/views/Dashboards/Orders/Update/UpdateOrder')
-  }, {
+  },
+  {
     path: `/dashboards/updateorder/:id`,
     name: 'UpdateOrder',
     meta: {
       requiresAuth: true
     },
     component: () => import('@/views/Dashboards/Orders/Update/UpdateOrder')
+  },
+  {
+    path: `/dashboards/notifications`,
+    name: 'Notifications',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Notifications/index')
   },
   {
     path: `/dashboards/chats`,
