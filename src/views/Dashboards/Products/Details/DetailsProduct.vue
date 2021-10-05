@@ -72,6 +72,15 @@
                         </ion-col>
                     </ion-row>
 
+                    <div class="ion-margin-top" />
+                    <ion-row class="ion-margin-top">
+                        <ion-col>
+                            <ion-label class="details-header-label">
+                                Product Rating
+                            </ion-label>
+                        </ion-col>
+                    </ion-row>
+
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
                             <ion-label>Rating & Reviews (5)</ion-label>
@@ -165,7 +174,7 @@
                         })
                 }
             }
-            
+
             return {
                 product,
                 isLoading,
