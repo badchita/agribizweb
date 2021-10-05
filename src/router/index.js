@@ -106,7 +106,18 @@ const routes = [{
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Chats/index')
+    component: () => import('@/views/Dashboards/Chats/index'),
+    children: [{
+      path: '',
+      redirect: '/dashboards/chats/1'
+    }, {
+      path: `/dashboards/chats/1`,
+      name: 'Conversation',
+      meta: {
+        requiresAuth: true
+      },
+      component: () => import('@/components/Chats/Conversation')
+    }, ]
   },
   {
     path: `/profile`,

@@ -1,77 +1,57 @@
 <template>
     <ion-page>
-        <!-- <ion-header>
-            <NavBar />
-        </ion-header> -->
-        <!-- <ion-content>
-            <MenuFabButton /> -->
-        <ion-split-pane content-id="chat-content" when="md">
-            <ion-menu content-id="chat-content" menu-id="chat-menu">
-                <ion-list id="inbox-list">
-                    <ion-list-header>
-                        <ion-label>Chats</ion-label>
-                    </ion-list-header>
-                    <ion-menu-toggle auto-hide="false" v-for="(item, i) in 20" :key="i">
-                        <ion-item class="hydrated" :class="{ selected: selectedIndex === i }" router-direction="root"
-                            router-link="/dashboards/chats/1" lines="none" button>
-                            <ion-avatar slot="start">
-                                <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
-                            </ion-avatar>
-                            <ion-row class="sender-details">
-                                <ion-col size="12">
-                                    <ion-label>
-                                        Vr Bachita
-                                    </ion-label>
-                                </ion-col>
-                                <ion-col>
-                                    <ion-label class="sender-message">
-                                        We admire the dedication to high-quality work and service that goes into
-                                        building a
-                                        successful freelance business on Upwork. When you’re great at what you
-                                        do,
-                                        you
-                                        only
-                                        can create a good marketing plan to show potential clients the value you
-                                        offer.
-                                    </ion-label>
-                                </ion-col>
-                            </ion-row>
-                            <div slot="end" class="unread"></div>
-                        </ion-item>
-                    </ion-menu-toggle>
-                </ion-list>
-            </ion-menu>
+        <ion-header>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-button @click="onClickOpenChatMenu">
+                        <ion-icon name="ellipsis-vertical" />
+                    </ion-button>
+                </ion-buttons>
+                <ion-label>
+                    Name
+                </ion-label>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content>
+            <!-- <MenuFabButton /> -->
+            <section ref="chatArea" class="chat-area">
+                <ion-item lines="none" v-for="(message, i) in messages" :key="i">
+                    <div v-if=" message.author === 'user'" class="message-out" slot="end">
+                        <p>
+                            {{message.body}}
+                        </p>
+                    </div>
 
-            <!-- <Conversation id="chat-content" /> -->
-            <ion-router-outlet id="chat-content" />
-        </ion-split-pane>
+                    <ion-item lines="none" v-else-if=" message.author !== 'user'">
+
+                        <p class="message-in">
+                            {{message.body}}
+                        </p>
+                    </ion-item>
+                </ion-item>
+            </section>
+        </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-item lines="none" colors="none">
+                    <ion-textarea autoGrow="true" :value="userMessage" maxlength="500"
+                        placeholder="Type message here..."></ion-textarea>
+                    <ion-button @click.prevent="sendMessage('out')">send</ion-button>
+                </ion-item>
+            </ion-toolbar>
+        </ion-footer>
     </ion-page>
-    <!-- </ion-content> -->
-</template> 
+</template>
 
 <script>
-    // import Conversation from '@/components/Chats/Conversation'
-
     import {
         ref
-    } from '@vue/reactivity';
+    } from '@vue/reactivity'
     import {
         menuController
-    } from '@ionic/core';
-    import {
-        onMounted
-    } from '@vue/runtime-core';
-
+    } from '@ionic/core'
     export default {
-        components: {
-            // Conversation,
-        },
         setup() {
-            onMounted(() => {
-                // onClickOpenChatMenu()
-            })
-            const selectedIndex = ref(0)
-
             let senderMessage = ref('')
             let userMessage = ref('')
 
@@ -123,7 +103,6 @@
             }
 
             return {
-                selectedIndex,
                 senderMessage,
                 userMessage,
                 messages,
@@ -134,6 +113,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@/assets/css/menu.scss';
-    @import '@/assets/css/chats.scss';
+
 </style>

@@ -11,7 +11,6 @@
   } from '@ionic/vue';
   import {
     defineComponent,
-    ref
   } from 'vue';
 
   import {
@@ -46,9 +45,6 @@
     chatbubbleEllipses,
     ellipsisVertical,
   } from 'ionicons/icons';
-  import {
-    useRoute
-  } from 'vue-router';
 
   addIcons({
     'menu': menu,
@@ -85,25 +81,6 @@
 
       Menu
     },
-    setup() {
-      const router = useRoute()
-      const selectedIndex = ref(0);
-
-      const appPages = [{
-        title: 'Products',
-        url: '/dashboards/products',
-      }]
-
-      function selectedItem(url) {
-        url === router.path ? 'selected' : ''
-      }
-
-      return {
-        selectedItem,
-        appPages,
-        selectedIndex,
-      }
-    }
   });
 </script>
 
