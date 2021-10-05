@@ -44,6 +44,7 @@
     business,
     chatbubbleEllipses,
     ellipsisVertical,
+    informationCircle,
   } from 'ionicons/icons';
 
   addIcons({
@@ -72,7 +73,8 @@
     'receipt': receipt,
     'business': business,
     'chatbubble-ellipses': chatbubbleEllipses,
-    'ellipsis-vertical': ellipsisVertical
+    'ellipsis-vertical': ellipsisVertical,
+    'information-circle': informationCircle,
   })
   export default defineComponent({
     name: 'App',

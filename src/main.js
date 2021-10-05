@@ -104,6 +104,7 @@ import '@ionic/vue/css/display.css';
 
 import MenuFabButton from '@/components/MenuFabButton'
 import NavBar from '@/components/NavBar'
+import ListHeader from '@/components/ListHeader'
 
 import {
   quillEditor
@@ -118,6 +119,7 @@ const app = createApp(App)
   .use(store)
 app.component('NavBar', NavBar)
 app.component('MenuFabButton', MenuFabButton)
+app.component('ListHeader', ListHeader)
 app.component('QuillEditor', quillEditor)
 
 app.component('ion-badge', IonBadge)

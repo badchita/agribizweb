@@ -7,15 +7,8 @@
         <ion-content>
             <MenuFabButton />
             <div class="container">
-                <ion-item lines="none">
-                    <ion-label class="header-title">
-                        Addresses List
-                    </ion-label>
-                    <ion-button class="add-button" slot="end" @click="onClickGoToUpdate()">
-                        <ion-icon name="add" />
-                        <ion-label style="">Add</ion-label>
-                    </ion-button>
-                </ion-item>
+                <ListHeader headerTitle="Addresses List" routerUrl="/dashboards/updateaddresses" />
+                
                 <ion-row>
                     <ion-col size="6">
                         <ion-searchbar placeholder="Search by City" @ionInput="onInputSearch($event)"></ion-searchbar>
@@ -96,7 +89,7 @@
                                     </ion-col>
                                 </ion-row>
                             </div>
-                            
+
                             <div v-else class="data-list">
                                 <ion-row class="data-row" v-for="(item,i) in addresses" :key="i"
                                     @click="onClickRowDetails(item.id)">
@@ -171,11 +164,8 @@
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id, ev) {
-                if (id) {
-                    ev.stopPropagation();
-                    router.push(`/dashboards/updateaddresses/${id}`)
-                } else
-                    router.push(`/dashboards/updateaddresses`)
+                ev.stopPropagation();
+                router.push(`/dashboards/updateaddresses/${id}`)
             }
 
             function onClickRowDetails(id) {

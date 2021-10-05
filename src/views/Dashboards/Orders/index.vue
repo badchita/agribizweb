@@ -6,15 +6,8 @@
         <ion-content>
             <MenuFabButton />
             <div class="container">
-                <ion-item lines="none">
-                    <ion-label class="header-title">
-                        Order List
-                    </ion-label>
-                    <ion-button class="add-button" slot="end" @click="onClickGoToUpdate()">
-                        <ion-icon name="add" />
-                        <ion-label style="">Add</ion-label>
-                    </ion-button>
-                </ion-item>
+                <ListHeader headerTitle="Order List" routerUrl="/dashboards/updateorder" />
+
                 <ion-row>
                     <ion-col size="6">
                         <ion-searchbar placeholder="Search by Order Number"></ion-searchbar>
@@ -119,10 +112,7 @@
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id) {
-                if (id)
-                    router.push(`/dashboards/updateorder/${id}`)
-                else
-                    router.push(`/dashboards/updateorder`)
+                router.push(`/dashboards/updateorder/${id}`)
             }
 
             async function loadOrder(s) {

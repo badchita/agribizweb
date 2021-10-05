@@ -7,15 +7,8 @@
         <ion-content>
             <MenuFabButton />
             <div class="container">
-                <ion-item lines="none">
-                    <ion-label class="header-title">
-                        Product List
-                    </ion-label>
-                    <ion-button class="add-button" slot="end" @click="onClickGoToUpdate()">
-                        <ion-icon name="add" />
-                        <ion-label style="">Add</ion-label>
-                    </ion-button>
-                </ion-item>
+                <ListHeader headerTitle="Product List" routerUrl="/dashboards/updateproduct" />
+
                 <ion-row>
                     <ion-col size="6">
                         <ion-searchbar placeholder="Search by Name" @ionInput="onInputSearch($event)"></ion-searchbar>
@@ -169,11 +162,8 @@
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id, ev) {
-                if (id) {
-                    ev.stopPropagation();
-                    router.push(`/dashboards/updateproduct/${id}`)
-                } else
-                    router.push(`/dashboards/updateproduct`)
+                ev.stopPropagation();
+                router.push(`/dashboards/updateproduct/${id}`)
             }
 
             function onClickRowDetails(id) {
