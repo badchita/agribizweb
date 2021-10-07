@@ -140,7 +140,7 @@
                 loadProductDetails()
                 loadAddressesDetails()
                 pageTitle,
-                getThumbnail()
+                getThumbnail() 
             })
 
             const data = reactive({
