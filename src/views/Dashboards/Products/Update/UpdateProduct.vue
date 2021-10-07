@@ -216,7 +216,7 @@
             }
 
             function getThumbnail() {
-                return thumbnailPath.value === 'https://www.fcprop.net/images/noimage.png'
+                return thumbnailPath.value = 'https://www.fcprop.net/images/noimage.png'
             }
 
             function onClickChooseFile(ev) {
