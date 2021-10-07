@@ -223,6 +223,8 @@
                 const file = ev.target.files[0]
                 document.getElementById("uploadFile").value = file.name
                 thumbnailPath.value = URL.createObjectURL(file)
+
+                product.value.thumbnail_name = file.name
             }
 
             function test() {
