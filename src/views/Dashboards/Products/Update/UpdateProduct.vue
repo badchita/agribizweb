@@ -14,6 +14,24 @@
 
                     <ion-row>
                         <ion-col>
+                            <ion-img :src="thumbnailPath" class="ion-margin-bottom"
+                                style="width:50%; margin-left: 16px;" />
+                            <ion-label class="ion-margin-start" style="color: rgb(128, 128, 128);">Thumbnail</ion-label>
+                            <ion-item class="ion-margin-top" lines="none">
+                                <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+                                <div size="default" class="fileUpload">
+                                    <ion-icon name="cloud-upload" />
+                                    <span>Choose File</span>
+                                    <input class="upload" type="file" accept="image/png, image/jpeg"
+                                        @change="onClickChooseFile($event)" />
+                                </div>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col />
+                    </ion-row>
+
+                    <ion-row>
+                        <ion-col>
                             <ion-item lines="none">
                                 <ion-label class="label-style" mode="ios" position="floating">Name</ion-label>
                                 <ion-input class="input-style" v-model="product.name"></ion-input>
@@ -121,14 +139,13 @@
             onMounted(() => {
                 loadProductDetails()
                 loadAddressesDetails()
-                pageTitle
+                pageTitle,
+                getThumbnail()
             })
 
             const data = reactive({
                 price: '',
             })
-
-            const location = ref([])
 
             const categories = [{
                 value: 'Fruit',
@@ -156,6 +173,8 @@
 
             const product = ref({})
             const isLoading = ref(false)
+            const location = ref([])
+            let thumbnailPath = ref('')
 
             const pageTitle = computed(() => {
                 if (router.currentRoute.value.params.id)
@@ -196,6 +215,16 @@
                 product.value.product_location_id = ev.detail.value.id
             }
 
+            function getThumbnail() {
+                return thumbnailPath.value === 'https://www.fcprop.net/images/noimage.png'
+            }
+
+            function onClickChooseFile(ev) {
+                const file = ev.target.files[0]
+                document.getElementById("uploadFile").value = file.name
+                thumbnailPath.value = URL.createObjectURL(file)
+            }
+
             function test() {
                 console.log(product.value);
             }
@@ -233,7 +262,8 @@
                 }
             }
             async function onClickSave() {
-                const message = 'Status must be <strong>Out of Stocks</strong> if <strong>Quantity</strong> is <strong>0</strong>'
+                const message =
+                    'Status must be <strong>Out of Stocks</strong> if <strong>Quantity</strong> is <strong>0</strong>'
 
                 if (+product.value.quantity === 0 && product.value.product_status === 'Available') {
                     presentToast(message)
@@ -279,6 +309,8 @@
                 location,
                 onIonChangeGetSelectedLocation,
                 initialLocation,
+                onClickChooseFile,
+                thumbnailPath
             }
         }
     }

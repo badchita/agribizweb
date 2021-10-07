@@ -45,6 +45,7 @@
     chatbubbleEllipses,
     ellipsisVertical,
     informationCircle,
+    cloudUpload,
   } from 'ionicons/icons';
 
   addIcons({
@@ -75,6 +76,7 @@
     'chatbubble-ellipses': chatbubbleEllipses,
     'ellipsis-vertical': ellipsisVertical,
     'information-circle': informationCircle,
+    'cloud-upload': cloudUpload,
   })
   export default defineComponent({
     name: 'App',
