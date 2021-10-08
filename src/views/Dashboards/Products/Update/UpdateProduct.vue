@@ -14,8 +14,10 @@
 
                     <ion-row>
                         <ion-col>
-                            <ion-img :src="thumbnailPath" class="ion-margin-bottom"
-                                style="width:50%; margin-left: 16px;" />
+                            <ion-thumbnail class="ion-margin-start" style="width: 50%; height: 50%;">
+                                <img :src="thumbnailPath" style="width:100%;" />
+                            </ion-thumbnail>
+                            <div class="ion-margin-top" />
                             <ion-label class="ion-margin-start" style="color: rgb(128, 128, 128);">Thumbnail</ion-label>
                             <ion-item class="ion-margin-top" lines="none">
                                 <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
@@ -140,7 +142,7 @@
                 loadProductDetails()
                 loadAddressesDetails()
                 pageTitle,
-                getThumbnail() 
+                getThumbnail()
             })
 
             const data = reactive({

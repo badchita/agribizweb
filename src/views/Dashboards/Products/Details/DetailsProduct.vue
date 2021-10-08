@@ -31,6 +31,16 @@
                         </ion-col>
                     </ion-row>
 
+                    <ion-row>
+                        <ion-col>
+                            <ion-thumbnail class="thumbnail-style">
+                                <img src="https://www.fcprop.net/images/noimage.png" style="width: 100%;" />
+                            </ion-thumbnail>
+                        </ion-col>
+                        <ion-col />
+                        <ion-col />
+                        <ion-col />
+                    </ion-row>
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
                             <ion-label>Name</ion-label>
@@ -38,7 +48,7 @@
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Location</ion-label>
-                            <div class="details-label">{{product.location}}</div>
+                            <div class="details-label">{{product.product_location}}</div>
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Price</ion-label>
@@ -159,6 +169,7 @@
 
             function goBack() {
                 router.go(-1)
+                product.value = {}
             }
 
             async function loadProduct(id) {
@@ -180,7 +191,7 @@
                 isLoading,
                 onClickGoToUpdate,
                 goBack,
-                ratingAndReviews
+                ratingAndReviews,
             }
         }
     }
