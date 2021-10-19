@@ -84,6 +84,7 @@ import {
   IonRouterOutlet,
   IonTextarea,
   IonRippleEffect,
+  IonThumbnail,
 } from '@ionic/vue';
 
 /* Core CSS required for Ionic components to work properly */
@@ -198,6 +199,7 @@ app.component('ion-img', IonImg)
 app.component('ion-avatar', IonAvatar)
 app.component('ion-router-outlet', IonRouterOutlet)
 app.component('ion-textarea', IonTextarea)
+app.component('ion-thumbnail', IonThumbnail)
 
 router.isReady().then(() => {
   app.mount('#app');

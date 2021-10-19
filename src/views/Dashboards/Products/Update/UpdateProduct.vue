@@ -14,8 +14,8 @@
 
                     <ion-row>
                         <ion-col>
-                            <ion-thumbnail class="ion-margin-start" style="width: 50%; height: 50%;">
-                                <img :src="thumbnailPath" style="width:100%;" />
+                            <ion-thumbnail class="ion-margin-start" style="width: 40%; height: 50%;">
+                                <img :src="thumbnailPath" style="object-fit: contain;" />
                             </ion-thumbnail>
                             <div class="ion-margin-top" />
                             <ion-label class="ion-margin-start" style="color: rgb(128, 128, 128);">Thumbnail</ion-label>
@@ -101,7 +101,7 @@
                     </div>
                     <ion-row class="ion-margin-top ion-margin-bottom">
                         <ion-buttons class="ion-margin-start">
-                            <ion-button class="save-button" @click="onClickSave">
+                            <ion-button class="save-button" @click="test">
                                 Save
                             </ion-button>
                             <ion-button color="danger" @click="goBack">
@@ -193,10 +193,12 @@
 
             function clearForm() {
                 product.value = {}
+                location.value = []
+                thumbnailPath = ''
             }
 
             function goBack() {
-                // clearForm()
+                clearForm()
                 router.go(-1)
             }
 
@@ -205,7 +207,7 @@
             }
 
             function onIonChangeGetSelectedProductStatus(ev) {
-                return product.value.product_status = ev.detail.value
+                product.value.product_status = ev.detail.value
             }
 
             function onIonChangeGetSelectedLocation(ev) {
@@ -226,11 +228,13 @@
                 document.getElementById("uploadFile").value = file.name
                 thumbnailPath.value = URL.createObjectURL(file)
 
-                product.value.thumbnail_name = file.name
+                product.value.thumbnail_name = file
             }
 
             function test() {
-                console.log(product.value);
+                let formFile = new FormData()
+                formFile.append('file', product.value.thumbnail_name, product.value.thumbnail_name.name)
+                ProductAPI.update(formFile)
             }
 
             async function presentToast(m) {
@@ -269,14 +273,20 @@
                 const message =
                     'Status must be <strong>Out of Stocks</strong> if <strong>Quantity</strong> is <strong>0</strong>'
 
+                // let formFile = new FormData()
+                // product.value.thumbnail_name = formFile.append("file", product.value.thumbnail_name)
+
+                console.log(product.value.thumbnail_name);
+
+                let formFile = new FormData()
+                formFile.append('file', product.value.thumbnail_name, product.value.thumbnail_name.name)
+
                 if (+product.value.quantity === 0 && product.value.product_status === 'Available') {
                     presentToast(message)
                 } else {
                     product.value.price = +product.value.price
                     product.value.quantity = +product.value.quantity
                     product.value.category = product.value.category.toString()
-
-                    console.log('product status', product.value.product_status);
 
                     if (product.value.product_status == 'Available')
                         product.value.status = 'O'
@@ -288,11 +298,10 @@
                     const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
 
                     api.then(() => {
-                        clearForm()
-                        goBack()
-                        setTimeout(() => {
-                            router.go()
-                        }, 100)
+                        // goBack()
+                        // setTimeout(() => {
+                        //     router.go()
+                        // }, 100)
                     }).catch((err) => {
                         console.error(err);
                     })

@@ -6,7 +6,55 @@
         <ion-content>
             <ion-card>
                 <ion-card-content>
-                    <ion-list>
+                    <ion-list v-if="router.currentRoute.value.name === 'SignUp'">
+                        <ion-list-header>
+                            <ion-label>Sign Up</ion-label>
+                        </ion-list-header>
+                        <ion-item class="input-item">
+                            <ion-input v-model="auth.email" placeholder="Name"></ion-input>
+                        </ion-item>
+                        <ion-item class="input-item">
+                            <ion-input v-model="auth.email" placeholder="Email"></ion-input>
+                        </ion-item>
+                        <ion-item class="input-item">
+                            <ion-input v-model="auth.password" placeholder="Password" :type="passwordVisibility">
+                            </ion-input>
+                            <ion-buttons slot="end">
+                                <ion-button v-if="passwordVisibility === 'text'" @click="hidePassword()">
+                                    <ion-icon name="eye" />
+                                </ion-button>
+                                <ion-button v-if="passwordVisibility === 'password'" @click="showPassword()">
+                                    <ion-icon name="eye-off" />
+                                </ion-button>
+                            </ion-buttons>
+                        </ion-item>
+                        <ion-item class="input-item">
+                            <ion-input v-model="auth.password" placeholder="Confirm Password"
+                                :type="passwordVisibility">
+                            </ion-input>
+                            <ion-buttons slot="end">
+                                <ion-button v-if="passwordVisibility === 'text'" @click="hidePassword()">
+                                    <ion-icon name="eye" />
+                                </ion-button>
+                                <ion-button v-if="passwordVisibility === 'password'" @click="showPassword()">
+                                    <ion-icon name="eye-off" />
+                                </ion-button>
+                            </ion-buttons>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-button class="login-button" expand="full" strong="true" @click="onClickLogin">
+                                <ion-spinner v-if="loadingStatus"></ion-spinner>
+                                <span v-else>Sign Up</span>
+                            </ion-button>
+                        </ion-item>
+                        <ion-item class="signup-link" lines="none">
+                            <ion-label>Have an account yet? <router-link to="/vendor/login"><strong>Login
+                                        Here</strong></router-link>
+                            </ion-label>
+                        </ion-item>
+                    </ion-list>
+
+                    <ion-list v-else-if="router.currentRoute.value.name === 'Login'">
                         <ion-list-header>
                             <ion-label>Login</ion-label>
                         </ion-list-header>
@@ -26,7 +74,7 @@
                             </ion-buttons>
                         </ion-item>
                         <ion-item v-if="showError" class="error-message-item" lines="none">
-                            <ion-button fill="clear" slot="end" @click="onClickCloseErrorIcon"> 
+                            <ion-button fill="clear" slot="end" @click="onClickCloseErrorIcon">
                                 <ion-icon name="close-circle" />
                             </ion-button>
                             <span>{{errorMessage}}</span>
@@ -61,7 +109,9 @@
                             </ion-buttons>
                         </ion-item>
                         <ion-item class="signup-link" lines="none">
-                            <ion-label>Don't have a account yet? <a href="">Sign Up Here</a></ion-label>
+                            <ion-label>Don't have a account yet? <router-link to="/vendor/sign-up"><strong>Sign Up
+                                        Here</strong></router-link>
+                            </ion-label>
                         </ion-item>
                     </ion-list>
                 </ion-card-content>
@@ -98,6 +148,7 @@
 
             const router = useRouter()
             const store = useStore()
+
             let passwordVisibility = ref('password')
             let showError = ref(false)
 
@@ -139,7 +190,8 @@
                 loadingStatus,
                 errorMessage,
                 onClickCloseErrorIcon,
-                showError
+                showError,
+                router,
             }
         }
     }

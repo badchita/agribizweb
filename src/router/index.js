@@ -5,15 +5,30 @@ import {
 
 const routes = [{
     path: '/',
-    redirect: '/login'
+    redirect: '/vendor/'
   },
   {
-    path: '/login',
+    path: '/vendor/',
     name: 'Login',
     meta: {
       hideNavbar: true,
     },
     component: () => import('@/views/Pages/LoginPage'),
+    children: [{
+        path: '',
+        redirect: '/vendor/login'
+      },
+      {
+        path: 'login',
+        name: 'Login',
+        component: () => import('@/views/Pages/LoginPage'),
+      },
+      {
+        path: 'sign-up',
+        name: 'SignUp',
+        component: () => import('@/views/Pages/LoginPage'),
+      }
+    ]
   },
   {
     path: '/home',

@@ -8,7 +8,7 @@ export default {
         return api.get('product/' + id)
     },
     update(product) {
-        return api.put('product', product)
+        return api.post('product', product)
     },
     list(status) {
         if (status === 'O') {
