@@ -63,8 +63,7 @@ export default {
     login({
       commit
     }, payload) {
-      return AuthAPI.login(payload)
-        .then((res) => {
+      return AuthAPI.login(payload).then((res) => {
           commit('AUTHENTICATING_SUCCESS', res.data)
           commit('SET_IS_USER_LOGGED_IN', true)
           commit('SET_ERROR_MESSAGE', '')
@@ -72,8 +71,7 @@ export default {
         .catch((err) => {
           const errorMsg = err.response
           const networkError = err.message
-          console.log(errorMsg);
-          console.log(networkError);
+
           commit('AUTHENTICATING_ERROR')
           if (networkError == 'Request failed with status code 500')
             commit('SET_ERROR_MESSAGE', 'Network Error')
@@ -85,6 +83,28 @@ export default {
           }
           return Promise.reject(err)
         })
+    },
+    register({
+      commit
+    }, payload) {
+      return AuthAPI.register(payload).then((res) => {
+        console.log(res);
+      }).catch((err) => {
+        const errorMsg = err.response
+        const networkError = err.message
+        console.log(errorMsg);
+        console.log(networkError);
+        commit('AUTHENTICATING_ERROR')
+        if (networkError == 'Request failed with status code 500')
+          commit('SET_ERROR_MESSAGE', 'Network Error')
+        else if (errorMsg.status === 402 || errorMsg.status === 403)
+          commit('SET_ERROR_MESSAGE', errorMsg.data.message)
+        else if (errorMsg.status === 401) {
+          const requiredError = errorMsg.data.errors[0] + errorMsg.data.errors[1]
+          commit('SET_ERROR_MESSAGE', !errorMsg.data.errors[1] ? errorMsg.data.errors[0] : requiredError)
+        }
+        return Promise.reject(err)
+      })
     },
     logout({
       commit

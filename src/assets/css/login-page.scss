@@ -12,108 +12,115 @@ ion-header {
 ion-content {
     --background: #58a89d;
 
-    ion-card {
+    .login-card {
         position: fixed;
         width: 30%;
         margin-left: 35%;
         margin-top: 4%;
+    }
 
-        ion-list {
-            ion-list-header {
-                text-align: center;
-                margin-top: -8px;
-                font-size: 1.25rem;
-                color: #222;
-                margin-bottom: 6px;
+    .signup-card {
+        position: fixed;
+        width: 30%;
+        height: 80%;
+        margin-left: 35%;
+    }
+
+    ion-list {
+        ion-list-header {
+            text-align: center;
+            margin-top: -8px;
+            font-size: 1.25rem;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .error-message-item {
+            margin: auto;
+            margin-top: 30px;
+            width: 93%;
+            --background: rgba(var(--ion-color-danger-rgb), .5);
+            --color: rgb(0, 0, 0, .8);
+
+            ion-button {
+                --color: rgb(0, 0, 0, .6);
             }
+        }
 
-            .error-message-item {
-                margin: auto;
-                margin-top: 30px;
-                width: 93%;
-                --background: rgba(var(--ion-color-danger-rgb), .5);
-                --color: rgb(0, 0, 0, .8);
+        .input-item {
+            margin-left: 16px;
+            margin-right: 16px;
+            margin-top: 14px;
+            --padding-start: 0px;
+            --highlight-color-valid: green !important;
+            --border-color: #58a89d;
 
-                ion-button {
-                    --color: rgb(0, 0, 0, .6);
-                }
-            }
-
-            .input-item {
-                margin-left: 16px;
-                margin-right: 16px;
-                margin-top: 14px;
-                --padding-start: 0px;
-                --highlight-color-valid: green !important;
-                --border-color: #58a89d;
-
-                ion-icon {
-                    color: #898F9C;
-                }
-            }
-
-            .login-button {
-                width: 100%;
-                height: 2.5rem;
-                margin-top: 45px;
-                --background: #58a89d;
-                --box-shadow: none;
-            }
-
-            h5 {
-                width: 100%;
-                text-align: center;
-                border-bottom: 1px solid #898F9C;
-                line-height: 0.1em;
-                margin: 0 0 20px;
-                margin-left: 0px;
-                font-size: 12px;
-                font-weight: 600;
+            ion-icon {
                 color: #898F9C;
+            }
+        }
 
-                span {
-                    background: #fff;
-                    padding: 0 10px;
+        .login-button {
+            width: 100%;
+            height: 2.5rem;
+            margin-top: 45px;
+            --background: #58a89d;
+            --box-shadow: none;
+        }
+
+        h5 {
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid #898F9C;
+            line-height: 0.1em;
+            margin: 0 0 20px;
+            margin-left: 0px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #898F9C;
+
+            span {
+                background: #fff;
+                padding: 0 10px;
+            }
+        }
+
+        .social-buttons {
+            width: 100%;
+
+            .facebook-button,
+            .google-button,
+            .apple-button {
+                height: 45px;
+                width: 33.3%;
+                --color: white;
+
+                ion-label {
+                    margin-left: 6px;
                 }
             }
 
-            .social-buttons {
-                width: 100%;
-
-                .facebook-button,
-                .google-button,
-                .apple-button {
-                    height: 45px;
-                    width: 33.3%;
-                    --color: white;
-
-                    ion-label {
-                        margin-left: 6px;
-                    }
-                }
-
-                .facebook-button {
-                    --background: #1877f2;
-                }
-
-                .google-button {
-                    --background: #DB4437;
-                }
-
-                .apple-button {
-                    --background: rgb(28, 28, 30);
-                }
+            .facebook-button {
+                --background: #1877f2;
             }
 
-            .signup-link {
-                text-align: center;
-                color: #898F9C;
-                font-size: 14px;
+            .google-button {
+                --background: #DB4437;
+            }
 
-                a {
-                    color: #58a89d;
-                    text-decoration: none;
-                }
+            .apple-button {
+                --background: rgb(28, 28, 30);
+            }
+        }
+
+        .signup-link {
+            text-align: center;
+            color: #898F9C;
+            font-size: 14px;
+
+            a {
+                color: #58a89d;
+                text-decoration: none;
             }
         }
     }

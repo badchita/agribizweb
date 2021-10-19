@@ -4,20 +4,30 @@
             <img src="@/assets/images/logo.png" />
         </ion-header>
         <ion-content>
-            <ion-card>
+            <ion-card v-if="router.currentRoute.value.name === 'SignUp'" class="signup-card">
                 <ion-card-content>
-                    <ion-list v-if="router.currentRoute.value.name === 'SignUp'">
+                    <ion-list>
                         <ion-list-header>
                             <ion-label>Sign Up</ion-label>
                         </ion-list-header>
                         <ion-item class="input-item">
-                            <ion-input v-model="auth.email" placeholder="Name"></ion-input>
+                            <ion-input v-model="register.name" placeholder="Name"></ion-input>
                         </ion-item>
                         <ion-item class="input-item">
-                            <ion-input v-model="auth.email" placeholder="Email"></ion-input>
+                            <ion-input v-model="register.username" placeholder="Username"></ion-input>
                         </ion-item>
                         <ion-item class="input-item">
-                            <ion-input v-model="auth.password" placeholder="Password" :type="passwordVisibility">
+                            <ion-input v-model="register.email" placeholder="Email"></ion-input>
+                        </ion-item>
+                        <ion-item class="input-item">
+                            <ion-input v-model="register.mobile" placeholder="Mobile"></ion-input>
+                        </ion-item>
+                        <ion-item class="input-item">
+                            <ion-datetime display-format="MM/DD/YYYY" placeholder="Birth Date"
+                                @ionChange="onChangeGetBithday($event)"></ion-datetime>
+                        </ion-item>
+                        <ion-item class="input-item">
+                            <ion-input v-model="register.password" placeholder="Password" :type="passwordVisibility">
                             </ion-input>
                             <ion-buttons slot="end">
                                 <ion-button v-if="passwordVisibility === 'text'" @click="hidePassword()">
@@ -29,20 +39,27 @@
                             </ion-buttons>
                         </ion-item>
                         <ion-item class="input-item">
-                            <ion-input v-model="auth.password" placeholder="Confirm Password"
-                                :type="passwordVisibility">
+                            <ion-input v-model="register.password_confirmation" placeholder="Confirm Password"
+                                :type="confirmPasswordVisibility">
                             </ion-input>
                             <ion-buttons slot="end">
-                                <ion-button v-if="passwordVisibility === 'text'" @click="hidePassword()">
+                                <ion-button v-if="confirmPasswordVisibility === 'text'" @click="hideConfirmPassword()">
                                     <ion-icon name="eye" />
                                 </ion-button>
-                                <ion-button v-if="passwordVisibility === 'password'" @click="showPassword()">
+                                <ion-button v-if="confirmPasswordVisibility === 'password'"
+                                    @click="showConfirmPassword()">
                                     <ion-icon name="eye-off" />
                                 </ion-button>
                             </ion-buttons>
+                        </ion-item>
+                        <ion-item v-if="showError" class="error-message-item" lines="none">
+                            <ion-button fill="clear" slot="end" @click="onClickCloseErrorIcon">
+                                <ion-icon name="close-circle" />
+                            </ion-button>
+                            <span>{{errorMessage}}</span>
                         </ion-item>
                         <ion-item lines="none">
-                            <ion-button class="login-button" expand="full" strong="true" @click="onClickLogin">
+                            <ion-button class="login-button" expand="full" strong="true" @click="onClickSignUp">
                                 <ion-spinner v-if="loadingStatus"></ion-spinner>
                                 <span v-else>Sign Up</span>
                             </ion-button>
@@ -53,8 +70,11 @@
                             </ion-label>
                         </ion-item>
                     </ion-list>
-
-                    <ion-list v-else-if="router.currentRoute.value.name === 'Login'">
+                </ion-card-content>
+            </ion-card>
+            <ion-card v-else-if="router.currentRoute.value.name === 'Login'" class="login-card">
+                <ion-card-content>
+                    <ion-list>
                         <ion-list-header>
                             <ion-label>Login</ion-label>
                         </ion-list-header>
@@ -126,7 +146,6 @@
 </template>
 
 <script>
-    // import AuthAPI from '@/api/auth'
     import {
         computed,
         reactive,
@@ -138,6 +157,9 @@
     import {
         useStore
     } from 'vuex'
+    import {
+        toastController
+    } from '@ionic/core';
     export default {
         setup() {
             let auth = reactive({
@@ -146,10 +168,22 @@
                 password_confirmation: '',
             })
 
+            let register = reactive({
+                name: '',
+                email: '',
+                password: '',
+                password_confirmation: '',
+                mobile: '',
+                birthday: '',
+                user_type: 'Seller',
+                type: 0
+            })
+
             const router = useRouter()
             const store = useStore()
 
             let passwordVisibility = ref('password')
+            let confirmPasswordVisibility = ref('password')
             let showError = ref(false)
 
             let loadingStatus = computed(() => store.state.loading.status)
@@ -163,16 +197,58 @@
                 passwordVisibility.value = 'password'
             }
 
+            function showConfirmPassword() {
+                confirmPasswordVisibility.value = 'text'
+            }
+
+            function hideConfirmPassword() {
+                confirmPasswordVisibility.value = 'password'
+            }
+
             function onClickCloseErrorIcon() {
                 showError.value = false
             }
 
+            function clearData() {
+                register = {}
+                auth = {}
+            }
+
+            function onChangeGetBithday(ev) {
+                register.birthday = ev.detail.value
+                register.birthday = new Date(register.birthday).toISOString().substring(0, 10)
+            }
+
+            async function onToast() {
+                const toast = await toastController.create({
+                    message: 'Account Created',
+                    color: 'success',
+                    position: 'top',
+                    duration: 2000,
+                    cssClass: 'toast-style',
+                })
+                return toast.present();
+            }
             async function onClickLogin() {
                 auth.password_confirmation = auth.password
                 store.dispatch('loading/start')
-                store.dispatch('auth/login', auth)
-                    .then(() => {
+                store.dispatch('auth/login', auth).then(() => {
+                        clearData()
                         router.push('/home')
+                    }).catch((err) => {
+                        console.error(err);
+                        showError.value = true
+                    })
+                    .finally(() => {
+                        store.dispatch('loading/finish')
+                    })
+            }
+            async function onClickSignUp() {
+                register.mobile = +register.mobile
+                store.dispatch('loading/start')
+                store.dispatch('auth/register', register).then(() => {
+                        clearData()
+                        onToast()
                     }).catch((err) => {
                         console.error(err);
                         showError.value = true
@@ -192,6 +268,13 @@
                 onClickCloseErrorIcon,
                 showError,
                 router,
+                register,
+                showConfirmPassword,
+                hideConfirmPassword,
+                confirmPasswordVisibility,
+                onClickSignUp,
+                onChangeGetBithday,
+                onToast
             }
         }
     }

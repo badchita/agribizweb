@@ -49,7 +49,7 @@
                         onToast()
                         popoverController.dismiss()
                     }).finally(() => {
-                        router.push('/login')
+                        router.push('/')
                     })
             }
 
