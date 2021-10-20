@@ -46,10 +46,14 @@
             async function onClickSignOut() {
                 store.dispatch('auth/logout')
                     .then(() => {
+                        store.dispatch('user/removeUserData')
                         onToast()
                         popoverController.dismiss()
                     }).finally(() => {
                         router.push('/')
+                        setTimeout(() => {
+                            router.go()
+                        }, 500)
                     })
             }
 

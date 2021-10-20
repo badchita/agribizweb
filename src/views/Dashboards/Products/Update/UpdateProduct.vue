@@ -298,10 +298,10 @@
                     const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
 
                     api.then(() => {
-                        // goBack()
-                        // setTimeout(() => {
-                        //     router.go()
-                        // }, 100)
+                        goBack()
+                        setTimeout(() => {
+                            router.go()
+                        }, 100)
                     }).catch((err) => {
                         console.error(err);
                     })

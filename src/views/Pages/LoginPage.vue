@@ -209,11 +209,6 @@
                 showError.value = false
             }
 
-            function clearData() {
-                register = {}
-                auth = {}
-            }
-
             function onChangeGetBithday(ev) {
                 register.birthday = ev.detail.value
                 register.birthday = new Date(register.birthday).toISOString().substring(0, 10)
@@ -233,7 +228,6 @@
                 auth.password_confirmation = auth.password
                 store.dispatch('loading/start')
                 store.dispatch('auth/login', auth).then(() => {
-                        clearData()
                         router.push('/home')
                     }).catch((err) => {
                         console.error(err);
@@ -247,7 +241,6 @@
                 register.mobile = +register.mobile
                 store.dispatch('loading/start')
                 store.dispatch('auth/register', register).then(() => {
-                        clearData()
                         onToast()
                     }).catch((err) => {
                         console.error(err);

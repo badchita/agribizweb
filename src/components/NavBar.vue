@@ -47,7 +47,9 @@
         name: 'NavBar',
         components: {},
         setup() {
-            onMounted(() => {})
+            onMounted(() => {
+                console.log(userData);
+            })
             const router = useRouter()
             const store = useStore()
 

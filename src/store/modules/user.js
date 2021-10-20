@@ -10,15 +10,8 @@ const state = {
 export default {
     namespaced: true,
     state,
-    getters: {
-        ...make.getters(state)
-    },
-    mutations: {
-        ...make.mutations(state),
-        SET_USER_DATA(state, userData) {
-            state.userData = userData
-        },
-    },
+    getters: make.getters(state),
+    mutations: make.mutations(state),
     actions: {
         ...make.actions(state),
         async loadUserData({
@@ -27,6 +20,11 @@ export default {
             await UserAPI.get(id).then((response) => {
                 commit('SET_USER_DATA', response.data)
             })
+        },
+        removeUserData({
+            commit
+        }) {
+            commit('SET_USER_DATA', {})
         }
     }
 }
