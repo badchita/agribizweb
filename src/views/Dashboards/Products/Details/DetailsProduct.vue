@@ -169,7 +169,6 @@
 
             function goBack() {
                 router.go(-1)
-                product.value = {}
             }
 
             async function loadProduct(id) {

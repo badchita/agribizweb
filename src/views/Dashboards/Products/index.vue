@@ -134,6 +134,7 @@
     import ProductAPI from '@/api/product'
 
     import {
+        computed,
         onMounted,
         ref
     } from '@vue/runtime-core'
@@ -144,15 +145,19 @@
     import {
         alertController
     } from '@ionic/core'
+    import {
+        useStore
+    } from 'vuex'
     export default {
         name: 'Products',
         components: {},
         setup() {
             onMounted(() => {
-                loadProduct(status.value)
+                loadProduct(user_id.value,status.value)
             })
 
             const router = useRouter()
+            const store = useStore()
 
             let product = ref({})
             let productSearch = ref({})
@@ -160,6 +165,8 @@
             let activeSelect = ref('Open')
             let searchInput = ref('')
             const isLoading = ref(false)
+
+            const user_id = computed(() => store.state.user.userData.id)
 
             function onClickGoToUpdate(id, ev) {
                 ev.stopPropagation();
@@ -174,15 +181,15 @@
                 if (ev.detail.value === 'Archived') {
                     status.value = 'V'
                     activeSelect.value = 'Archived'
-                    loadProduct(status.value)
+                    loadProduct(user_id.value, status.value)
                 } else if (ev.detail.value === 'Open') {
                     status.value = 'O'
                     activeSelect.value = 'Open'
-                    loadProduct(status.value)
+                    loadProduct(user_id.value, status.value)
                 } else {
                     status.value = ''
                     activeSelect.value = 'All'
-                    loadProduct(status.value)
+                    loadProduct(user_id.value, status.value)
                 }
             }
 
@@ -211,15 +218,15 @@
 
                 activeSelect.value !== 'All' ? product.value.splice(i, 1) : ''
 
-                await ProductAPI.update(item).catch((err) => {
+                await ProductAPI.archive(item).catch((err) => {
                     console.error(err);
                 }).finally(() => {
                     isLoading.value = false;
                 })
             }
-            async function loadProduct(s) {
+            async function loadProduct(uId, s) {
                 isLoading.value = true;
-                await ProductAPI.list(s).then((response) => {
+                await ProductAPI.list(uId, s).then((response) => {
                     product.value = response.data
                 }).catch((err) => {
                     console.error(err);

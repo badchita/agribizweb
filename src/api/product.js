@@ -8,16 +8,19 @@ export default {
         return api.get('product/' + id)
     },
     update(product) {
-        return api.post('product', product)
+        return api.put('product', product)
     },
-    list(status) {
+    list(user_id, status) {
         if (status === 'O') {
-            return api.get(`products/` + status)
+            return api.get(`products/${user_id}/` + status)
         } else if (status === 'V') {
-            return api.get(`products/` + status)
+            return api.get(`products/${user_id}/` + status)
         } else {
-            return api.get(`products`)
+            return api.get(`products/` + user_id)
         }
+    },
+    archive(product) {
+        return api.patch('product', product)
     },
     delete(id) {
         return api.delete('product', id)

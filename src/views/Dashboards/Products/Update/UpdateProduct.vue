@@ -101,7 +101,7 @@
                     </div>
                     <ion-row class="ion-margin-top ion-margin-bottom">
                         <ion-buttons class="ion-margin-start">
-                            <ion-button class="save-button" @click="test">
+                            <ion-button class="save-button" @click="onClickSave">
                                 Save
                             </ion-button>
                             <ion-button color="danger" @click="goBack">
@@ -134,6 +134,7 @@
     import {
         toastController
     } from '@ionic/core'
+import { useStore } from 'vuex'
     export default {
         name: 'UpdateProduct',
         components: {},
@@ -172,12 +173,15 @@
             }]
 
             const router = useRouter()
+            const store = useStore()
 
             const product = ref({})
             const isLoading = ref(false)
             const location = ref([])
             let thumbnailPath = ref('')
 
+            
+            const user_id = computed(() => store.state.user.userData.id)
             const pageTitle = computed(() => {
                 if (router.currentRoute.value.params.id)
                     return 'Update Product'
@@ -276,11 +280,6 @@
                 // let formFile = new FormData()
                 // product.value.thumbnail_name = formFile.append("file", product.value.thumbnail_name)
 
-                console.log(product.value.thumbnail_name);
-
-                let formFile = new FormData()
-                formFile.append('file', product.value.thumbnail_name, product.value.thumbnail_name.name)
-
                 if (+product.value.quantity === 0 && product.value.product_status === 'Available') {
                     presentToast(message)
                 } else {
@@ -295,6 +294,7 @@
                     else
                         product.value.status = 'O'
 
+                    product.value.user_id = user_id.value.toString()
                     const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
 
                     api.then(() => {
