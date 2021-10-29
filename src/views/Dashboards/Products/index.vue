@@ -153,7 +153,7 @@
         components: {},
         setup() {
             onMounted(() => {
-                loadProduct(user_id.value,status.value)
+                loadProduct(user_id.value, status.value)
             })
 
             const router = useRouter()

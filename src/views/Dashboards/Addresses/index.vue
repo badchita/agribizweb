@@ -8,7 +8,7 @@
             <MenuFabButton />
             <div class="container">
                 <ListHeader headerTitle="Addresses List" routerUrl="/dashboards/updateaddresses" />
-                
+
                 <ion-row>
                     <ion-col size="6">
                         <ion-searchbar placeholder="Search by City" @ionInput="onInputSearch($event)"></ion-searchbar>
@@ -135,6 +135,7 @@
     import AddressesAPI from '@/api/addresses'
 
     import {
+        computed,
         onMounted,
         ref
     } from '@vue/runtime-core'
@@ -145,15 +146,19 @@
     import {
         alertController
     } from '@ionic/core'
+    import {
+        useStore
+    } from 'vuex'
     export default {
         name: 'Addresses',
         components: {},
         setup() {
             onMounted(() => {
-                loadAddresses(status.value)
+                loadAddresses(user_id.value, status.value)
             })
 
             const router = useRouter()
+            const store = useStore()
 
             let addresses = ref({})
             let addressesSearch = ref({})
@@ -162,6 +167,8 @@
             let searchInput = ref('')
 
             const isLoading = ref(false)
+
+            const user_id = computed(() => store.state.user.userData.id)
 
             function onClickGoToUpdate(id, ev) {
                 ev.stopPropagation();
@@ -176,15 +183,15 @@
                 if (ev.detail.value === 'Archived') {
                     status.value = 'V'
                     activeSelect.value = 'Archived'
-                    loadAddresses(status.value)
+                    loadAddresses(user_id.value, status.value)
                 } else if (ev.detail.value === 'Open') {
                     status.value = 'O'
                     activeSelect.value = 'Open'
-                    loadAddresses(status.value)
+                    loadAddresses(user_id.value, status.value)
                 } else {
                     status.value = ''
                     activeSelect.value = 'All'
-                    loadAddresses(status.value)
+                    loadAddresses(user_id.value, status.value)
                 }
             }
 
@@ -213,15 +220,15 @@
 
                 activeSelect.value !== 'All' ? addresses.value.splice(i, 1) : ''
 
-                await AddressesAPI.update(item).catch((err) => {
+                await AddressesAPI.archive(item).catch((err) => {
                     console.error(err);
                 }).finally(() => {
                     isLoading.value = false;
                 })
             }
-            async function loadAddresses(s) {
+            async function loadAddresses(uId, s) {
                 isLoading.value = true;
-                await AddressesAPI.list(s)
+                await AddressesAPI.list(uId, s)
                     .then((response) => {
                         addresses.value = response.data
                     }).catch((err) => {
@@ -248,6 +255,7 @@
                 isLoading,
                 onClickRowDetails,
                 onIonChangeGetSelectedStatus,
+                status,
                 onClickArchive,
                 onClickArchiveRestore,
                 activeSelect,

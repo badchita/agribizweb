@@ -141,7 +141,7 @@ import { useStore } from 'vuex'
         setup() {
             onMounted(() => {
                 loadProductDetails()
-                loadAddressesDetails()
+                loadAddressesDetails(user_id.value)
                 pageTitle,
                 getThumbnail()
             })
@@ -170,6 +170,8 @@ import { useStore } from 'vuex'
                 value: 'Available',
             }, {
                 value: 'Out Of Stocks',
+            }, {
+                value: 'Archive',
             }]
 
             const router = useRouter()
@@ -180,7 +182,6 @@ import { useStore } from 'vuex'
             const location = ref([])
             let thumbnailPath = ref('')
 
-            
             const user_id = computed(() => store.state.user.userData.id)
             const pageTitle = computed(() => {
                 if (router.currentRoute.value.params.id)
@@ -252,8 +253,8 @@ import { useStore } from 'vuex'
 
                 await toast.present()
             }
-            async function loadAddressesDetails() {
-                await AddressesAPI.list('O')
+            async function loadAddressesDetails(uId) {
+                await AddressesAPI.list(uId,'O')
                     .then((response) => {
                         location.value = response.data
                     })
@@ -285,7 +286,7 @@ import { useStore } from 'vuex'
                 } else {
                     product.value.price = +product.value.price
                     product.value.quantity = +product.value.quantity
-                    product.value.category = product.value.category.toString()
+                    product.value.category ? product.value.category = product.value.category.toString() : ''
 
                     if (product.value.product_status == 'Available')
                         product.value.status = 'O'
@@ -294,7 +295,7 @@ import { useStore } from 'vuex'
                     else
                         product.value.status = 'O'
 
-                    product.value.user_id = user_id.value.toString()
+                    product.value.user_id = user_id.value
                     const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
 
                     api.then(() => {

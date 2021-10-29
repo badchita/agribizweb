@@ -46,6 +46,13 @@
                     </ion-row>
 
                     <ion-row>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label class="label-style" mode="ios" position="floating">Shipping Cost</ion-label>
+                                <ion-input class="input-style" type="number" v-model="address.shipping_fee"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col />
                     </ion-row>
 
                     <ion-row class="ion-margin-top ion-margin-bottom">
@@ -78,6 +85,7 @@
     import {
         onMounted
     } from '@vue/runtime-core'
+import { useStore } from 'vuex'
     export default {
         name: 'UpdateAddresses',
         components: {},
@@ -88,10 +96,12 @@
             })
 
             const router = useRouter()
+            const store = useStore()
 
             const address = ref({})
             const isLoading = ref(false)
 
+            const user_id = computed(() => store.state.user.userData.id)
             const pageTitle = computed(() => {
                 if (router.currentRoute.value.params.id)
                     return 'Update Address'
@@ -130,7 +140,8 @@
             }
             async function onClickSave() {
                 address.value.status = 'O'
-
+                address.value.user_id = user_id.value
+                
                 const api = address.value.id ? AddressesAPI.update(address.value) : AddressesAPI.add(address.value)
 
                 api.then(() => {
