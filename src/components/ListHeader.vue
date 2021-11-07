@@ -6,7 +6,7 @@
         <ion-label class="header-title" >
             {{headerTitle}}
         </ion-label>
-        <ion-button class="add-button" slot="end" @click="onClickGoToUpdate()">
+        <ion-button v-if="headerTitle !== 'Order List'" class="add-button" slot="end" @click="onClickGoToUpdate()">
             <ion-icon name="add" />
             <ion-label style="">Add</ion-label>
         </ion-button>
@@ -27,7 +27,7 @@ import { alertController } from '@ionic/core';
             routerUrl: {
                 type: String,
                 default: ''
-            }
+            },
         },
         setup(props) {
             const router = useRouter()

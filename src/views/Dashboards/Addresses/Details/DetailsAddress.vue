@@ -53,6 +53,15 @@
                             <div class="details-label">{{address.province}}</div>
                         </ion-col>
                     </ion-row>
+
+                    <ion-row class="ion-margin-top">
+                        <ion-col class="details-col">
+                            <ion-label>Shipping Fee</ion-label> 
+                            <div class="details-label">{{address.shipping_fee}}</div>
+                        </ion-col>
+                        <ion-col class="details-col">
+                        </ion-col>
+                    </ion-row>
                 </ion-grid>
             </div>
         </ion-content>

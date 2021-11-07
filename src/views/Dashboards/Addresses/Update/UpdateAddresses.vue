@@ -6,7 +6,7 @@
 
         <ion-content>
             <MenuFabButton />
-            
+
             <div class="container">
                 <ion-grid>
                     <ion-item lines="none">
@@ -85,7 +85,9 @@
     import {
         onMounted
     } from '@vue/runtime-core'
-import { useStore } from 'vuex'
+    import {
+        useStore
+    } from 'vuex'
     export default {
         name: 'UpdateAddresses',
         components: {},
@@ -141,7 +143,7 @@ import { useStore } from 'vuex'
             async function onClickSave() {
                 address.value.status = 'O'
                 address.value.user_id = user_id.value
-                
+
                 const api = address.value.id ? AddressesAPI.update(address.value) : AddressesAPI.add(address.value)
 
                 api.then(() => {
