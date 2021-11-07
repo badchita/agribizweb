@@ -19,8 +19,8 @@ export default {
             return api.get(`addresses/` + user_id)
         }
     },
-    archive(product) {
-        return api.patch('address', product)
+    archive(addresses) {
+        return api.patch('address', addresses)
     },
     delete(id) {
         return api.delete('address', id)

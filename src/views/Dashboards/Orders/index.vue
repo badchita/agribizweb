@@ -58,12 +58,16 @@
                             <div class="data-list">
                                 <ion-row v-for="(item,i) in order" :key="i">
                                     <ion-col class="data-col">
-                                        {{item.name}}
-                                    </ion-col>
-                                    <ion-col class="data-col" v-html="item.quantity">
+                                        {{item.order_number}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.price}}
+                                        {{item.ship_from_address_details.city}}, {{item.ship_from_address_details.province}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        {{item.ship_to_address_details.city}}, {{item.ship_from_address_details.province}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        {{numberWithCommaFormatt(item.order_total_price)}}
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
@@ -89,6 +93,7 @@
     import OrderAPI from '@/api/orders'
 
     import {
+        computed,
         onMounted,
         ref
     } from '@vue/runtime-core'
@@ -96,28 +101,34 @@
     import {
         useRouter
     } from 'vue-router'
+    import {
+        useStore
+    } from 'vuex'
     export default {
         name: 'Order',
         components: {},
         setup() {
             onMounted(() => {
-                loadOrder(status.value)
+                loadOrder(user_id.value, status.value)
             })
 
             const router = useRouter()
+            const store = useStore()
 
             let order = ref({})
             let status = ref('O')
             let activeSelect = ref('Open')
             const isLoading = ref(false)
 
+            const user_id = computed(() => store.state.user.userData.id)
+
             function onClickGoToUpdate(id) {
                 router.push(`/dashboards/updateorder/${id}`)
             }
 
-            async function loadOrder(s) {
+            async function loadOrder(uId, s) {
                 isLoading.value = true;
-                await OrderAPI.list(s)
+                await OrderAPI.list(uId, s)
                     .then((response) => {
                         order.value = response.data.data
                     }).catch((err) => {

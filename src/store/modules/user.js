@@ -18,7 +18,7 @@ export default {
             commit
         }, id) {
             await UserAPI.get(id).then((response) => {
-                commit('SET_USER_DATA', response.data)
+                commit('SET_USER_DATA', response.data.data)
             })
         },
         removeUserData({

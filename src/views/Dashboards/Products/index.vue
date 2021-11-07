@@ -114,7 +114,7 @@
                                                 <ion-icon size="small" name="archive" />
                                             </ion-button>
                                             <ion-button
-                                                v-if="item.status === 'V' && item.product_status === 'Archive'"
+                                                v-if="item.status === 'V' && item.product_status === 'Archive' || item.product_status === 'Available'"
                                                 class="restore-button" @click="onClickArchiveRestore(item, $event, i)">
                                                 <ion-icon size="small" name="refresh" />
                                             </ion-button>

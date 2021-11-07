@@ -114,10 +114,21 @@ import {
 /* Theme variables */
 import './theme/variables.css';
 
+import helpers from '@/globals/helpers.js'
+import permissions from '@/globals/permissions.js'
+
+var mixin = {
+  methods: {
+    ...helpers,
+    ...permissions
+  }
+}
+
 const app = createApp(App)
   .use(IonicVue)
   .use(router)
   .use(store)
+  .mixin(mixin)
 app.component('NavBar', NavBar)
 app.component('MenuFabButton', MenuFabButton)
 app.component('ListHeader', ListHeader)

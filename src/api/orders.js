@@ -10,14 +10,17 @@ export default {
     update(order) {
         return api.put('order', order)
     },
-    list(status) {
+    list(seller_id, status) {
         if (status === 'O') {
-            return api.get(`orders/` + status)
+            return api.get(`orders/${seller_id}/` + status)
         } else if (status === 'V') {
-            return api.get(`orders/` + status)
+            return api.get(`orders/${seller_id}/` + status)
         } else {
-            return api.get(`orders`)
+            return api.get(`orders/` + seller_id)
         }
+    },
+    archive(payload) {
+        return api.patch('address', payload)
     },
     delete(id) {
         return api.delete('order', id)

@@ -154,6 +154,7 @@
         components: {},
         setup() {
             onMounted(() => {
+                console.log(user_id.value);
                 loadAddresses(user_id.value, status.value)
             })
 
