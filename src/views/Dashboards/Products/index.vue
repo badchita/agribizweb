@@ -66,7 +66,7 @@
                                         {{item.quantity}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        ₱{{item.price}}
+                                        ₱{{numberWithCommaFormatt(item.price)}}
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
@@ -114,7 +114,7 @@
                                                 <ion-icon size="small" name="archive" />
                                             </ion-button>
                                             <ion-button
-                                                v-if="item.status === 'V' && item.product_status === 'Archive' || item.product_status === 'Available'"
+                                                v-if="item.status === 'V' && item.product_status === 'Available'"
                                                 class="restore-button" @click="onClickArchiveRestore(item, $event, i)">
                                                 <ion-icon size="small" name="refresh" />
                                             </ion-button>

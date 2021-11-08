@@ -52,7 +52,7 @@
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Price</ion-label>
-                            <div class="details-label">₱{{product.price}}</div>
+                            <div class="details-label">₱{{numberWithCommaFormatt(product.price)}}</div>
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Quantity</ion-label>
@@ -85,7 +85,7 @@
                     <div class="ion-margin-top" />
                     <ion-row class="ion-margin-top">
                         <ion-col>
-                            <ion-label class="details-header-label">
+                            <ion-label>
                                 Product Rating
                             </ion-label>
                         </ion-col>

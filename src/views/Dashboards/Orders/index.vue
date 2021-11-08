@@ -67,7 +67,7 @@
                                         {{item.ship_to_address_details.city}}, {{item.ship_from_address_details.province}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{numberWithCommaFormatt(item.order_total_price)}}
+                                        ₱{{numberWithCommaFormatt(item.order_total_price)}}
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
