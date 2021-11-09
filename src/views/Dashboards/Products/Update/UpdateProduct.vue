@@ -290,7 +290,7 @@ import { useStore } from 'vuex'
 
                     if (product.value.product_status == 'Available')
                         product.value.status = 'O'
-                    else if (product.value.product_status == 'Out Of Stocks')
+                    else if (product.value.product_status == 'Out Of Stocks' || product.value.product_status == 'Archive')
                         product.value.status = 'V'
                     else
                         product.value.status = 'O'
