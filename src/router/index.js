@@ -117,6 +117,14 @@ const routes = [{
     component: () => import('@/views/Dashboards/Orders/Update/UpdateOrder')
   },
   {
+    path: `/dashboards/detailsorders/:id`,
+    name: 'DetailsOrders',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Dashboards/Orders/Details/DetailsOrders')
+  },
+  {
     path: `/dashboards/notifications`,
     name: 'Notifications',
     meta: {

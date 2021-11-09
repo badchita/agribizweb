@@ -20,12 +20,12 @@ export default {
         }
     },
     archive(payload) {
-        return api.patch('address', payload)
+        return api.patch('order', payload)
     },
     delete(id) {
         return api.delete('order', id)
     },
-    search(name) {
-        return api.get('order/search/' + name)
+    search(seller_id, order_number) {
+        return api.get(`order/search/${order_number}/${seller_id}`)
     }
 }

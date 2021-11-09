@@ -10,7 +10,8 @@
 
                 <ion-row>
                     <ion-col size="6">
-                        <ion-searchbar placeholder="Search by Order Number"></ion-searchbar>
+                        <ion-searchbar placeholder="Search by Order Number" @ionInput="onInputSearch($event)">
+                        </ion-searchbar>
                     </ion-col>
                     <ion-col size="1.8">
                         <ion-item lines="none">
@@ -55,27 +56,72 @@
                                 </ion-col>
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
-                            <div class="data-list">
-                                <ion-row v-for="(item,i) in order" :key="i">
+                            <div v-if="searchInput.length !== 0 && orderSearch.length !== 0" class="data-list">
+                                <ion-row class="data-row" v-for="(item,i) in orderSearch" :key="i"
+                                    @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
                                         {{item.order_number}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.ship_from_address_details.city}}, {{item.ship_from_address_details.province}}
+                                        {{item.ship_from_address_details.city}},
+                                        {{item.ship_from_address_details.province}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.ship_to_address_details.city}}, {{item.ship_from_address_details.province}}
+                                        {{item.ship_to_address_details.city}},
+                                        {{item.ship_from_address_details.province}}
                                     </ion-col>
                                     <ion-col class="data-col">
                                         ₱{{numberWithCommaFormatt(item.order_total_price)}}
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
-                                            <ion-button class="update-button" @click="onClickGoToUpdate(item.id)">
+                                            <!-- <ion-button v-if="item.status === 'O'" class="update-button"
+                                                @click="onClickGoToUpdate(item.id, $event)">
                                                 <ion-icon size="small" name="create" />
-                                            </ion-button>
-                                            <ion-button class="archive-button" @click="onClickGoToUpdate(item.id)">
+                                            </ion-button> -->
+                                            <ion-button v-if="item.status === 'O'" class="archive-button"
+                                                @click="onClickArchive(item, $event, i)">
                                                 <ion-icon size="small" name="archive" />
+                                            </ion-button>
+                                            <ion-button v-if="item.status === 'V'" class="restore-button"
+                                                @click="onClickArchiveRestore(item, $event, i)">
+                                                <ion-icon size="small" name="refresh" />
+                                            </ion-button>
+                                        </ion-buttons>
+                                    </ion-col>
+                                </ion-row>
+                            </div>
+
+                            <div v-else class="data-list">
+                                <ion-row class="data-row" v-for="(item,i) in order" :key="i"
+                                    @click="onClickRowDetails(item.id)">
+                                    <ion-col class="data-col">
+                                        {{item.order_number}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        {{item.ship_from_address_details.city}},
+                                        {{item.ship_from_address_details.province}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        {{item.ship_to_address_details.city}},
+                                        {{item.ship_from_address_details.province}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        ₱{{numberWithCommaFormatt(item.order_total_price)}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        <ion-buttons>
+                                            <!-- <ion-button v-if="item.status === 'O'" class="update-button"
+                                                @click="onClickGoToUpdate(item.id, $event)">
+                                                <ion-icon size="small" name="create" />
+                                            </ion-button> -->
+                                            <ion-button v-if="item.status === 'O'" class="archive-button"
+                                                @click="onClickArchive(item, $event, i)">
+                                                <ion-icon size="small" name="archive" />
+                                            </ion-button>
+                                            <ion-button v-if="item.status === 'V'" class="restore-button"
+                                                @click="onClickArchiveRestore(item, $event, i)">
+                                                <ion-icon size="small" name="refresh" />
                                             </ion-button>
                                         </ion-buttons>
                                     </ion-col>
@@ -104,6 +150,9 @@
     import {
         useStore
     } from 'vuex'
+    import {
+        alertController
+    } from '@ionic/core'
     export default {
         name: 'Order',
         components: {},
@@ -116,8 +165,10 @@
             const store = useStore()
 
             let order = ref({})
+            let orderSearch = ref({})
             let status = ref('O')
             let activeSelect = ref('Open')
+            let searchInput = ref('')
             const isLoading = ref(false)
 
             const user_id = computed(() => store.state.user.userData.id)
@@ -126,6 +177,57 @@
                 router.push(`/dashboards/updateorder/${id}`)
             }
 
+            function onClickRowDetails(id) {
+                router.push(`/dashboards/detailsorders/${id}`)
+            }
+
+            function onIonChangeGetSelectedStatus(ev) {
+                if (ev.detail.value === 'Archived') {
+                    status.value = 'V'
+                    activeSelect.value = 'Archived'
+                    loadOrder(user_id.value, status.value)
+                } else if (ev.detail.value === 'Open') {
+                    status.value = 'O'
+                    activeSelect.value = 'Open'
+                    loadOrder(user_id.value, status.value)
+                } else {
+                    status.value = ''
+                    activeSelect.value = 'All'
+                    loadOrder(user_id.value, status.value)
+                }
+            }
+
+            async function onClickArchive(item, ev, i) {
+                ev.stopPropagation();
+                const alert = await alertController.create({
+                    header: 'Archive',
+                    message: '<strong>Are you sure you want to Archive this Address?</strong>',
+                    buttons: [{
+                        text: 'Yes',
+                        handler: () => {
+                            onClickArchiveRestore(item, ev, i)
+                        }
+                    }, {
+                        text: 'No',
+                        role: 'cancel'
+                    }]
+                })
+
+                return alert.present();
+            }
+            async function onClickArchiveRestore(item, ev, i) {
+                ev.stopPropagation();
+                isLoading.value = true;
+                item.status === 'O' ? item.status = 'V' : item.status = 'O'
+
+                activeSelect.value !== 'All' ? order.value.splice(i, 1) : ''
+
+                await OrderAPI.archive(item).catch((err) => {
+                    console.error(err);
+                }).finally(() => {
+                    isLoading.value = false;
+                })
+            }
             async function loadOrder(uId, s) {
                 isLoading.value = true;
                 await OrderAPI.list(uId, s)
@@ -137,12 +239,31 @@
                         isLoading.value = false;
                     })
             }
+            async function onInputSearch(ev) {
+                isLoading.value = true;
+                searchInput.value = ev.target.value
+                await OrderAPI.search(user_id.value, searchInput.value).then((response) => {
+                    console.log(response.data);
+                    orderSearch.value = response.data.data
+                }).catch((err) => {
+                    console.error(err);
+                }).finally(() => {
+                    isLoading.value = false;
+                })
+            }
 
             return {
                 order,
                 onClickGoToUpdate,
                 isLoading,
-                activeSelect
+                onClickRowDetails,
+                onIonChangeGetSelectedStatus,
+                activeSelect,
+                onClickArchive,
+                onClickArchiveRestore,
+                onInputSearch,
+                searchInput,
+                orderSearch
             }
         }
     }
