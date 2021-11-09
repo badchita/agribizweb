@@ -27,5 +27,8 @@ export default {
     },
     search(seller_id, order_number) {
         return api.get(`order/search/${order_number}/${seller_id}`)
+    },
+    updateStatus(payload) {
+        return api.patch('/order/update_status', payload)
     }
 }

@@ -121,6 +121,13 @@ ion-content {
 
 .details-col {
     padding-left: 12px;
+
+    ion-button {
+        text-transform: none;
+        height: 25px;
+        margin-bottom: 24px;
+        text-align: center;
+    }
 }
 
 .details-label {

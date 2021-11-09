@@ -52,6 +52,9 @@
                                     Total Price
                                 </ion-col>
                                 <ion-col>
+                                    Status
+                                </ion-col>
+                                <ion-col>
                                     Action
                                 </ion-col>
                             </ion-row>
@@ -110,6 +113,9 @@
                                         ₱{{numberWithCommaFormatt(item.order_total_price)}}
                                     </ion-col>
                                     <ion-col class="data-col">
+                                        <OrderStatus :status="item.order_status" />
+                                    </ion-col>
+                                    <ion-col class="data-col">
                                         <ion-buttons>
                                             <!-- <ion-button v-if="item.status === 'O'" class="update-button"
                                                 @click="onClickGoToUpdate(item.id, $event)">
@@ -138,6 +144,8 @@
 <script>
     import OrderAPI from '@/api/orders'
 
+    import OrderStatus from '@/components/OrderStatus'
+
     import {
         computed,
         onMounted,
@@ -155,7 +163,7 @@
     } from '@ionic/core'
     export default {
         name: 'Order',
-        components: {},
+        components: {OrderStatus},
         setup() {
             onMounted(() => {
                 loadOrder(user_id.value, status.value)
