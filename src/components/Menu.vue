@@ -34,27 +34,27 @@
 
             const appPages = [{
                     title: 'Products',
-                    url: '/dashboards/products',
+                    url: '/vendor/dashboards/products',
                     iosIcon: 'cube'
                 },
                 {
                     title: 'Addresses',
-                    url: '/dashboards/addresses',
+                    url: '/vendor/dashboards/addresses',
                     iosIcon: 'business'
                 },
                 {
                     title: 'Orders',
-                    url: '/dashboards/orders',
+                    url: '/vendor/dashboards/orders',
                     iosIcon: 'receipt'
                 },
                 {
                     title: 'Chats',
-                    url: '/dashboards/chats',
+                    url: '/vendor/dashboards/chats',
                     iosIcon: 'chatbubble-ellipses'
                 },
                 {
                     title: 'Notifications',
-                    url: '/dashboards/notifications',
+                    url: '/vendor/dashboards/notifications',
                     iosIcon: 'notifications'
                 }
             ]

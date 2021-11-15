@@ -228,7 +228,7 @@
                 auth.password_confirmation = auth.password
                 store.dispatch('loading/start')
                 store.dispatch('auth/login', auth).then(() => {
-                        router.push('/home')
+                        router.push('/vendor/home')
                     }).catch((err) => {
                         console.error(err);
                         showError.value = true

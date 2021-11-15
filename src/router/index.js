@@ -31,138 +31,138 @@ const routes = [{
     ]
   },
   {
-    path: '/home',
+    path: '/vendor/home',
     name: 'Home',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Pages/HomePage'),
+    component: () => import('@/views/Vendor/Pages/HomePage'),
   },
   {
-    path: '/dashboards/products',
+    path: '/vendor/dashboards/products',
     name: 'Products',
-    component: () => import('@/views/Dashboards/Products/index'),
+    component: () => import('@/views/Vendor/Dashboards/Products/index'),
   },
   {
-    path: `/dashboards/updateproduct`,
+    path: `/vendor/dashboards/updateproduct`,
     name: 'AddProduct',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Products/Update/UpdateProduct')
+    component: () => import('@/views/Vendor/Dashboards/Products/Update/UpdateProduct')
   },
   {
-    path: `/dashboards/updateproduct/:id`,
+    path: `/vendor/dashboards/updateproduct/:id`,
     name: 'UpdateProduct',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Products/Update/UpdateProduct')
+    component: () => import('@/views/Vendor/Dashboards/Products/Update/UpdateProduct')
   },
   {
-    path: `/dashboards/detailsproduct/:id`,
+    path: `/vendor/dashboards/detailsproduct/:id`,
     name: 'DetailsProduct',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Products/Details/DetailsProduct')
+    component: () => import('@/views/Vendor/Dashboards/Products/Details/DetailsProduct')
   },
   {
-    path: '/dashboards/addresses',
+    path: '/vendor/dashboards/addresses',
     name: 'Addresses',
-    component: () => import('@/views/Dashboards/Addresses/index'),
+    component: () => import('@/views/Vendor/Dashboards/Addresses/index'),
   },
   {
-    path: `/dashboards/updateaddresses`,
+    path: `/vendor/dashboards/updateaddresses`,
     name: 'AddAddresses',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Addresses/Update/UpdateAddresses')
+    component: () => import('@/views/Vendor/Dashboards/Addresses/Update/UpdateAddresses')
   }, {
-    path: `/dashboards/updateaddresses/:id`,
+    path: `/vendor/dashboards/updateaddresses/:id`,
     name: 'UpdateAddresses',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Addresses/Update/UpdateAddresses')
+    component: () => import('@/views/Vendor/Dashboards/Addresses/Update/UpdateAddresses')
   },
   {
-    path: `/dashboards/detailsaddresses/:id`,
+    path: `/vendor/dashboards/detailsaddresses/:id`,
     name: 'DetailsAddresses',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Addresses/Details/DetailsAddress')
+    component: () => import('@/views/Vendor/Dashboards/Addresses/Details/DetailsAddress')
   },
   {
-    path: '/dashboards/orders',
+    path: '/vendor/dashboards/orders',
     name: 'Orders',
-    component: () => import('@/views/Dashboards/Orders/index'),
+    component: () => import('@/views/Vendor/Dashboards/Orders/index'),
   },
   {
-    path: `/dashboards/updateorder`,
+    path: `/vendor/dashboards/updateorder`,
     name: 'AddOrder',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Orders/Update/UpdateOrder')
+    component: () => import('@/views/Vendor/Dashboards/Orders/Update/UpdateOrder')
   },
   {
-    path: `/dashboards/updateorder/:id`,
+    path: `/vendor/dashboards/updateorder/:id`,
     name: 'UpdateOrder',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Orders/Update/UpdateOrder')
+    component: () => import('@/views/Vendor/Dashboards/Orders/Update/UpdateOrder')
   },
   {
-    path: `/dashboards/detailsorders/:id`,
+    path: `/vendor/dashboards/detailsorders/:id`,
     name: 'DetailsOrders',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Orders/Details/DetailsOrders')
+    component: () => import('@/views/Vendor/Dashboards/Orders/Details/DetailsOrders')
   },
   {
-    path: `/dashboards/notifications`,
+    path: `/vendor/dashboards/notifications`,
     name: 'Notifications',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Notifications/index')
+    component: () => import('@/views/Vendor/Dashboards/Notifications/index')
   },
   {
-    path: `/dashboards/updatenotification`,
+    path: `/vendor/dashboards/updatenotification`,
     name: 'AddNotification',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Notifications/Update/UpdateNotification')
+    component: () => import('@/views/Vendor/Dashboards/Notifications/Update/UpdateNotification')
   },
   {
-    path: `/dashboards/updatenotification/:id`,
+    path: `/vendor/dashboards/updatenotification/:id`,
     name: 'UpdateNotification',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Notifications/Update/UpdateNotification')
+    component: () => import('@/views/Vendor/Dashboards/Notifications/Update/UpdateNotification')
   },
   {
-    path: `/dashboards/detailsnotification/:id`,
+    path: `/vendor/dashboards/detailsnotification/:id`,
     name: 'DetailsNotification',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Notifications/Details/DetailsNotification')
+    component: () => import('@/views/Vendor/Dashboards/Notifications/Details/DetailsNotification')
   },
   {
-    path: `/dashboards/chats`,
+    path: `/vendor/dashboards/chats`,
     name: 'Chats',
     meta: {
       requiresAuth: true
     },
-    component: () => import('@/views/Dashboards/Chats/index'),
+    component: () => import('@/views/Vendor/Dashboards/Chats/index'),
     children: [{
       path: '',
       redirect: '/dashboards/chats/1'

@@ -3,15 +3,15 @@
         <ion-header>
             <NavBar />
         </ion-header>
-
         <ion-content>
             <MenuFabButton />
             <div class="container">
-                <ListHeader headerTitle="Product List" routerUrl="/dashboards/updateproduct" />
+                <ListHeader headerTitle="Order List" routerUrl="/vendor/dashboards/updateorder" />
 
                 <ion-row>
                     <ion-col size="6">
-                        <ion-searchbar placeholder="Search by Name" @ionInput="onInputSearch($event)"></ion-searchbar>
+                        <ion-searchbar placeholder="Search by Order Number" @ionInput="onInputSearch($event)">
+                        </ion-searchbar>
                     </ion-col>
                     <ion-col size="1.8">
                         <ion-item lines="none">
@@ -38,49 +38,59 @@
                 <ion-card style="overflow: visible">
                     <ion-card-content>
                         <ion-grid>
-                            <ion-row class="header-row">
+                            <ion-row class="row-header">
                                 <ion-col>
-                                    Name
+                                    Order Number
                                 </ion-col>
                                 <ion-col>
-                                    Quantity
+                                    Shipp From
                                 </ion-col>
                                 <ion-col>
-                                    Price
+                                    Shipp To
+                                </ion-col>
+                                <ion-col>
+                                    Total Price
+                                </ion-col>
+                                <ion-col>
+                                    Status
                                 </ion-col>
                                 <ion-col>
                                     Action
                                 </ion-col>
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
-                            <div v-if="searchInput.length !== 0 && productSearch.length !== 0" class="data-list">
-                                <ion-row class="data-row" v-for="(item,i) in productSearch" :key="i"
+                            <div v-if="searchInput.length !== 0 && orderSearch.length !== 0" class="data-list">
+                                <ion-row class="data-row" v-for="(item,i) in orderSearch" :key="i"
                                     @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
-                                        {{item.name}}
-                                    </ion-col>
-                                    <ion-col v-if="item.quantity ===  0" style="color: #eb445a;" class="data-col">
-                                        {{item.quantity}}
-                                    </ion-col>
-                                    <ion-col v-else class="data-col">
-                                        {{item.quantity}}
+                                        {{item.order_number}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        ₱{{numberWithCommaFormatt(item.price)}}
+                                        {{item.ship_from_address_details.city}},
+                                        {{item.ship_from_address_details.province}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        {{item.ship_to_address_details.city}},
+                                        {{item.ship_from_address_details.province}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        ₱{{numberWithCommaFormatt(item.order_total_price)}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        <OrderStatus :status="item.order_status" />
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
-                                            <ion-button v-if="item.status === 'O'" class="update-button"
+                                            <!-- <ion-button v-if="item.status === 'O'" class="update-button"
                                                 @click="onClickGoToUpdate(item.id, $event)">
                                                 <ion-icon size="small" name="create" />
-                                            </ion-button>
+                                            </ion-button> -->
                                             <ion-button v-if="item.status === 'O'" class="archive-button"
                                                 @click="onClickArchive(item, $event, i)">
                                                 <ion-icon size="small" name="archive" />
                                             </ion-button>
-                                            <ion-button
-                                                v-if="item.status === 'V' && item.product_status === 'Available'"
-                                                class="restore-button" @click="onClickArchiveRestore(item, $event, i)">
+                                            <ion-button v-if="item.status === 'V'" class="restore-button"
+                                                @click="onClickArchiveRestore(item, $event, i)">
                                                 <ion-icon size="small" name="refresh" />
                                             </ion-button>
                                         </ion-buttons>
@@ -89,33 +99,37 @@
                             </div>
 
                             <div v-else class="data-list">
-                                <ion-row class="data-row" v-for="(item,i) in product" :key="i"
+                                <ion-row class="data-row" v-for="(item,i) in order" :key="i"
                                     @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
-                                        {{item.name}}
-                                    </ion-col>
-                                    <ion-col v-if="item.quantity ===  0" style="color: #eb445a;" class="data-col">
-                                        {{item.quantity}}
-                                    </ion-col>
-                                    <ion-col v-else class="data-col">
-                                        {{item.quantity}}
+                                        {{item.order_number}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        ₱{{numberWithCommaFormatt(item.price)}}
+                                        {{item.ship_from_address_details.city}},
+                                        {{item.ship_from_address_details.province}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        {{item.ship_to_address_details.city}},
+                                        {{item.ship_from_address_details.province}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        ₱{{numberWithCommaFormatt(item.order_total_price)}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        <OrderStatus :status="item.order_status" />
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
-                                            <ion-button v-if="item.status === 'O'" class="update-button"
+                                            <!-- <ion-button v-if="item.status === 'O'" class="update-button"
                                                 @click="onClickGoToUpdate(item.id, $event)">
                                                 <ion-icon size="small" name="create" />
-                                            </ion-button>
+                                            </ion-button> -->
                                             <ion-button v-if="item.status === 'O'" class="archive-button"
                                                 @click="onClickArchive(item, $event, i)">
                                                 <ion-icon size="small" name="archive" />
                                             </ion-button>
-                                            <ion-button
-                                                v-if="item.status === 'V' && item.product_status === 'Available' || item.product_status === 'Archive'"
-                                                class="restore-button" @click="onClickArchiveRestore(item, $event, i)">
+                                            <ion-button v-if="item.status === 'V'" class="restore-button"
+                                                @click="onClickArchiveRestore(item, $event, i)">
                                                 <ion-icon size="small" name="refresh" />
                                             </ion-button>
                                         </ion-buttons>
@@ -131,7 +145,9 @@
 </template>
 
 <script>
-    import ProductAPI from '@/api/product'
+    import OrderAPI from '@/api/orders'
+
+    import OrderStatus from '@/components/OrderStatus'
 
     import {
         computed,
@@ -143,24 +159,24 @@
         useRouter
     } from 'vue-router'
     import {
-        alertController
-    } from '@ionic/core'
-    import {
         useStore
     } from 'vuex'
+    import {
+        alertController
+    } from '@ionic/core'
     export default {
-        name: 'Products',
-        components: {},
+        name: 'Order',
+        components: {OrderStatus},
         setup() {
             onMounted(() => {
-                loadProduct(user_id.value, status.value)
+                loadOrder(user_id.value, status.value)
             })
 
             const router = useRouter()
             const store = useStore()
 
-            let product = ref({})
-            let productSearch = ref({})
+            let order = ref({})
+            let orderSearch = ref({})
             let status = ref('O')
             let activeSelect = ref('Open')
             let searchInput = ref('')
@@ -168,28 +184,27 @@
 
             const user_id = computed(() => store.state.user.userData.id)
 
-            function onClickGoToUpdate(id, ev) {
-                ev.stopPropagation();
-                router.push(`/dashboards/updateproduct/${id}`)
+            function onClickGoToUpdate(id) {
+                router.push(`/vendor/dashboards/updateorder/${id}`)
             }
 
             function onClickRowDetails(id) {
-                router.push(`/dashboards/detailsproduct/${id}`)
+                router.push(`/vendor/dashboards/detailsorders/${id}`)
             }
 
             function onIonChangeGetSelectedStatus(ev) {
                 if (ev.detail.value === 'Archived') {
                     status.value = 'V'
                     activeSelect.value = 'Archived'
-                    loadProduct(user_id.value, status.value)
+                    loadOrder(user_id.value, status.value)
                 } else if (ev.detail.value === 'Open') {
                     status.value = 'O'
                     activeSelect.value = 'Open'
-                    loadProduct(user_id.value, status.value)
+                    loadOrder(user_id.value, status.value)
                 } else {
                     status.value = ''
                     activeSelect.value = 'All'
-                    loadProduct(user_id.value, status.value)
+                    loadOrder(user_id.value, status.value)
                 }
             }
 
@@ -197,7 +212,7 @@
                 ev.stopPropagation();
                 const alert = await alertController.create({
                     header: 'Archive',
-                    message: '<strong>Are you sure you want to Archive this Product?</strong>',
+                    message: '<strong>Are you sure you want to Archive this Address?</strong>',
                     buttons: [{
                         text: 'Yes',
                         handler: () => {
@@ -216,36 +231,31 @@
                 isLoading.value = true;
                 item.status === 'O' ? item.status = 'V' : item.status = 'O'
 
-                if (item.product_status === 'Available')
-                    item.product_status = 'Archive'
-                else if (item.product_status === 'Archive')
-                    item.product_status = 'Available'
-                else
-                    item.product_status = 'Out Of Stocks'
+                activeSelect.value !== 'All' ? order.value.splice(i, 1) : ''
 
-                activeSelect.value !== 'All' ? product.value.splice(i, 1) : ''
-
-                await ProductAPI.archive(item).catch((err) => {
+                await OrderAPI.archive(item).catch((err) => {
                     console.error(err);
                 }).finally(() => {
                     isLoading.value = false;
                 })
             }
-            async function loadProduct(uId, s) {
+            async function loadOrder(uId, s) {
                 isLoading.value = true;
-                await ProductAPI.list(uId, s).then((response) => {
-                    product.value = response.data
-                }).catch((err) => {
-                    console.error(err);
-                }).finally(() => {
-                    isLoading.value = false;
-                })
+                await OrderAPI.list(uId, s)
+                    .then((response) => {
+                        order.value = response.data.data
+                    }).catch((err) => {
+                        console.error(err);
+                    }).finally(() => {
+                        isLoading.value = false;
+                    })
             }
             async function onInputSearch(ev) {
                 isLoading.value = true;
                 searchInput.value = ev.target.value
-                await ProductAPI.search(searchInput.value).then((response) => {
-                    productSearch.value = response.data
+                await OrderAPI.search(user_id.value, searchInput.value).then((response) => {
+                    console.log(response.data);
+                    orderSearch.value = response.data.data
                 }).catch((err) => {
                     console.error(err);
                 }).finally(() => {
@@ -254,18 +264,17 @@
             }
 
             return {
-                product,
+                order,
                 onClickGoToUpdate,
                 isLoading,
                 onClickRowDetails,
                 onIonChangeGetSelectedStatus,
-                status,
+                activeSelect,
                 onClickArchive,
                 onClickArchiveRestore,
-                activeSelect,
-                searchInput,
                 onInputSearch,
-                productSearch
+                searchInput,
+                orderSearch
             }
         }
     }
@@ -273,5 +282,4 @@
 
 <style lang="scss" scoped>
     @import '@/assets/css/global.scss';
-    @import '@/assets/css/products.scss';
 </style>
