@@ -77,6 +77,9 @@
                                         ₱{{numberWithCommaFormatt(item.order_total_price)}}
                                     </ion-col>
                                     <ion-col class="data-col">
+                                        <OrderStatus :status="item.order_status" />
+                                    </ion-col>
+                                    <ion-col class="data-col">
                                         <ion-buttons>
                                             <!-- <ion-button v-if="item.status === 'O'" class="update-button"
                                                 @click="onClickGoToUpdate(item.id, $event)">

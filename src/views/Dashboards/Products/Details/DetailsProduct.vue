@@ -164,6 +164,7 @@
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id) {
+                console.log(id);
                 router.push(`/dashboards/updateproduct/${id}`)
             }
 

@@ -127,11 +127,13 @@
 </template>
 
 <script>
+  import DashboardAPI from '@/api/dashboard'
   import MenuFabButton from '@/components/MenuFabButton'
   import NavBar from '@/components/NavBar'
   import {
     computed,
     onMounted,
+    ref,
   } from '@vue/runtime-core';
   import {
     useStore
@@ -146,13 +148,43 @@
     setup() {
       onMounted(() => {
         store.dispatch('user/loadUserData', userId.value)
+        loadDashboard()
+        setTimeout(() => {
+          getNewOrders()
+        }, 1000)
       })
 
+      let orders = ref([])
+      let newOrders = ref([])
       const store = useStore()
 
       const userId = computed(() => store.state.auth.userId)
 
-      return {}
+      function loadDashboard() {
+        DashboardAPI.get(userId.value).then((response) => {
+          orders.value = response.data.data.orders
+          console.log(orders.value);
+        })
+      }
+
+      function getNewOrders() {
+        orders.value.forEach((value) => {
+          switch (value.order_status) {
+            case '0': {
+              newOrders.value.push(value)
+              console.log(newOrders.value);
+            }
+            break;
+          }
+        })
+
+        console.log(newOrders.value);
+      }
+
+      return {
+        orders,
+        newOrders
+      }
     }
   };
 </script>

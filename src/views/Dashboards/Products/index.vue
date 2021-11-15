@@ -215,7 +215,13 @@
                 ev.stopPropagation();
                 isLoading.value = true;
                 item.status === 'O' ? item.status = 'V' : item.status = 'O'
-                item.product_status === 'Available' ? item.product_status = 'Archive' : item.product_status = 'Available'
+
+                if (item.product_status === 'Available')
+                    item.product_status = 'Archive'
+                else if (item.product_status === 'Archive')
+                    item.product_status = 'Available'
+                else
+                    item.product_status = 'Out Of Stocks'
 
                 activeSelect.value !== 'All' ? product.value.splice(i, 1) : ''
 
