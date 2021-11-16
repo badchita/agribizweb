@@ -46,6 +46,11 @@
     ellipsisVertical,
     informationCircle,
     cloudUpload,
+    personOutline,
+    mailOutline,
+    phonePortraitOutline,
+    calendarOutline,
+    lockClosedOutline,
   } from 'ionicons/icons';
 
   addIcons({
@@ -77,6 +82,11 @@
     'ellipsis-vertical': ellipsisVertical,
     'information-circle': informationCircle,
     'cloud-upload': cloudUpload,
+    'person-outline': personOutline,
+    'mail-outline': mailOutline,
+    'phone-portrait-outline': phonePortraitOutline,
+    'calendar-outline': calendarOutline,
+    'lock-closed-outline': lockClosedOutline,
   })
   export default defineComponent({
     name: 'App',

@@ -11,22 +11,40 @@
                             <ion-label>Sign Up</ion-label>
                         </ion-list-header>
                         <ion-item class="input-item">
+                            <div class="ion-margin-end">
+                                <ion-icon color="medium" name="person-outline" />
+                            </div>
                             <ion-input v-model="register.name" placeholder="Name"></ion-input>
                         </ion-item>
                         <ion-item class="input-item">
+                            <div class="ion-margin-end">
+                                <ion-icon color="medium" name="person-outline" />
+                            </div>
                             <ion-input v-model="register.username" placeholder="Username"></ion-input>
                         </ion-item>
                         <ion-item class="input-item">
+                            <div class="ion-margin-end">
+                                <ion-icon color="medium" name="mail-outline" />
+                            </div>
                             <ion-input v-model="register.email" placeholder="Email"></ion-input>
                         </ion-item>
                         <ion-item class="input-item">
+                            <div class="ion-margin-end">
+                                <ion-icon color="medium" name="phone-portrait-outline" />
+                            </div>
                             <ion-input v-model="register.mobile" placeholder="Mobile"></ion-input>
                         </ion-item>
                         <ion-item class="input-item">
+                            <div class="ion-margin-end">
+                                <ion-icon color="medium" name="calendar-outline" />
+                            </div>
                             <ion-datetime display-format="MM/DD/YYYY" placeholder="Birth Date"
                                 @ionChange="onChangeGetBithday($event)"></ion-datetime>
                         </ion-item>
                         <ion-item class="input-item">
+                            <div class="ion-margin-end">
+                                <ion-icon color="medium" name="lock-closed-outline" />
+                            </div>
                             <ion-input v-model="register.password" placeholder="Password" :type="passwordVisibility">
                             </ion-input>
                             <ion-buttons slot="end">
@@ -39,6 +57,9 @@
                             </ion-buttons>
                         </ion-item>
                         <ion-item class="input-item">
+                            <div class="ion-margin-end">
+                                <ion-icon color="medium" name="lock-closed-outline" />
+                            </div>
                             <ion-input v-model="register.password_confirmation" placeholder="Confirm Password"
                                 :type="confirmPasswordVisibility">
                             </ion-input>
@@ -79,9 +100,15 @@
                             <ion-label>Login</ion-label>
                         </ion-list-header>
                         <ion-item class="input-item">
+                            <div class="ion-margin-end">
+                                <ion-icon color="medium" name="mail-outline" />
+                            </div>
                             <ion-input v-model="auth.email" placeholder="Email"></ion-input>
                         </ion-item>
                         <ion-item class="input-item">
+                            <div  class="ion-margin-end">
+                                <ion-icon color="medium" name="lock-closed-outline" />
+                            </div>
                             <ion-input v-model="auth.password" placeholder="Password" :type="passwordVisibility">
                             </ion-input>
                             <ion-buttons slot="end">
