@@ -183,6 +183,13 @@ const routes = [{
     },
     component: () => import('@/views/Pages/ProfilePage')
   },
+
+  //admin pages
+  {
+    path: '/admin/dashboards/users',
+    name: 'Users',
+    component: () => import('@/views/Admin/Dashboards/Users/index'),
+  },
 ]
 
 const router = createRouter({
@@ -198,7 +205,7 @@ router.beforeEach((to, from, next) => {
       next();
       return;
     }
-    next('/login');
+    next('/vendor/');
   } else {
     next();
   }

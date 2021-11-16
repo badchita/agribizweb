@@ -7,8 +7,8 @@ const state = {
   userId: 0,
   isUserLoggedIn: false,
   errorMessage: '',
-  logoutMessage: '',
   userType: '',
+  response: {},
 }
 
 export default {
@@ -30,6 +30,9 @@ export default {
     },
     userType(state) {
       return state.userType
+    },
+    response(state) {
+      return state.response
     },
     errorMessage(state) {
       return state.errorMessage
@@ -58,11 +61,12 @@ export default {
     SET_IS_USER_LOGGED_IN(state, isUserLoggedIn) {
       state.isUserLoggedIn = isUserLoggedIn
     },
-    SET_LOGOUT_MESSAGE(state, logoutMessage) {
-      state.logoutMessage = logoutMessage
-    },
     SET_USER_TYPE(state, userType) {
       state.userType = userType
+    },
+    SET_RESPONSE(state, response) {
+      state.response = response
+      console.log(state.response);
     }
   },
   actions: {
@@ -72,6 +76,7 @@ export default {
     }, payload) {
       return AuthAPI.login(payload).then((res) => {
           commit('AUTHENTICATING_SUCCESS', res.data)
+          commit('SET_RESPONSE', res.data)
           commit('SET_USER_TYPE', res.data.user_type)
           commit('SET_IS_USER_LOGGED_IN', true)
           commit('SET_IS_USER_LOGGED_IN', true)
@@ -101,8 +106,6 @@ export default {
       }).catch((err) => {
         const errorMsg = err.response
         const networkError = err.message
-        console.log(errorMsg);
-        console.log(networkError);
         commit('AUTHENTICATING_ERROR')
         if (networkError == 'Request failed with status code 500')
           commit('SET_ERROR_MESSAGE', 'Network Error')
@@ -114,19 +117,6 @@ export default {
         }
         return Promise.reject(err)
       })
-    },
-    logout({
-      commit
-    }) {
-      return AuthAPI.logout()
-        .then((response) => {
-          commit('SET_LOGOUT_MESSAGE', response.data.message)
-          commit('SET_IS_USER_LOGGED_IN', false)
-          commit('AUTHENTICATING_ERROR')
-        })
-        .catch((err) => {
-          return Promise.reject(err)
-        })
     },
     socialCallback({
       commit

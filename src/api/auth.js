@@ -4,8 +4,9 @@ export default {
     login(auth) {
         return api.post('login', auth)
     },
-    logout() {
-        return api.post('logout')
+    logout(params) {
+        console.log(params);
+        return api.post('logout', params)
     },
     register(auth) {
         return api.post('register', auth)

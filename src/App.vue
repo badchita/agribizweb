@@ -51,6 +51,9 @@
     phonePortraitOutline,
     calendarOutline,
     lockClosedOutline,
+    people,
+    radioButtonOn,
+    radioButtonOff,
   } from 'ionicons/icons';
 
   addIcons({
@@ -87,6 +90,9 @@
     'phone-portrait-outline': phonePortraitOutline,
     'calendar-outline': calendarOutline,
     'lock-closed-outline': lockClosedOutline,
+    'people': people,
+    'radio-button-on': radioButtonOn,
+    'radio-button-off': radioButtonOff,
   })
   export default defineComponent({
     name: 'App',

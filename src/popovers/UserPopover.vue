@@ -12,6 +12,7 @@
 </template>
 
 <script>
+    import AuthAPI from '@/api/auth'
     import {
         popoverController,
         toastController
@@ -36,7 +37,8 @@
             const router = useRouter()
             const store = useStore()
 
-            let logoutMessage = computed(() => store.state.auth.logoutMessage)
+            let loginResponse = computed(() => store.state.auth.response)
+            console.log(loginResponse.value);
 
             function onClickManageAccount() {
                 router.push(`/profile`)
@@ -44,22 +46,21 @@
             }
 
             async function onClickSignOut() {
-                store.dispatch('auth/logout')
-                    .then(() => {
-                        store.dispatch('user/removeUserData')
-                        onToast()
-                        popoverController.dismiss()
-                    }).finally(() => {
-                        router.push('/')
-                        setTimeout(() => {
-                            router.go()
-                        }, 500)
-                    })
+                AuthAPI.logout(loginResponse.value).then((response) => {
+                    store.dispatch('user/removeUserData')
+                    onToast(response.data.message)
+                    popoverController.dismiss()
+                }).finally(() => {
+                    router.push('/')
+                    setTimeout(() => {
+                        router.go()
+                    }, 500)
+                })
             }
 
-            async function onToast() {
+            async function onToast(m) {
                 const toast = await toastController.create({
-                    message: logoutMessage.value,
+                    message: m,
                     color: 'success',
                     position: 'top',
                     duration: 2000,
