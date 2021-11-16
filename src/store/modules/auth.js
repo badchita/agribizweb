@@ -89,7 +89,7 @@ export default {
           commit('AUTHENTICATING_ERROR')
           if (networkError == 'Request failed with status code 500')
             commit('SET_ERROR_MESSAGE', 'Network Error')
-          else if (errorMsg.status === 402 || errorMsg.status === 403)
+          else if (errorMsg.status === 402 || errorMsg.status === 403 || errorMsg.status === 404)
             commit('SET_ERROR_MESSAGE', errorMsg.data.message)
           else if (errorMsg.status === 401) {
             const requiredError = errorMsg.data.errors[0] + errorMsg.data.errors[1]

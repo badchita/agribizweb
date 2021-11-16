@@ -166,7 +166,7 @@
         },
         setup() {
             onMounted(() => {
-                loadUsers(user_id.value)
+                loadUsers(user_id.value, status.value)
             })
 
             const router = useRouter()
@@ -238,9 +238,9 @@
                     isLoading.value = false;
                 })
             }
-            async function loadUsers(uId) {
+            async function loadUsers(uId, s) {
                 isLoading.value = true;
-                await UserAPI.list(uId)
+                await UserAPI.list(uId, s)
                     .then((response) => {
                         users.value = response.data.data
                     }).catch((err) => {
