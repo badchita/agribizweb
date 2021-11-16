@@ -16,4 +16,7 @@ export default {
     archive(params) {
         return api.patch('user', params)
     },
+    search(user_id, name) {
+        return api.get(`user/search/${name}/${user_id}`)
+    },
 }

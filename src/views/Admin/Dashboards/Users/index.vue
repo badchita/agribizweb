@@ -59,20 +59,23 @@
                                 </ion-col>
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
-                            <div v-if="searchInput.length !== 0 && addressesSearch.length !== 0" class="data-list">
-                                <ion-row class="data-row" v-for="(item,i) in addressesSearch" :key="i"
+                            <div v-if="searchInput.length !== 0 && usersSearch.length !== 0" class="data-list">
+                                <ion-row class="data-row" v-for="(item,i) in usersSearch" :key="i"
                                     @click="onClickRowDetails(item.id)">
                                     <ion-col class="data-col">
-                                        {{item.street_building}}
+                                        {{item.name}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.barangay}}
+                                        {{item.email}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.city}}
+                                        {{item.username}}
                                     </ion-col>
                                     <ion-col class="data-col">
-                                        {{item.province}}
+                                        <UserType :user_type="item.user_type" />
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        <OnlineStatus :isOnline="item.isOnline" />
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
@@ -173,7 +176,7 @@
             const store = useStore()
 
             let users = ref({})
-            let addressesSearch = ref({})
+            let usersSearch = ref({})
             let status = ref('O')
             let activeSelect = ref('Open')
             let searchInput = ref('')
@@ -252,8 +255,8 @@
             async function onInputSearch(ev) {
                 isLoading.value = true;
                 searchInput.value = ev.target.value
-                await UserAPI.search(searchInput.value).then((response) => {
-                    addressesSearch.value = response.data
+                await UserAPI.search(user_id.value, searchInput.value).then((response) => {
+                    usersSearch.value = response.data.data
                 }).catch((err) => {
                     console.error(err);
                 }).finally(() => {
@@ -271,7 +274,7 @@
                 onClickArchive,
                 onClickArchiveRestore,
                 activeSelect,
-                addressesSearch,
+                usersSearch,
                 searchInput,
                 onInputSearch
             }
