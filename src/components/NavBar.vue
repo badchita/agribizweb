@@ -55,29 +55,8 @@
 
             const userData = computed(() => store.state.user.userData)
 
-            const navDetails = [{
-                    label: 'Home',
-                    col_size: '2.4',
-                    handler: () => {
-                        router.push(`/home`)
-                    }
-                },
-                {
-                    label: 'Service Request',
-                    col_size: '2.4'
-                },
-                {
-                    label: 'Warranty Inquiry',
-                    col_size: '2.4'
-                },
-                {
-                    label: 'Customer Feedback',
-                    col_size: '2.4'
-                },
-            ]
-
             function onClickHomeCol() {
-                router.push(`/home`)
+                router.push(`/vendor/home`)
             }
 
             async function onClickItemUser(ev) {
@@ -97,7 +76,6 @@
             }
 
             return {
-                navDetails,
                 onClickHomeCol,
                 userData,
                 onClickItemUser,

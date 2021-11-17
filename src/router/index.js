@@ -190,6 +190,11 @@ const routes = [{
     name: 'Users',
     component: () => import('@/views/Admin/Dashboards/Users/index'),
   },
+  {
+    path: '/admin/dashboards/detailsusers/:id',
+    name: 'UsersDetail',
+    component: () => import('@/views/Admin/Dashboards/Users/Details/DetailsUser'),
+  },
 ]
 
 const router = createRouter({

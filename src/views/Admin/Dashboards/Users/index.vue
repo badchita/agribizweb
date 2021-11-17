@@ -39,23 +39,8 @@
                     <ion-card-content>
                         <ion-grid>
                             <ion-row class="header-row">
-                                <ion-col>
-                                    Name
-                                </ion-col>
-                                <ion-col>
-                                    Email
-                                </ion-col>
-                                <ion-col>
-                                    Username
-                                </ion-col>
-                                <ion-col>
-                                    User Type
-                                </ion-col>
-                                <ion-col>
-                                    Active
-                                </ion-col>
-                                <ion-col>
-                                    Action
+                                <ion-col v-for="item in userHeader" :key="item">
+                                    {{item.text}}
                                 </ion-col>
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
@@ -172,6 +157,26 @@
                 loadUsers(user_id.value, status.value)
             })
 
+            const userHeader = [{
+                    text: 'Name'
+                },
+                {
+                    text: 'Email'
+                },
+                {
+                    text: 'Username'
+                },
+                {
+                    text: 'User Type'
+                },
+                {
+                    text: 'Active'
+                },
+                {
+                    text: 'Action'
+                },
+            ]
+
             const router = useRouter()
             const store = useStore()
 
@@ -191,7 +196,7 @@
             }
 
             function onClickRowDetails(id) {
-                router.push(`/vendor/dashboards/detailsaddresses/${id}`)
+                router.push(`/admin/dashboards/detailsusers/${id}`)
             }
 
             function onIonChangeGetSelectedStatus(ev) {
@@ -276,7 +281,8 @@
                 activeSelect,
                 usersSearch,
                 searchInput,
-                onInputSearch
+                onInputSearch,
+                userHeader
             }
         }
     }

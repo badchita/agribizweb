@@ -95,7 +95,7 @@
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id) {
-                router.push(`/dashboards/updateaddresses/${id}`)
+                router.push(`/vendor/dashboards/updateaddresses/${id}`)
             }
 
             function goBack() {

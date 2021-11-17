@@ -35,6 +35,7 @@
             display: inline-block;
             vertical-align: middle;
             font-size: 14px;
+            font-weight: 400;
         }
     }
 </style>

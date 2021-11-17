@@ -39,20 +39,8 @@
                     <ion-card-content>
                         <ion-grid>
                             <ion-row class="header-row">
-                                <ion-col>
-                                    Street/Building
-                                </ion-col>
-                                <ion-col>
-                                    Barangay
-                                </ion-col>
-                                <ion-col>
-                                    City
-                                </ion-col>
-                                <ion-col>
-                                    Province
-                                </ion-col>
-                                <ion-col>
-                                    Action
+                                <ion-col v-for="item in addressesHeader" :key="item">
+                                    {{item.text}}
                                 </ion-col>
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
@@ -160,6 +148,23 @@
             const router = useRouter()
             const store = useStore()
 
+            const addressesHeader = [{
+                    text: 'Street/Building'
+                },
+                {
+                    text: 'Barangay'
+                },
+                {
+                    text: 'City'
+                },
+                {
+                    text: 'Province'
+                },
+                {
+                    text: 'Action'
+                },
+            ]
+
             let addresses = ref({})
             let addressesSearch = ref({})
             let status = ref('O')
@@ -261,7 +266,8 @@
                 activeSelect,
                 addressesSearch,
                 searchInput,
-                onInputSearch
+                onInputSearch,
+                addressesHeader
             }
         }
     }
