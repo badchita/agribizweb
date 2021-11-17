@@ -142,7 +142,7 @@
         components: {},
         setup() {
             onMounted(() => {
-                loadAddresses(user_id.value, status.value)
+                loadAddresses(userData.value.id, status.value)
             })
 
             const router = useRouter()
@@ -173,7 +173,7 @@
 
             const isLoading = ref(false)
 
-            const user_id = computed(() => store.state.user.userData.id)
+            const userData = computed(() => store.state.user.userData)
 
             function onClickGoToUpdate(id, ev) {
                 ev.stopPropagation();
@@ -188,15 +188,15 @@
                 if (ev.detail.value === 'Archived') {
                     status.value = 'V'
                     activeSelect.value = 'Archived'
-                    loadAddresses(user_id.value, status.value)
+                    loadAddresses(userData.value.id, status.value)
                 } else if (ev.detail.value === 'Open') {
                     status.value = 'O'
                     activeSelect.value = 'Open'
-                    loadAddresses(user_id.value, status.value)
+                    loadAddresses(userData.value.id, status.value)
                 } else {
                     status.value = ''
                     activeSelect.value = 'All'
-                    loadAddresses(user_id.value, status.value)
+                    loadAddresses(userData.value.id, status.value)
                 }
             }
 
@@ -233,8 +233,9 @@
             }
             async function loadAddresses(uId, s) {
                 isLoading.value = true;
-                await AddressesAPI.list(uId, s)
-                    .then((response) => {
+                const api = userData.value.user_type === 'Admin' ? AddressesAPI.listAdmin(uId, s) : AddressesAPI.list(
+                    uId, s)
+                await api.then((response) => {
                         addresses.value = response.data
                     }).catch((err) => {
                         console.error(err);

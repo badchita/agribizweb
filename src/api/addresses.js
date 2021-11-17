@@ -19,6 +19,15 @@ export default {
             return api.get(`addresses/` + user_id)
         }
     },
+    listAdmin(user_id, status) {
+        if (status === 'O') {
+            return api.get(`/admin/addresses/${user_id}/` + status)
+        } else if (status === 'V') {
+            return api.get(`/admin/addresses/${user_id}/` + status)
+        } else {
+            return api.get(`/admin/addresses/` + user_id)
+        }
+    },
     archive(addresses) {
         return api.patch('address', addresses)
     },
