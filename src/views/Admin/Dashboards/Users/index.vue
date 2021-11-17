@@ -152,30 +152,33 @@
             UserType,
             OnlineStatus
         },
+        data() {
+            return {
+                userHeader: [{
+                        text: 'Name'
+                    },
+                    {
+                        text: 'Email'
+                    },
+                    {
+                        text: 'Username'
+                    },
+                    {
+                        text: 'User Type'
+                    },
+                    {
+                        text: 'Active'
+                    },
+                    {
+                        text: 'Action'
+                    },
+                ]
+            }
+        },
         setup() {
             onMounted(() => {
                 loadUsers(user_id.value, status.value)
             })
-
-            const userHeader = [{
-                    text: 'Name'
-                },
-                {
-                    text: 'Email'
-                },
-                {
-                    text: 'Username'
-                },
-                {
-                    text: 'User Type'
-                },
-                {
-                    text: 'Active'
-                },
-                {
-                    text: 'Action'
-                },
-            ]
 
             const router = useRouter()
             const store = useStore()
@@ -282,7 +285,6 @@
                 usersSearch,
                 searchInput,
                 onInputSearch,
-                userHeader
             }
         }
     }

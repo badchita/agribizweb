@@ -85,11 +85,11 @@
                         </ion-col>
                     </ion-row>
 
-                    <!-- user's products -->
+                    <!-- user's orders -->
                     <ion-row class="ion-margin-top">
                         <ion-col>
                             <ion-label class="details-header-label">
-                                User's Products
+                                Orders
                             </ion-label>
                         </ion-col>
                     </ion-row>
@@ -97,21 +97,29 @@
                         <ion-card-content>
                             <ion-grid>
                                 <ion-row class="header-row">
-                                    <ion-col v-for="item in productHeader" :key="item">
+                                    <ion-col v-for="item in orderHeader" :key="item">
                                         {{item.text}}
                                     </ion-col>
                                 </ion-row>
                                 <div class="data-list">
-                                    <ion-row class="data-row" v-for="(item,i) in products" :key="i"
-                                        @click="onClickRowDetails(item.id, 'products')">
+                                    <ion-row class="data-row" v-for="(item,i) in orders" :key="i"
+                                        @click="onClickRowDetails(item.id, 'orders')">
                                         <ion-col class="data-col">
-                                            {{item.name}}
+                                            {{item.order_number}}
                                         </ion-col>
                                         <ion-col class="data-col">
-                                            {{item.quantity}}
+                                            {{item.ship_from_address_details.city}},
+                                            {{item.ship_from_address_details.province}}
                                         </ion-col>
                                         <ion-col class="data-col">
-                                            {{item.price}}
+                                            {{item.ship_to_address_details.city}},
+                                            {{item.ship_from_address_details.province}}
+                                        </ion-col>
+                                        <ion-col class="data-col">
+                                            ₱{{numberWithCommaFormatt(item.order_total_price)}}
+                                        </ion-col>
+                                        <ion-col class="data-col">
+                                            <OrderStatus :status="item.order_status" />
                                         </ion-col>
                                     </ion-row>
                                 </div>
@@ -119,11 +127,53 @@
                         </ion-card-content>
                     </ion-card>
 
+                    <!-- user's products -->
+                    <div v-if="user.user_type === 'Seller'">
+                        <ion-row class="ion-margin-top">
+                            <ion-col>
+                                <ion-label class="details-header-label">
+                                    Products
+                                </ion-label>
+                            </ion-col>
+                        </ion-row>
+                        <ion-card style="overflow: visible">
+                            <ion-card-content>
+                                <ion-grid>
+                                    <ion-row class="header-row">
+                                        <ion-col v-for="item in productHeader" :key="item">
+                                            {{item.text}}
+                                        </ion-col>
+                                    </ion-row>
+                                    <div class="data-list">
+                                        <ion-row class="data-row" v-for="(item,i) in products" :key="i"
+                                            @click="onClickRowDetails(item.id, 'products')">
+                                            <ion-col class="data-col">
+                                                {{item.name}}
+                                            </ion-col>
+                                            <ion-col class="data-col">
+                                                {{item.quantity}}
+                                            </ion-col>
+                                            <ion-col class="data-col">
+                                                {{item.price}}
+                                            </ion-col>
+                                            <ion-col class="data-col">
+                                                <ProductStatus :status="item.product_status" />
+                                            </ion-col>
+                                        </ion-row>
+                                    </div>
+                                </ion-grid>
+                            </ion-card-content>
+                        </ion-card>
+                    </div>
+
                     <!-- user's shops -->
                     <ion-row class="ion-margin-top">
                         <ion-col>
-                            <ion-label class="details-header-label">
-                                User's Shops
+                            <ion-label v-if="user.user_type === 'Seller'" class="details-header-label">
+                                Shops
+                            </ion-label>
+                            <ion-label v-if="user.user_type === 'Customer'" class="details-header-label">
+                                Adresses
                             </ion-label>
                         </ion-col>
                     </ion-row>
@@ -163,9 +213,12 @@
 
 <script>
     import UserAPI from '@/api/user'
+    import OrderAPI from '@/api/orders'
 
     import OnlineStatus from '@/components/Users/OnlineStatus'
     import UserType from '@/components/Users/UserType'
+    import OrderStatus from '@/components/OrderStatus'
+    import ProductStatus from '@/components/ProductStatus'
 
     import {
         ref
@@ -180,43 +233,70 @@
         name: 'DetailProduct',
         components: {
             OnlineStatus,
-            UserType
+            UserType,
+            OrderStatus,
+            ProductStatus
+        },
+        data() {
+            return {
+                productHeader: [{
+                        text: 'Name'
+                    },
+                    {
+                        text: 'Quantity'
+                    },
+                    {
+                        text: 'Price'
+                    },
+                    {
+                        text: 'Status'
+                    }
+                ],
+                addressesHeader: [{
+                        text: 'Street/Building'
+                    },
+                    {
+                        text: 'Barangay'
+                    },
+                    {
+                        text: 'City'
+                    },
+                    {
+                        text: 'Province'
+                    },
+                ],
+                orderHeader: [{
+                        text: 'Order Number'
+                    },
+                    {
+                        text: 'Shipp From'
+                    },
+                    {
+                        text: 'Shipp To'
+                    },
+                    {
+                        text: 'Total Price'
+                    },
+                    {
+                        text: 'Status'
+                    },
+                ],
+            }
         },
         setup() {
             onMounted(() => {
                 loadUser()
+                setTimeout(() => {
+                    loadOrder()
+                }, 1000);
             })
 
             const router = useRouter()
 
-            const productHeader = [{
-                    text: 'Name'
-                },
-                {
-                    text: 'Quantity'
-                },
-                {
-                    text: 'Price'
-                },
-            ]
-
-            const addressesHeader = [{
-                    text: 'Street/Building'
-                },
-                {
-                    text: 'Barangay'
-                },
-                {
-                    text: 'City'
-                },
-                {
-                    text: 'Province'
-                },
-            ]
-
             let user = ref({})
             let products = ref([])
             let addresses = ref([])
+            let orders = ref([])
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id) {
@@ -232,6 +312,8 @@
                     router.push(`/vendor/dashboards/detailsproduct/${id}`)
                 else if (type === 'addresses')
                     router.push(`/vendor/dashboards/detailsaddresses/${id}`)
+                else if (type === 'orders')
+                    router.push(`/vendor/dashboards/detailsorders/${id}`)
             }
 
             async function loadUser(id) {
@@ -249,16 +331,26 @@
                         })
                 }
             }
+            async function loadOrder(id) {
+                id = router.currentRoute.value.params.id
+                const api = user.value.user_type === 'Seller' ? OrderAPI.list(id) : OrderAPI.listCustomer(id)
+                await api.then((response) => {
+                    orders.value = response.data.data
+                }).catch((err) => {
+                    console.error(err);
+                }).finally(() => {
+                    isLoading.value = false;
+                })
+            }
             return {
                 user,
                 isLoading,
                 onClickGoToUpdate,
                 goBack,
-                productHeader,
                 products,
                 onClickRowDetails,
-                addressesHeader,
-                addresses
+                addresses,
+                orders
             }
         }
     }

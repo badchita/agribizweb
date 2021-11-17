@@ -39,17 +39,8 @@
                     <ion-card-content>
                         <ion-grid>
                             <ion-row class="header-row">
-                                <ion-col>
-                                    Name
-                                </ion-col>
-                                <ion-col>
-                                    Quantity
-                                </ion-col>
-                                <ion-col>
-                                    Price
-                                </ion-col>
-                                <ion-col>
-                                    Action
+                                <ion-col v-for="item in productHeader" :key="item">
+                                    {{item.text}}
                                 </ion-col>
                             </ion-row>
                             <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
@@ -67,6 +58,9 @@
                                     </ion-col>
                                     <ion-col class="data-col">
                                         ₱{{numberWithCommaFormatt(item.price)}}
+                                    </ion-col>
+                                    <ion-col class="data-col">
+                                        <ProductStatus :status="item.product_status" />
                                     </ion-col>
                                     <ion-col class="data-col">
                                         <ion-buttons>
@@ -104,6 +98,9 @@
                                         ₱{{numberWithCommaFormatt(item.price)}}
                                     </ion-col>
                                     <ion-col class="data-col">
+                                        <ProductStatus :status="item.product_status" />
+                                    </ion-col>
+                                    <ion-col class="data-col">
                                         <ion-buttons>
                                             <ion-button v-if="item.status === 'O'" class="update-button"
                                                 @click="onClickGoToUpdate(item.id, $event)">
@@ -133,6 +130,8 @@
 <script>
     import ProductAPI from '@/api/product'
 
+    import ProductStatus from '@/components/ProductStatus'
+
     import {
         computed,
         onMounted,
@@ -150,10 +149,32 @@
     } from 'vuex'
     export default {
         name: 'Products',
-        components: {},
+        components: {
+            ProductStatus
+        },
+        data() {
+            return {
+                productHeader: [{
+                        text: 'Name'
+                    },
+                    {
+                        text: 'Quantity'
+                    },
+                    {
+                        text: 'Price'
+                    },
+                    {
+                        text: 'Status'
+                    },
+                    {
+                        text: 'Action'
+                    },
+                ]
+            }
+        },
         setup() {
             onMounted(() => {
-                loadProduct(user_id.value, status.value)
+                loadProduct(userData.value.id, status.value)
             })
 
             const router = useRouter()
@@ -166,7 +187,7 @@
             let searchInput = ref('')
             const isLoading = ref(false)
 
-            const user_id = computed(() => store.state.user.userData.id)
+            const userData = computed(() => store.state.user.userData)
 
             function onClickGoToUpdate(id, ev) {
                 ev.stopPropagation();
@@ -181,15 +202,15 @@
                 if (ev.detail.value === 'Archived') {
                     status.value = 'V'
                     activeSelect.value = 'Archived'
-                    loadProduct(user_id.value, status.value)
+                    loadProduct(userData.value.id, status.value)
                 } else if (ev.detail.value === 'Open') {
                     status.value = 'O'
                     activeSelect.value = 'Open'
-                    loadProduct(user_id.value, status.value)
+                    loadProduct(userData.value.id, status.value)
                 } else {
                     status.value = ''
                     activeSelect.value = 'All'
-                    loadProduct(user_id.value, status.value)
+                    loadProduct(userData.value.id, status.value)
                 }
             }
 
@@ -233,7 +254,9 @@
             }
             async function loadProduct(uId, s) {
                 isLoading.value = true;
-                await ProductAPI.list(uId, s).then((response) => {
+                const api = userData.value.user_type === 'Admin' ? ProductAPI.listAdmin(uId, s) : ProductAPI.list(
+                    uId, s)
+                await api.then((response) => {
                     product.value = response.data
                 }).catch((err) => {
                     console.error(err);

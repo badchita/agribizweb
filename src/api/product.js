@@ -19,6 +19,15 @@ export default {
             return api.get(`products/` + user_id)
         }
     },
+    listAdmin(user_id, status) {
+        if (status === 'O') {
+            return api.get(`/admin/products/${user_id}/` + status)
+        } else if (status === 'V') {
+            return api.get(`/admin/products/${user_id}/` + status)
+        } else {
+            return api.get(`/admin/products/` + user_id)
+        }
+    },
     archive(product) {
         return api.patch('product', product)
     },

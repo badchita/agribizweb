@@ -19,6 +19,9 @@ export default {
             return api.get(`orders/` + seller_id)
         }
     },
+    listCustomer(user_id) {
+        return api.get(`customer/orders/` + user_id)
+    },
     archive(payload) {
         return api.patch('order', payload)
     },
