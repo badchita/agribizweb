@@ -34,7 +34,7 @@
                     <ion-row>
                         <ion-col>
                             <ion-thumbnail class="thumbnail-style">
-                                <img src="https://www.fcprop.net/images/noimage.png" style="width: 100%;" />
+                                <img :src="thumbnailPath" style="width: 100%;" />
                             </ion-thumbnail>
                         </ion-col>
                         <ion-col />
@@ -127,6 +127,7 @@
 
     import ProductStatus from '@/components/ProductStatus'
     import StarRating from 'vue-star-rating'
+    import ResourceURL from '@/api/resourceURL'
 
     import {
         ref
@@ -161,6 +162,7 @@
             }]
 
             let product = ref({})
+            let thumbnailPath = ref('')
             const isLoading = ref(false)
 
             function onClickGoToUpdate(id) {
@@ -171,13 +173,24 @@
                 router.go(-1)
             }
 
+            function getThumbnail(fileName) {
+                if (fileName) {
+                    return thumbnailPath.value = ResourceURL.api + fileName
+                } else {
+                    return thumbnailPath.value = 'https://www.fcprop.net/images/noimage.png'
+                }
+            }
+
             async function loadProduct(id) {
                 isLoading.value = true;
                 id = router.currentRoute.value.params.id
                 if (id) {
-                    await ProductAPI.get(id)
-                        .then((response) => {
+                    await ProductAPI.get(id).then((response) => {
                             product.value = response.data.data
+                            if (product.value.thumbnail_name === "")
+                                getThumbnail()
+                            else
+                                getThumbnail(product.value.thumbnail_name)
                         })
                         .finally(() => {
                             isLoading.value = false;
@@ -191,6 +204,8 @@
                 onClickGoToUpdate,
                 goBack,
                 ratingAndReviews,
+                getThumbnail,
+                thumbnailPath
             }
         }
     }

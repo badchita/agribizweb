@@ -10,6 +10,10 @@ export default {
     update(product) {
         return api.put('product', product)
     },
+    upload(params) {
+        console.log(params)
+        return api.post('upload', params)
+    },
     list(user_id, status) {
         if (status === 'O') {
             return api.get(`products/${user_id}/` + status)

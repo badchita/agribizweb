@@ -13,21 +13,13 @@
                     <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
 
                     <ion-row>
-                        <ion-col>
-                            <ion-thumbnail class="ion-margin-start" style="width: 40%; height: 50%;">
-                                <img :src="thumbnailPath" style="object-fit: contain;" />
-                            </ion-thumbnail>
-                            <div class="ion-margin-top" />
+                        <ion-col size="12">
+                            <img :src="thumbnailPath" style="margin-left: 16px; width: 400px; height: 300px;  object-fit: contain;" />
+                            <ion-button class="upload-button" style="margin-top: -24px;" @click="onClickUpload($event)">
+                                Upload
+                            </ion-button> <br>
+
                             <ion-label class="ion-margin-start" style="color: rgb(128, 128, 128);">Thumbnail</ion-label>
-                            <ion-item class="ion-margin-top" lines="none">
-                                <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
-                                <div size="default" class="fileUpload">
-                                    <ion-icon name="cloud-upload" />
-                                    <span>Choose File</span>
-                                    <input class="upload" type="file" accept="image/png, image/jpeg"
-                                        @change="onClickChooseFile($event)" />
-                                </div>
-                            </ion-item>
                         </ion-col>
                         <ion-col />
                     </ion-row>
@@ -118,6 +110,9 @@
 <script>
     import ProductAPI from '@/api/product'
     import AddressesAPI from '@/api/addresses'
+    import ResourceURL from '@/api/resourceURL'
+
+    import UploadImage from '@/modals/UploadImage'
     import 'quill/dist/quill.snow.css'
 
     import {
@@ -132,18 +127,20 @@
         onMounted
     } from '@vue/runtime-core'
     import {
+        modalController,
         toastController
     } from '@ionic/core'
-import { useStore } from 'vuex'
+    import {
+        useStore
+    } from 'vuex'
     export default {
         name: 'UpdateProduct',
         components: {},
         setup() {
             onMounted(() => {
                 loadProductDetails()
-                loadAddressesDetails(user_id.value)
-                pageTitle,
-                getThumbnail()
+                loadAddressesDetails(userData.value.id)
+                pageTitle
             })
 
             const data = reactive({
@@ -182,7 +179,7 @@ import { useStore } from 'vuex'
             const location = ref([])
             let thumbnailPath = ref('')
 
-            const user_id = computed(() => store.state.user.userData.id)
+            const userData = computed(() => store.state.user.userData)
             const pageTitle = computed(() => {
                 if (router.currentRoute.value.params.id)
                     return 'Update Product'
@@ -224,22 +221,12 @@ import { useStore } from 'vuex'
                 product.value.product_location_id = ev.detail.value.id
             }
 
-            function getThumbnail() {
-                return thumbnailPath.value = 'https://www.fcprop.net/images/noimage.png'
-            }
-
-            function onClickChooseFile(ev) {
-                const file = ev.target.files[0]
-                document.getElementById("uploadFile").value = file.name
-                thumbnailPath.value = URL.createObjectURL(file)
-
-                product.value.thumbnail_name = file
-            }
-
-            function test() {
-                let formFile = new FormData()
-                formFile.append('file', product.value.thumbnail_name, product.value.thumbnail_name.name)
-                ProductAPI.update(formFile)
+            function getThumbnail(fileName) {
+                if (fileName) {
+                    return thumbnailPath.value = ResourceURL.api + fileName
+                } else {
+                    return thumbnailPath.value = 'https://www.fcprop.net/images/noimage.png'
+                }
             }
 
             async function presentToast(m) {
@@ -254,33 +241,34 @@ import { useStore } from 'vuex'
                 await toast.present()
             }
             async function loadAddressesDetails(uId) {
-                await AddressesAPI.list(uId,'O')
+                await AddressesAPI.list(uId, 'O')
                     .then((response) => {
                         location.value = response.data
                     })
             }
             async function loadProductDetails(id) {
                 id = router.currentRoute.value.params.id
-                if (id)
-                    isLoading.value = true;
-
+                console.log(id);
                 if (id) {
+                    isLoading.value = true;
                     await ProductAPI.get(id)
                         .then((response) => {
                             product.value = response.data.data
+                            getThumbnail(product.value.thumbnail_name)
                         })
                         .finally(() => {
                             isLoading.value = false;
                         })
+                } else {
+                    getThumbnail()
                 }
             }
             async function onClickSave() {
                 const message =
                     'Status must be <strong>Out of Stocks</strong> if <strong>Quantity</strong> is <strong>0</strong>'
 
-                // let formFile = new FormData()
-                // product.value.thumbnail_name = formFile.append("file", product.value.thumbnail_name)
-
+                if (typeof(router.currentRoute.value.params.id) === 'undefined')
+                    product.value.user_id = userData.value.id
                 if (+product.value.quantity === 0 && product.value.product_status === 'Available') {
                     presentToast(message)
                 } else {
@@ -290,23 +278,34 @@ import { useStore } from 'vuex'
 
                     if (product.value.product_status == 'Available')
                         product.value.status = 'O'
-                    else if (product.value.product_status == 'Out Of Stocks' || product.value.product_status == 'Archive')
+                    else if (product.value.product_status == 'Out Of Stocks' || product.value.product_status ==
+                        'Archive')
                         product.value.status = 'V'
                     else
                         product.value.status = 'O'
 
-                    product.value.user_id = user_id.value
                     const api = product.value.id ? ProductAPI.update(product.value) : ProductAPI.add(product.value)
 
                     api.then(() => {
                         goBack()
-                        setTimeout(() => {
-                            router.go()
-                        }, 100)
                     }).catch((err) => {
                         console.error(err);
                     })
                 }
+            }
+            async function onClickUpload(ev) {
+                let modal = await modalController.create({
+                    component: UploadImage,
+                    event: ev
+                })
+
+                modal.onDidDismiss().then((returned) => {
+                    console.log(returned);
+                    product.value.thumbnail_name = returned.data.fileName
+                    getThumbnail(product.value.thumbnail_name)
+                })
+
+                await modal.present();
             }
             return {
                 product,
@@ -315,7 +314,6 @@ import { useStore } from 'vuex'
                 goBack,
                 pageTitle,
                 categories,
-                test,
                 onIonChangeGetSelectedCategories,
                 onIonChangeGetSelectedProductStatus,
                 isLoading,
@@ -323,8 +321,8 @@ import { useStore } from 'vuex'
                 location,
                 onIonChangeGetSelectedLocation,
                 initialLocation,
-                onClickChooseFile,
-                thumbnailPath
+                thumbnailPath,
+                onClickUpload
             }
         }
     }

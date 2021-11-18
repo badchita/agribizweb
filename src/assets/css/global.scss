@@ -207,3 +207,11 @@ ion-content {
     height: 100%;
     margin-left: 8px;
 }
+
+.upload-button {
+    margin-left: 16px;
+    height: 30px;
+    text-transform: none;
+    --color: white;
+    --box-shadow: none;
+}

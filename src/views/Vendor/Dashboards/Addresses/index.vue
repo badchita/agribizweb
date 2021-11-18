@@ -125,6 +125,7 @@
     import {
         computed,
         onMounted,
+        onUpdated,
         ref
     } from '@vue/runtime-core'
 
@@ -140,30 +141,37 @@
     export default {
         name: 'Addresses',
         components: {},
+        data() {
+            return {
+                addressesHeader: [{
+                        text: 'Street/Building'
+                    },
+                    {
+                        text: 'Barangay'
+                    },
+                    {
+                        text: 'City'
+                    },
+                    {
+                        text: 'Province'
+                    },
+                    {
+                        text: 'Action'
+                    },
+                ]
+            }
+        },
         setup() {
             onMounted(() => {
                 loadAddresses(userData.value.id, status.value)
             })
 
+            onUpdated(() => {
+                loadAddresses(userData.value.id, status.value)
+            })
+
             const router = useRouter()
             const store = useStore()
-
-            const addressesHeader = [{
-                    text: 'Street/Building'
-                },
-                {
-                    text: 'Barangay'
-                },
-                {
-                    text: 'City'
-                },
-                {
-                    text: 'Province'
-                },
-                {
-                    text: 'Action'
-                },
-            ]
 
             let addresses = ref({})
             let addressesSearch = ref({})
@@ -233,15 +241,16 @@
             }
             async function loadAddresses(uId, s) {
                 isLoading.value = true;
-                const api = userData.value.user_type === 'Admin' ? AddressesAPI.listAdmin(uId, s) : AddressesAPI.list(
-                    uId, s)
+                const api = userData.value.user_type === 'Admin' ? AddressesAPI.listAdmin(uId, s) : AddressesAPI
+                    .list(
+                        uId, s)
                 await api.then((response) => {
-                        addresses.value = response.data
-                    }).catch((err) => {
-                        console.error(err);
-                    }).finally(() => {
-                        isLoading.value = false;
-                    })
+                    addresses.value = response.data
+                }).catch((err) => {
+                    console.error(err);
+                }).finally(() => {
+                    isLoading.value = false;
+                })
             }
             async function onInputSearch(ev) {
                 isLoading.value = true;
@@ -268,7 +277,6 @@
                 addressesSearch,
                 searchInput,
                 onInputSearch,
-                addressesHeader
             }
         }
     }

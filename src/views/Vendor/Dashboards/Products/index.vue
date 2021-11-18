@@ -135,6 +135,7 @@
     import {
         computed,
         onMounted,
+        onUpdated,
         ref
     } from '@vue/runtime-core'
 
@@ -174,6 +175,9 @@
         },
         setup() {
             onMounted(() => {
+                loadProduct(userData.value.id, status.value)
+            })
+            onUpdated(() => {
                 loadProduct(userData.value.id, status.value)
             })
 

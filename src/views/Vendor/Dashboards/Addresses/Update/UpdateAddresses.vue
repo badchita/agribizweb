@@ -85,9 +85,7 @@
     import {
         onMounted
     } from '@vue/runtime-core'
-    import {
-        useStore
-    } from 'vuex'
+import { useStore } from 'vuex'
     export default {
         name: 'UpdateAddresses',
         components: {},
@@ -103,7 +101,7 @@
             const address = ref({})
             const isLoading = ref(false)
 
-            const user_id = computed(() => store.state.user.userData.id)
+            const userData = computed(() => store.state.user.userData)
             const pageTitle = computed(() => {
                 if (router.currentRoute.value.params.id)
                     return 'Update Address'
@@ -116,21 +114,13 @@
             }
 
             function goBack() {
-                // clearForm()
+                clearForm()
                 router.go(-1)
             }
 
-
-            function test() {
-                console.log(address.value);
-            }
-
             async function loadAddressDetails(id) {
-                id = router.currentRoute.value.params.id
-                if (id)
-                    isLoading.value = true;
-
                 if (id) {
+                    isLoading.value = true;
                     await AddressesAPI.get(id)
                         .then((response) => {
                             address.value = response.data.data
@@ -141,17 +131,12 @@
                 }
             }
             async function onClickSave() {
-                address.value.status = 'O'
-                address.value.user_id = user_id.value
-
+                if (typeof(router.currentRoute.value.params.id) === 'undefined')
+                    address.value.user_id = userData.value.id
                 const api = address.value.id ? AddressesAPI.update(address.value) : AddressesAPI.add(address.value)
 
                 api.then(() => {
-                    clearForm()
                     goBack()
-                    setTimeout(() => {
-                        router.go()
-                    }, 100)
                 }).catch((err) => {
                     console.error(err);
                 })
@@ -161,7 +146,6 @@
                 onClickSave,
                 goBack,
                 pageTitle,
-                test,
                 isLoading,
             }
         }
