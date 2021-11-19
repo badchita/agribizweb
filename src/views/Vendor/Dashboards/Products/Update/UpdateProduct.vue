@@ -13,15 +13,12 @@
                     <ion-progress-bar v-if="isLoading" type="indeterminate"></ion-progress-bar>
 
                     <ion-row>
-                        <ion-col size="12">
-                            <img :src="thumbnailPath" style="margin-left: 16px; width: 400px; height: 300px;  object-fit: contain;" />
+                        <ion-col size="5">
+                            <img :src="thumbnailPath" style="width: 300px; height: 200px;  object-fit: contain;" />
                             <ion-button class="upload-button" style="margin-top: -24px;" @click="onClickUpload($event)">
                                 Upload
-                            </ion-button> <br>
-
-                            <ion-label class="ion-margin-start" style="color: rgb(128, 128, 128);">Thumbnail</ion-label>
+                            </ion-button>
                         </ion-col>
-                        <ion-col />
                     </ion-row>
 
                     <ion-row>
@@ -296,11 +293,13 @@
             async function onClickUpload(ev) {
                 let modal = await modalController.create({
                     component: UploadImage,
+                    componentProps: {
+                        title: 'Upload Product Thumbnail'
+                    },
                     event: ev
                 })
 
                 modal.onDidDismiss().then((returned) => {
-                    console.log(returned);
                     product.value.thumbnail_name = returned.data.fileName
                     getThumbnail(product.value.thumbnail_name)
                 })

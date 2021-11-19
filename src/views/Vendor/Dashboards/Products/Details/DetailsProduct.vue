@@ -32,14 +32,9 @@
                     </ion-row>
 
                     <ion-row>
-                        <ion-col>
-                            <ion-thumbnail class="thumbnail-style">
-                                <img :src="thumbnailPath" style="width: 100%;" />
-                            </ion-thumbnail>
+                        <ion-col size="2.7">
+                            <img :src="thumbnailPath" style="margin-left: 8px; width: 300px; height: 200px;  object-fit: contain;" />
                         </ion-col>
-                        <ion-col />
-                        <ion-col />
-                        <ion-col />
                     </ion-row>
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">

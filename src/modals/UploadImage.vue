@@ -1,5 +1,10 @@
 <template>
     <ion-page>
+        <ion-header class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>{{title}}</ion-title>
+            </ion-toolbar>
+        </ion-header>
         <ion-content>
             <ion-row>
                 <ion-col size="12">
@@ -48,6 +53,12 @@
         modalController
     } from '@ionic/core'
     export default {
+        props: {
+            title: {
+                type: String,
+                default:  ''
+            },
+        },
         setup() {
             onMounted(() => {
                 getThumbnail()
@@ -102,7 +113,7 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 10%;
+        margin-top: 9%;
         width: 400px;
         height: 300px;
     }
