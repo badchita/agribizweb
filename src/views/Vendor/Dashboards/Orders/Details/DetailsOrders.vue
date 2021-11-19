@@ -145,7 +145,11 @@
             function onClickUpdateStatus(status) {
                 let payload = {
                     id: router.currentRoute.value.params.id,
-                    order_status: status
+                    seller_id: order.value.seller_id,
+                    order_status: status,
+                    product_total_price: order.value.product_total_price,
+                    quantity: order.value.quantity,
+                    product_id: order.value.product_id,
                 }
 
                 OrderAPI.updateStatus(payload).then(() => {

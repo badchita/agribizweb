@@ -46,7 +46,7 @@
                 </ion-button>
               </ion-item>
               <ion-item lines="none">
-                <ion-note color="primary">₱10,00.00</ion-note>
+                <ion-note color="primary">₱{{numberWithCommaFormatt(dashboard.week_income)}}</ion-note>
               </ion-item>
             </ion-col>
             <ion-col class="income-rating-col">
@@ -158,11 +158,13 @@
       let newOrders = ref([])
       let ongoingOrders = ref([])
       let completedOrders = ref([])
+      let dashboard = ref({})
 
       const userId = computed(() => store.state.auth.userId)
 
       function loadDashboard() {
         DashboardAPI.get(userId.value).then((response) => {
+          dashboard.value = response.data.data
           orders.value = response.data.data.orders
           getOrdersLength(orders.value)
         })
@@ -184,7 +186,8 @@
         orders,
         newOrders,
         ongoingOrders,
-        completedOrders
+        completedOrders,
+        dashboard
       }
     }
   };
