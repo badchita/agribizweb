@@ -124,7 +124,6 @@
 
     import {
         computed,
-        onMounted,
         onUpdated,
         ref
     } from '@vue/runtime-core'
@@ -162,12 +161,9 @@
             }
         },
         setup() {
-            onMounted(() => {
-                loadAddresses(userData.value.id, status.value)
-            })
-
             onUpdated(() => {
-                loadAddresses(userData.value.id, status.value)
+                if (router.currentRoute.value.path === '/vendor/dashboards/addresses')
+                    loadAddresses(userData.value.id, status.value)
             })
 
             const router = useRouter()

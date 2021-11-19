@@ -134,9 +134,8 @@
 
     import {
         computed,
-        onMounted,
         onUpdated,
-        ref
+        ref,
     } from '@vue/runtime-core'
 
     import {
@@ -174,13 +173,6 @@
             }
         },
         setup() {
-            onMounted(() => {
-                loadProduct(userData.value.id, status.value)
-            })
-            onUpdated(() => {
-                loadProduct(userData.value.id, status.value)
-            })
-
             const router = useRouter()
             const store = useStore()
 
@@ -192,6 +184,12 @@
             const isLoading = ref(false)
 
             const userData = computed(() => store.state.user.userData)
+
+            onUpdated(() => {
+                if (router.currentRoute.value.path === '/vendor/dashboards/products')
+                    loadProduct(userData.value.id, status.value)
+            })
+
 
             function onClickGoToUpdate(id, ev) {
                 ev.stopPropagation();
@@ -260,6 +258,7 @@
                 isLoading.value = true;
                 const api = userData.value.user_type === 'Admin' ? ProductAPI.listAdmin(uId, s) : ProductAPI.list(
                     uId, s)
+
                 await api.then((response) => {
                     product.value = response.data
                 }).catch((err) => {
