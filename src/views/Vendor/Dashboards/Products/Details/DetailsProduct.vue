@@ -33,7 +33,8 @@
 
                     <ion-row>
                         <ion-col size="2.7">
-                            <img :src="thumbnailPath" style="margin-left: 8px; width: 300px; height: 200px;  object-fit: contain;" />
+                            <img :src="thumbnailPath"
+                                style="margin-left: 8px; width: 300px; height: 200px;  object-fit: contain;" />
                         </ion-col>
                     </ion-row>
                     <ion-row class="ion-margin-top">
@@ -119,10 +120,10 @@
 
 <script>
     import ProductAPI from '@/api/product'
+    import ResourceURL from '@/api/resourceURL'
 
     import ProductStatus from '@/components/ProductStatus'
     import StarRating from 'vue-star-rating'
-    import ResourceURL from '@/api/resourceURL'
 
     import {
         ref

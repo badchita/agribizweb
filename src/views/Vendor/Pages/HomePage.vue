@@ -13,7 +13,7 @@
                 <strong>NEW ORDERS</strong>
               </ion-item>
               <ion-item lines="none">
-                <ion-note color="primary">0</ion-note>
+                <ion-note color="primary">{{newOrders.length}}</ion-note>
                 <ion-icon name="cart" slot="end" />
               </ion-item>
             </ion-col>
@@ -22,7 +22,7 @@
                 <strong>ONGOING ORDERS</strong>
               </ion-item>
               <ion-item lines="none">
-                <ion-note color="primary">0</ion-note>
+                <ion-note color="warning">{{ongoingOrders.length}}</ion-note>
                 <ion-icon name="bus" slot="end" />
               </ion-item>
             </ion-col>
@@ -31,7 +31,7 @@
                 <strong>COMPLETED ORDERS</strong>
               </ion-item>
               <ion-item lines="none">
-                <ion-note color="primary">0</ion-note>
+                <ion-note color="success">{{completedOrders.length}}</ion-note>
                 <ion-icon name="checkmark-circle" slot="end" />
               </ion-item>
             </ion-col>
@@ -149,41 +149,42 @@
       onMounted(() => {
         store.dispatch('user/loadUserData', userId.value)
         loadDashboard()
-        setTimeout(() => {
-          getNewOrders()
-        }, 1000)
       })
+
+      const store = useStore()
+
 
       let orders = ref([])
       let newOrders = ref([])
-      const store = useStore()
+      let ongoingOrders = ref([])
+      let completedOrders = ref([])
 
       const userId = computed(() => store.state.auth.userId)
 
       function loadDashboard() {
         DashboardAPI.get(userId.value).then((response) => {
           orders.value = response.data.data.orders
-          console.log(orders.value);
+          getOrdersLength(orders.value)
         })
       }
 
-      function getNewOrders() {
-        orders.value.forEach((value) => {
-          switch (value.order_status) {
-            case '0': {
-              newOrders.value.push(value)
-              console.log(newOrders.value);
-            }
-            break;
+      function getOrdersLength(o) {
+        o.forEach((value) => {
+          if (value.order_status === '0') {
+            newOrders.value.push(value)
+          } else if (value.order_status === '1' || value.order_status === '2' || value.order_status === '3') {
+            ongoingOrders.value.push(value)
+          } else if (value.order_status === '4') {
+            completedOrders.value.push(value)
           }
         })
-
-        console.log(newOrders.value);
       }
 
       return {
         orders,
-        newOrders
+        newOrders,
+        ongoingOrders,
+        completedOrders
       }
     }
   };

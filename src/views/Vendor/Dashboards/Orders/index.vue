@@ -152,6 +152,7 @@
     import {
         computed,
         onMounted,
+        onUpdated,
         ref
     } from '@vue/runtime-core'
 
@@ -169,6 +170,10 @@
         components: {OrderStatus},
         setup() {
             onMounted(() => {
+                loadOrder(user_id.value, status.value)
+            })
+
+            onUpdated(() => {
                 loadOrder(user_id.value, status.value)
             })
 
