@@ -10,23 +10,15 @@ export default {
     update(addresses) {
         return api.put('address', addresses)
     },
-    list(user_id, status) {
-        if (status === 'O') {
-            return api.get(`addresses/${user_id}/` + status)
-        } else if (status === 'V') {
-            return api.get(`addresses/${user_id}/` + status)
-        } else {
-            return api.get(`addresses/` + user_id)
-        }
+    list(params) {
+        return api.get(`/addresses`, {
+            params
+        })
     },
-    listAdmin(user_id, status) {
-        if (status === 'O') {
-            return api.get(`/admin/addresses/${user_id}/` + status)
-        } else if (status === 'V') {
-            return api.get(`/admin/addresses/${user_id}/` + status)
-        } else {
-            return api.get(`/admin/addresses/` + user_id)
-        }
+    listAdmin(params) {
+        return api.get(`/admin/addresses`, {
+            params
+        })
     },
     archive(addresses) {
         return api.patch('address', addresses)

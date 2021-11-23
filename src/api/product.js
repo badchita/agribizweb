@@ -11,26 +11,17 @@ export default {
         return api.put('product', product)
     },
     upload(params) {
-        console.log(params)
         return api.post('upload', params)
     },
-    list(user_id, status) {
-        if (status === 'O') {
-            return api.get(`products/${user_id}/` + status)
-        } else if (status === 'V') {
-            return api.get(`products/${user_id}/` + status)
-        } else {
-            return api.get(`products/` + user_id)
-        }
+    list(params) {
+        return api.get(`/products`, {
+            params
+        })
     },
-    listAdmin(user_id, status) {
-        if (status === 'O') {
-            return api.get(`/admin/products/${user_id}/` + status)
-        } else if (status === 'V') {
-            return api.get(`/admin/products/${user_id}/` + status)
-        } else {
-            return api.get(`/admin/products/` + user_id)
-        }
+    listAdmin(params) {
+        return api.get(`/admin/products`, {
+            params
+        })
     },
     archive(product) {
         return api.patch('product', product)

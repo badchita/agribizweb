@@ -333,7 +333,11 @@
             }
             async function loadOrder(id) {
                 id = router.currentRoute.value.params.id
-                const api = user.value.user_type === 'Seller' ? OrderAPI.list(id) : OrderAPI.listCustomer(id)
+                const params = {
+                    offset: 0,
+                    limit: 10
+                }
+                const api = user.value.user_type === 'Seller' ? OrderAPI.list(id) : OrderAPI.listCustomer(id, params)
                 await api.then((response) => {
                     orders.value = response.data.data
                 }).catch((err) => {

@@ -237,9 +237,14 @@
             }
             async function loadAddresses(uId, s) {
                 isLoading.value = true;
-                const api = userData.value.user_type === 'Admin' ? AddressesAPI.listAdmin(uId, s) : AddressesAPI
-                    .list(
-                        uId, s)
+                const params = {
+                    offset: 0,
+                    limit: 10,
+                    user_id: uId,
+                    status: s,
+                }
+                const api = userData.value.user_type === 'Admin' ? AddressesAPI.listAdmin(params) : AddressesAPI
+                    .list(params)
                 await api.then((response) => {
                     addresses.value = response.data
                 }).catch((err) => {

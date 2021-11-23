@@ -256,8 +256,13 @@
             }
             async function loadProduct(uId, s) {
                 isLoading.value = true;
-                const api = userData.value.user_type === 'Admin' ? ProductAPI.listAdmin(uId, s) : ProductAPI.list(
-                    uId, s)
+                const params = {
+                    offset: 0,
+                    limit: 10,
+                    user_id: uId,
+                    status: s,
+                }
+                const api = userData.value.user_type === 'Admin' ? ProductAPI.listAdmin(params) : ProductAPI.list(params)
 
                 await api.then((response) => {
                     product.value = response.data
