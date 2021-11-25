@@ -190,7 +190,6 @@
                     loadProduct(userData.value.id, status.value)
             })
 
-
             function onClickGoToUpdate(id, ev) {
                 ev.stopPropagation();
                 router.push(`/vendor/dashboards/updateproduct/${id}`)

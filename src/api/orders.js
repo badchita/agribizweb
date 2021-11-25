@@ -10,18 +10,18 @@ export default {
     update(order) {
         return api.put('order', order)
     },
-    list(seller_id, status) {
-        if (status === 'O') {
-            return api.get(`orders/${seller_id}/` + status)
-        } else if (status === 'V') {
-            return api.get(`orders/${seller_id}/` + status)
-        } else {
-            return api.get(`orders/` + seller_id)
-        }
+    list(params) {
+        return api.get(`orders`, {
+            params
+        })
     },
     listCustomer(user_id, params) {
-        console.log(params);
         return api.get(`customer/orders/` + user_id, {
+            params
+        })
+    },
+    listAdmin(params) {
+        return api.get(`admin/orders`, {
             params
         })
     },

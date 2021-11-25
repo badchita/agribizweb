@@ -16,7 +16,7 @@
                     <ion-col size="1.8">
                         <ion-item lines="none">
                             <ion-label position="floating">Show</ion-label>
-                            <ion-select value="10">
+                            <ion-select value="10" @IonChange="onIonChangeShowLimit($event)">
                                 <ion-select-option value="10">10</ion-select-option>
                                 <ion-select-option value="25">25</ion-select-option>
                                 <ion-select-option value="50">50</ion-select-option>
@@ -170,11 +170,10 @@
         components: {OrderStatus},
         setup() {
             onMounted(() => {
-                loadOrder(user_id.value, status.value)
+                loadOrder(userData.value.id, status.value, 10)
             })
 
             onUpdated(() => {
-                loadOrder(user_id.value, status.value)
             })
 
             const router = useRouter()
@@ -187,7 +186,7 @@
             let searchInput = ref('')
             const isLoading = ref(false)
 
-            const user_id = computed(() => store.state.user.userData.id)
+            const userData = computed(() => store.state.user.userData)
 
             function onClickGoToUpdate(id) {
                 router.push(`/vendor/dashboards/updateorder/${id}`)
@@ -201,16 +200,20 @@
                 if (ev.detail.value === 'Archived') {
                     status.value = 'V'
                     activeSelect.value = 'Archived'
-                    loadOrder(user_id.value, status.value)
+                    loadOrder(userData.value.id, status.value)
                 } else if (ev.detail.value === 'Open') {
                     status.value = 'O'
                     activeSelect.value = 'Open'
-                    loadOrder(user_id.value, status.value)
+                    loadOrder(userData.value.id, status.value)
                 } else {
                     status.value = ''
                     activeSelect.value = 'All'
-                    loadOrder(user_id.value, status.value)
+                    loadOrder(userData.value.id, status.value)
                 }
+            }
+
+            function onIonChangeShowLimit(ev) {
+                loadOrder(userData.value.id, status.value, ev.detail.value)
             }
 
             async function onClickArchive(item, ev, i) {
@@ -244,21 +247,28 @@
                     isLoading.value = false;
                 })
             }
-            async function loadOrder(uId, s) {
+            async function loadOrder(uId, s, limit) {
                 isLoading.value = true;
-                await OrderAPI.list(uId, s)
-                    .then((response) => {
-                        order.value = response.data.data
-                    }).catch((err) => {
-                        console.error(err);
-                    }).finally(() => {
-                        isLoading.value = false;
-                    })
+                const params = {
+                    offset: 0,
+                    limit: limit,
+                    user_id: uId,
+                    status: s,
+                }
+                const api = userData.value.user_type === 'Admin' ? OrderAPI.listAdmin(params) : OrderAPI.list(params)
+
+                await api.then((response) => {
+                    order.value = response.data.data
+                }).catch((err) => {
+                    console.error(err);
+                }).finally(() => {
+                    isLoading.value = false;
+                })
             }
             async function onInputSearch(ev) {
                 isLoading.value = true;
                 searchInput.value = ev.target.value
-                await OrderAPI.search(user_id.value, searchInput.value).then((response) => {
+                await OrderAPI.search(userData.value.id, searchInput.value).then((response) => {
                     console.log(response.data);
                     orderSearch.value = response.data.data
                 }).catch((err) => {
@@ -279,7 +289,8 @@
                 onClickArchiveRestore,
                 onInputSearch,
                 searchInput,
-                orderSearch
+                orderSearch,
+                onIonChangeShowLimit
             }
         }
     }
