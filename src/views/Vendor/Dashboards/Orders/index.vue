@@ -269,7 +269,6 @@
                 isLoading.value = true;
                 searchInput.value = ev.target.value
                 await OrderAPI.search(userData.value.id, searchInput.value).then((response) => {
-                    console.log(response.data);
                     orderSearch.value = response.data.data
                 }).catch((err) => {
                     console.error(err);

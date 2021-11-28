@@ -16,7 +16,7 @@ export default {
         })
     },
     listCustomer(user_id, params) {
-        return api.get(`customer/orders/` + user_id, {
+        return api.get(`/customer/orders/`, {
             params
         })
     },

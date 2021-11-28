@@ -335,9 +335,11 @@
                 id = router.currentRoute.value.params.id
                 const params = {
                     offset: 0,
-                    limit: 10
+                    limit: 10,
+                    user_id: id,
+                    status: 'O',
                 }
-                const api = user.value.user_type === 'Seller' ? OrderAPI.list(id) : OrderAPI.listCustomer(id, params)
+                const api = user.value.user_type === 'Seller' ? OrderAPI.list(params) : OrderAPI.listCustomer(params)
                 await api.then((response) => {
                     orders.value = response.data.data
                 }).catch((err) => {

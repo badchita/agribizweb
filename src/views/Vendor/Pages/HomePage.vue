@@ -14,7 +14,7 @@
               </ion-item>
               <ion-item lines="none">
                 <ion-note color="primary">{{newOrders.length}}</ion-note>
-                <ion-icon name="cart" slot="end" />
+                <ion-icon color="primary" name="cart" slot="end" />
               </ion-item>
             </ion-col>
             <ion-col>
@@ -23,7 +23,7 @@
               </ion-item>
               <ion-item lines="none">
                 <ion-note color="warning">{{ongoingOrders.length}}</ion-note>
-                <ion-icon name="bus" slot="end" />
+                <ion-icon color="warning" name="bus" slot="end" />
               </ion-item>
             </ion-col>
             <ion-col>
@@ -32,7 +32,7 @@
               </ion-item>
               <ion-item lines="none">
                 <ion-note color="success">{{completedOrders.length}}</ion-note>
-                <ion-icon name="checkmark-circle" slot="end" />
+                <ion-icon color="success" name="checkmark-circle" slot="end" />
               </ion-item>
             </ion-col>
           </ion-row>
@@ -46,7 +46,8 @@
                 </ion-button>
               </ion-item>
               <ion-item lines="none">
-                <ion-note color="primary">₱{{numberWithCommaFormatt(dashboard.week_income)}}</ion-note>
+                <ion-note color="primary" v-if="dashboard.week_income">₱{{numberWithCommaFormatt(dashboard.week_income)}}</ion-note>
+                <ion-note color="primary" v-else>₱0</ion-note>
               </ion-item>
             </ion-col>
             <ion-col class="income-rating-col">
@@ -152,7 +153,6 @@
       })
 
       const store = useStore()
-
 
       let orders = ref([])
       let newOrders = ref([])
