@@ -94,22 +94,25 @@
                         </ion-col>
                     </ion-row>
                     <div class="ion-margin-bottom description-text">
-                        <ion-row v-for="(item,i) in ratingAndReviews" :key="i" class="ion-margin-bottom">
-                            <ion-col>
+                        <ion-row v-for="(item,i) in product_ratings" :key="i" class="ion-margin-bottom">
+                            <ion-col size="12">
                                 <ion-item lines="none">
                                     <ion-avatar slot="start">
                                         <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
                                     </ion-avatar>
                                     <ion-label>
-                                        {{item.customerName}}
+                                        <h2 v-if="item.anonymous === 0">{{item.user.username}}</h2>
+                                        <h2 v-else>{{anonymousWord(item.user.username)}}</h2>
                                         <StarRating :rating="item.rating" :show-rating="false" :read-only="true"
                                             :increment="0.01" :star-size="20" />
                                     </ion-label>
                                 </ion-item>
                             </ion-col>
-                            <ion-label class="ion-margin-start">
-                                {{item.review}}
-                            </ion-label>
+                            <ion-col>
+                                <ion-label>
+                                    {{item.review}}
+                                </ion-label>
+                            </ion-col>
                         </ion-row>
                     </div>
                 </ion-grid>
@@ -158,6 +161,7 @@
             }]
 
             let product = ref({})
+            let product_ratings = ref({})
             let thumbnailPath = ref('')
             const isLoading = ref(false)
 
@@ -183,6 +187,7 @@
                 if (id) {
                     await ProductAPI.get(id).then((response) => {
                             product.value = response.data.data
+                            product_ratings.value = response.data.data.product_ratings
                             if (product.value.thumbnail_name === "")
                                 getThumbnail()
                             else
@@ -201,7 +206,8 @@
                 goBack,
                 ratingAndReviews,
                 getThumbnail,
-                thumbnailPath
+                thumbnailPath,
+                product_ratings
             }
         }
     }

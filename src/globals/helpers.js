@@ -54,5 +54,9 @@ export default {
     var n = parseFloat(number).toFixed(2)
     var withComma = Number(n).toLocaleString('en')
     return withComma
+  },
+  anonymousWord(word) {
+    if (word.length < 3) return word
+    return word.substring(0, 2) + '*'.repeat(word.length - 2)
   }
 }
