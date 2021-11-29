@@ -71,7 +71,7 @@
                         </ion-col>
                         <ion-col class="details-col">
                             <ion-label>Date Joined</ion-label>
-                            <div class="details-label">{{user.joined_date}}</div>
+                            <div class="details-label">{{formatDate(user.joined_date)}}</div>
                         </ion-col>
                     </ion-row>
 
@@ -87,7 +87,7 @@
                                 <StatusVerification :status_verification="user.status_verification" />
                                 <ion-button v-if="user.status_verification === 0" color="tertiary"
                                     class="ion-margin-start" size="small" @click="onClickUpdateStatusVerification(1)">
-                                    Accept
+                                    Approve
                                 </ion-button>
                                 <ion-button v-if="user.status_verification === 1" color="secondary"
                                     class="ion-margin-start" size="small" @click="onClickUpdateStatusVerification(2)">
