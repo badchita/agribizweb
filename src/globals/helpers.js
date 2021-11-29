@@ -1,4 +1,5 @@
 import md5 from 'md5'
+import moment from 'moment'
 export default {
   parseError(err) {
     const errors = err && err.response && err.response.data ? err.response.data.errors : []
@@ -58,5 +59,19 @@ export default {
   anonymousWord(word) {
     if (word.length < 3) return word
     return word.substring(0, 2) + '*'.repeat(word.length - 2)
-  }
+  },
+  formatDate(value, format) {
+    if (value) {
+      var date = moment.unix(value)
+      if (!date.isValid()) {
+        date = moment(value)
+      }
+      if (format) {
+        return moment(date).format(format)
+      } else {
+        return moment(date).format('MM/DD/YYYY hh:mm A')
+      }
+    }
+    return ''
+  },
 }

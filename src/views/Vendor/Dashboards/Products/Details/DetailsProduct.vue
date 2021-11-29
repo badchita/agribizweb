@@ -89,7 +89,7 @@
 
                     <ion-row class="ion-margin-top">
                         <ion-col class="details-col">
-                            <ion-label>Rating & Reviews (5)</ion-label>
+                            <ion-label>Rating & Reviews ({{product_ratings.length}})</ion-label>
                             <StarRating :rating="4.8" :read-only="true" :increment="0.01" :star-size="20" />
                         </ion-col>
                     </ion-row>
@@ -108,9 +108,12 @@
                                     </ion-label>
                                 </ion-item>
                             </ion-col>
-                            <ion-col>
+                            <ion-col style="margin-left: 70px;">
                                 <ion-label>
-                                    {{item.review}}
+                                    <p class="ion-text-wrap">{{item.review}}</p>
+                                    <p style="margin-top: 16px;">
+                                        {{formatDate(item.created_at)}}
+                                    </p>
                                 </ion-label>
                             </ion-col>
                         </ion-row>

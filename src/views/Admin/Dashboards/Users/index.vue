@@ -63,6 +63,9 @@
                                         <OnlineStatus :isOnline="item.isOnline" />
                                     </ion-col>
                                     <ion-col class="data-col">
+                                        <StatusVerification :status_verification="item.status_verification"/>
+                                    </ion-col>
+                                    <ion-col class="data-col">
                                         <ion-buttons>
                                             <ion-button v-if="item.status === 'O'" class="update-button"
                                                 @click="onClickGoToUpdate(item.id, $event)">
@@ -100,6 +103,9 @@
                                         <OnlineStatus :isOnline="item.isOnline" />
                                     </ion-col>
                                     <ion-col class="data-col">
+                                        <StatusVerification :status_verification="item.status_verification"/>
+                                    </ion-col>
+                                    <ion-col class="data-col">
                                         <ion-buttons>
                                             <ion-button v-if="item.status === 'O'" class="update-button"
                                                 @click="onClickGoToUpdate(item.id, $event)">
@@ -130,6 +136,7 @@
 
     import UserType from '@/components/Users/UserType'
     import OnlineStatus from '@/components/Users/OnlineStatus'
+    import StatusVerification from '@/components/Users/StatusVerification'
 
     import {
         computed,
@@ -150,7 +157,8 @@
         name: 'Addresses',
         components: {
             UserType,
-            OnlineStatus
+            OnlineStatus,
+            StatusVerification
         },
         data() {
             return {
@@ -168,6 +176,9 @@
                     },
                     {
                         text: 'Active'
+                    },
+                    {
+                        text: 'Status Verification'
                     },
                     {
                         text: 'Action'
@@ -251,7 +262,11 @@
             }
             async function loadUsers(uId, s) {
                 isLoading.value = true;
-                await UserAPI.list(uId, s)
+                const params = {
+                    user_id: uId,
+                    status: s,
+                }
+                await UserAPI.list(params)
                     .then((response) => {
                         users.value = response.data.data
                     }).catch((err) => {

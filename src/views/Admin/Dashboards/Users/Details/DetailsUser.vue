@@ -76,12 +76,24 @@
                     </ion-row>
 
                     <ion-row class="ion-margin-top">
-                        <ion-col class="details-col">
+                        <ion-col size="3" class="details-col">
                             <ion-label>Status</ion-label>
                             <div v-if="user.status === 'O'" class="details-label">Enabled</div>
                             <div v-if="user.status === 'V'" class="details-label">Disabled</div>
                         </ion-col>
-                        <ion-col class="details-col">
+                        <ion-col size="3" class="details-col">
+                            <ion-label>Status Verification</ion-label>
+                            <div class="details-label">
+                                <StatusVerification :status_verification="user.status_verification" />
+                                <ion-button v-if="user.status_verification === 0" color="tertiary"
+                                    class="ion-margin-start" size="small" @click="onClickUpdateStatusVerification(1)">
+                                    Accept
+                                </ion-button>
+                                <ion-button v-if="user.status_verification === 1" color="secondary"
+                                    class="ion-margin-start" size="small" @click="onClickUpdateStatusVerification(2)">
+                                    Verify
+                                </ion-button>
+                            </div>
                         </ion-col>
                     </ion-row>
 
@@ -219,6 +231,7 @@
     import UserType from '@/components/Users/UserType'
     import OrderStatus from '@/components/OrderStatus'
     import ProductStatus from '@/components/ProductStatus'
+    import StatusVerification from '@/components/Users/StatusVerification'
 
     import {
         ref
@@ -235,7 +248,8 @@
             OnlineStatus,
             UserType,
             OrderStatus,
-            ProductStatus
+            ProductStatus,
+            StatusVerification
         },
         data() {
             return {
@@ -316,6 +330,17 @@
                     router.push(`/vendor/dashboards/detailsorders/${id}`)
             }
 
+            function onClickUpdateStatusVerification(status) {
+                let payload = {
+                    status_verification: status,
+                    id: router.currentRoute.value.params.id
+                }
+
+                UserAPI.updateStatusVerification(payload).then(() => {
+                    loadUser()
+                })
+            }
+
             async function loadUser(id) {
                 isLoading.value = true;
                 id = router.currentRoute.value.params.id
@@ -339,7 +364,8 @@
                     user_id: id,
                     status: 'O',
                 }
-                const api = user.value.user_type === 'Seller' ? OrderAPI.list(params) : OrderAPI.listCustomer(params)
+                const api = user.value.user_type === 'Seller' ? OrderAPI.list(params) : OrderAPI.listCustomer(
+                    params)
                 await api.then((response) => {
                     orders.value = response.data.data
                 }).catch((err) => {
@@ -356,7 +382,8 @@
                 products,
                 onClickRowDetails,
                 addresses,
-                orders
+                orders,
+                onClickUpdateStatusVerification
             }
         }
     }

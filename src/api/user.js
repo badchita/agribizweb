@@ -1,14 +1,10 @@
 import api from './api'
 
 export default {
-    list(user_id, status) {
-        if (status === 'O') {
-            return api.get(`users/${user_id}/` + status)
-        } else if (status === 'V') {
-            return api.get(`users/${user_id}/` + status)
-        } else {
-            return api.get(`users/` + user_id)
-        }
+    list(params) {
+        return api.get(`/users`, {
+            params
+        })
     },
     get(id) {
         return api.get('user/' + id)
@@ -18,5 +14,8 @@ export default {
     },
     search(user_id, name) {
         return api.get(`user/search/${name}/${user_id}`)
+    },
+    updateStatusVerification(params) {
+        return api.patch(`/user/update_status_verification`, params)
     },
 }
