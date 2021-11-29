@@ -9,7 +9,7 @@
             </ion-col>
             <ion-col>
                 <ion-item lines="none">
-                    <ion-button fill="clear">
+                    <ion-button fill="clear" @click="onClickNotification($event)">
                         <ion-icon slot="icon-only" name="notifications" />
                     </ion-button>
                     <ion-item lines="none" button @click="onClickItemUser($event)">
@@ -28,6 +28,8 @@
 
 <script>
     import UserPopover from '@/popovers/UserPopover'
+    import NotificationsPopover from '@/popovers/NotificationsPopover'
+
     import {
         useRouter
     } from 'vue-router'
@@ -74,12 +76,25 @@
             async function onClickOpenMenu() {
                 await menuController.open();
             }
+            async function onClickNotification(ev) {
+                let popover = await popoverController.create({
+                    component: NotificationsPopover,
+                    // componentProps: {
+                    //     userData: userData.value
+                    // },
+                    showBackdrop: false,
+                    event: ev
+                })
+
+                await popover.present();
+            }
 
             return {
                 onClickHomeCol,
                 userData,
                 onClickItemUser,
-                onClickOpenMenu
+                onClickOpenMenu,
+                onClickNotification
             }
         }
     }

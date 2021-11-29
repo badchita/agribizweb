@@ -3,6 +3,7 @@
     <ion-header class="ion-no-border">
       <NavBar />
     </ion-header>
+    
     <ion-content class="ion-padding">
       <MenuFabButton />
       <div class="container">
@@ -46,7 +47,8 @@
                 </ion-button>
               </ion-item>
               <ion-item lines="none">
-                <ion-note color="primary" v-if="dashboard.week_income">₱{{numberWithCommaFormatt(dashboard.week_income)}}</ion-note>
+                <ion-note color="primary" v-if="dashboard.week_income">
+                  ₱{{numberWithCommaFormatt(dashboard.week_income)}}</ion-note>
                 <ion-note color="primary" v-else>₱0</ion-note>
               </ion-item>
             </ion-col>

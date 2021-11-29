@@ -54,6 +54,7 @@
     people,
     radioButtonOn,
     radioButtonOff,
+    ellipse,
   } from 'ionicons/icons';
 
   addIcons({
@@ -93,6 +94,7 @@
     'people': people,
     'radio-button-on': radioButtonOn,
     'radio-button-off': radioButtonOff,
+    'ellipse': ellipse,
   })
   export default defineComponent({
     name: 'App',
