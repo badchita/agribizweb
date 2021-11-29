@@ -27,6 +27,8 @@
 </template>
 
 <script>
+    import NotificationVendorAPI from '@/api/notifications_vendor'
+
     import UserPopover from '@/popovers/UserPopover'
     import NotificationsPopover from '@/popovers/NotificationsPopover'
 
@@ -36,6 +38,7 @@
     import {
         computed,
         onMounted,
+        ref,
     } from '@vue/runtime-core'
     import {
         useStore
@@ -50,15 +53,30 @@
         components: {},
         setup() {
             onMounted(() => {
-                console.log(userData);
+                setTimeout(() => {
+                    loadNotificationVendor()
+                }, 1000)
             })
             const router = useRouter()
             const store = useStore()
+
+            let notifications_vendor = ref([])
 
             const userData = computed(() => store.state.user.userData)
 
             function onClickHomeCol() {
                 router.push(`/vendor/home`)
+            }
+
+            function loadNotificationVendor() {
+                const params = {
+                    offset: 0,
+                    limit: 10,
+                    to_id: userData.value.id
+                }
+                NotificationVendorAPI.list(params).then((response) => {
+                    notifications_vendor.value = response.data.data
+                })
             }
 
             async function onClickItemUser(ev) {
@@ -79,9 +97,9 @@
             async function onClickNotification(ev) {
                 let popover = await popoverController.create({
                     component: NotificationsPopover,
-                    // componentProps: {
-                    //     userData: userData.value
-                    // },
+                    componentProps: {
+                        notifications_vendor: notifications_vendor.value
+                    },
                     showBackdrop: false,
                     event: ev
                 })

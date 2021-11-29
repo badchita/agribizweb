@@ -184,8 +184,8 @@ const routes = [{
     component: () => import('@/views/Pages/ProfilePage')
   },
   {
-    path: '/vendor/notifications',
-    name: 'Notifications',
+    path: '/vendor/notifications-page',
+    name: 'NotificationsPage',
     component: () => import('@/views/Vendor/Pages/NotificationsPage'),
   },
 
