@@ -238,7 +238,13 @@
                 await toast.present()
             }
             async function loadAddressesDetails(uId) {
-                await AddressesAPI.list(uId, 'O')
+                const params = {
+                    offset: 0,
+                    limit: 10,
+                    user_id: uId,
+                    status: 'O',
+                }
+                await AddressesAPI.list(params)
                     .then((response) => {
                         location.value = response.data
                     })

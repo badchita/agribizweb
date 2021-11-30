@@ -224,6 +224,9 @@
                     product_total_price: order.value.product_total_price,
                     quantity: order.value.quantity,
                     product_id: order.value.product_id,
+                    order_number: order.value.order_number,
+                    user_id: order.value.user_id,
+                    order_id: order.value.id
                 }
 
                 OrderAPI.updateStatus(payload).then(() => {

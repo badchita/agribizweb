@@ -88,15 +88,22 @@
                     markRead: 1,
                 }
                 if (item.order_id) {
-                    NotificationVendorAPI.markAsRead(params).then(() => {
+                    if (item.markRead === 0) {
+                        NotificationVendorAPI.markAsRead(params).then(() => {
+                            router.push(`/vendor/dashboards/detailsorders/${item.order_id}`)
+                        })
+                    } else {
                         router.push(`/vendor/dashboards/detailsorders/${item.order_id}`)
-                    })
+                    }
                 } else if (item.product_id) {
-                    NotificationVendorAPI.markAsRead(params).then(() => {
+                    if (item.markRead === 0) {
+                        NotificationVendorAPI.markAsRead(params).then(() => {
+                            router.push(`/vendor/dashboards/detailsproduct/${item.product_id}`)
+                        })
+                    } else {
                         router.push(`/vendor/dashboards/detailsproduct/${item.product_id}`)
-                    })
+                    }
                 }
-
                 popoverController.dismiss()
             }
 

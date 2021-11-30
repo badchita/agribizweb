@@ -57,23 +57,16 @@
         components: {},
         setup() {
             onMounted(() => {
-                // setTimeout(() => {
-                //     loadNotificationVendor()
-                // }, 1000)
                 loadNotificationVendor()
-                setInterval(() => {
-                    loadNotificationVendor()
-                }, 30000)
             })
             const router = useRouter()
             const store = useStore()
 
-            let notifications_vendor = ref([])
             let newNotification = ref([])
+            let notifications_vendor = ref([])
 
             const userData = computed(() => store.state.user.userData)
-
-            watch(newNotification, function(val) {
+            watch(newNotification, function (val) {
                 newNotification = val
             })
 
@@ -88,12 +81,13 @@
                     to_id: userData.value.id
                 }
                 NotificationVendorAPI.list(params).then((response) => {
-                    notifications_vendor.value = response.data.data
-                    notifications_vendor.value.forEach((value) => {
+                    // notifications_vendor.value = response.data.data
+                    response.data.data.forEach((value) => {
                         switch (value.new) {
                             case 1: {
                                 newNotification.value.push(value)
-                            } break
+                            }
+                            break
                         }
                     })
                 })
