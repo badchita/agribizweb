@@ -84,6 +84,10 @@
                     NotificationVendorAPI.markAsRead(params).then(() => {
                         router.push(`/vendor/dashboards/detailsorders/${item.order_id}`)
                     })
+                } else if (item.product_id) {
+                    NotificationVendorAPI.markAsRead(params).then(() => {
+                        router.push(`/vendor/dashboards/detailsproduct/${item.product_id}`)
+                    })
                 }
 
             }

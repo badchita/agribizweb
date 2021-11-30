@@ -11,6 +11,9 @@
                 <ion-item lines="none">
                     <ion-button fill="clear" @click="onClickNotification($event)">
                         <ion-icon slot="icon-only" name="notifications" />
+                        <ion-badge v-if="newNotification.length > 0" class="notification-badge">
+                            {{newNotification.length}}
+                        </ion-badge>
                     </ion-button>
                     <ion-item lines="none" button @click="onClickItemUser($event)">
                         <ion-avatar>
@@ -39,6 +42,7 @@
         computed,
         onMounted,
         ref,
+        watch,
     } from '@vue/runtime-core'
     import {
         useStore
@@ -53,16 +57,25 @@
         components: {},
         setup() {
             onMounted(() => {
-                setTimeout(() => {
+                // setTimeout(() => {
+                //     loadNotificationVendor()
+                // }, 1000)
+                loadNotificationVendor()
+                setInterval(() => {
                     loadNotificationVendor()
-                }, 1000)
+                }, 30000)
             })
             const router = useRouter()
             const store = useStore()
 
             let notifications_vendor = ref([])
+            let newNotification = ref([])
 
             const userData = computed(() => store.state.user.userData)
+
+            watch(newNotification, function(val) {
+                newNotification = val
+            })
 
             function onClickHomeCol() {
                 router.push(`/vendor/home`)
@@ -76,6 +89,13 @@
                 }
                 NotificationVendorAPI.list(params).then((response) => {
                     notifications_vendor.value = response.data.data
+                    notifications_vendor.value.forEach((value) => {
+                        switch (value.new) {
+                            case 1: {
+                                newNotification.value.push(value)
+                            } break
+                        }
+                    })
                 })
             }
 
@@ -98,7 +118,8 @@
                 let popover = await popoverController.create({
                     component: NotificationsPopover,
                     componentProps: {
-                        notifications_vendor: notifications_vendor.value
+                        notifications_vendor: notifications_vendor.value,
+                        userData: userData.value
                     },
                     showBackdrop: false,
                     event: ev
@@ -112,7 +133,8 @@
                 userData,
                 onClickItemUser,
                 onClickOpenMenu,
-                onClickNotification
+                onClickNotification,
+                newNotification
             }
         }
     }

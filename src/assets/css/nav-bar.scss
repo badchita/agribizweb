@@ -32,3 +32,12 @@ ion-item {
         margin-right: 10px;
     }
 }
+
+.notification-badge {
+    position: absolute;
+    bottom: 30px;
+    left: 14px;
+    font-size: 10px;
+    font-weight: lighter;
+    background: red;
+}

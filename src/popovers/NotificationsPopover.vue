@@ -31,20 +31,55 @@
     import {
         useRouter
     } from 'vue-router'
+    import {
+        onMounted,
+        ref
+    } from '@vue/runtime-core'
     export default {
         props: {
             notifications_vendor: {
                 type: Array,
                 default: () => []
             },
+            userData: {
+                type: Object,
+                default: (() => {})
+            }
         },
-        setup() {
+        setup(props) {
+            onMounted(() => {
+                checkNewNotification()
+
+                if (hasNew.value) {
+                    updateHasNew()
+                }
+            })
             const router = useRouter()
+
+            let hasNew = ref(false)
 
             function onClickSeeAll() {
                 router.push(`/vendor/notifications-page`)
 
                 popoverController.dismiss()
+            }
+
+            function updateHasNew() {
+                const params = {
+                    to_id: props.userData.id
+                }
+                NotificationVendorAPI.updateNew(params)
+            }
+
+            function checkNewNotification() {
+                props.notifications_vendor.forEach((value) => {
+                    switch (value.new) {
+                        case 1: {
+                            hasNew.value = true
+                        }
+                        break
+                    }
+                })
             }
 
             function onClickItem(item) {
@@ -55,6 +90,10 @@
                 if (item.order_id) {
                     NotificationVendorAPI.markAsRead(params).then(() => {
                         router.push(`/vendor/dashboards/detailsorders/${item.order_id}`)
+                    })
+                } else if (item.product_id) {
+                    NotificationVendorAPI.markAsRead(params).then(() => {
+                        router.push(`/vendor/dashboards/detailsproduct/${item.product_id}`)
                     })
                 }
 

@@ -27,4 +27,7 @@ export default {
     markAsRead(params) {
         return api.patch('/notification_vendor/markRead', params)
     },
+    updateNew(params) {
+        return api.patch('/notification_vendor/updateNew', params)
+    },
 }
