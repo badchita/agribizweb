@@ -24,4 +24,7 @@ export default {
     search(seller_id, notification_vendor_number) {
         return api.get(`notification_vendor/search/${notification_vendor_number}/${seller_id}`)
     },
+    markAsRead(params) {
+        return api.patch('/notification_vendor/markRead', params)
+    },
 }

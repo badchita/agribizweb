@@ -54,6 +54,12 @@
                                 Customer</ion-button>
                         </ion-col>
                     </ion-row>
+                    <ion-row>
+                        <ion-col class="details-col">
+                            <ion-label>Date Ordered</ion-label>
+                            <div class="details-label">{{formatDate(order.created_at)}}</div>
+                        </ion-col>
+                    </ion-row>
 
                     <ion-row class="ion-margin-top">
                         <ion-col>
@@ -98,6 +104,64 @@
                             </div>
                         </ion-col>
                     </ion-row>
+
+                    <ion-row class="ion-margin-top">
+                        <ion-col>
+                            <ion-label class="details-header-label">
+                                Customer Information
+                            </ion-label>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col class="details-col">
+                            <ion-label>Username</ion-label>
+                            <div class="details-label">
+                                {{customer_details.username}}
+                            </div>
+                        </ion-col>
+                        <ion-col class="details-col">
+                            <ion-label>Mobile</ion-label>
+                            <div class="details-label">
+                                {{customer_details.mobile}}
+                            </div>
+                        </ion-col>
+                        <ion-col class="details-col">
+                            <ion-label>Email</ion-label>
+                            <div class="details-label">
+                                {{customer_details.email}}
+                            </div>
+                        </ion-col>
+                    </ion-row>
+
+                    <div v-if="userData.user_type === 'Admin'">
+                        <ion-row class="ion-margin-top">
+                            <ion-col>
+                                <ion-label class="details-header-label">
+                                    Seller Information
+                                </ion-label>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col class="details-col">
+                                <ion-label>Username</ion-label>
+                                <div class="details-label">
+                                    {{seller_details.username}}
+                                </div>
+                            </ion-col>
+                            <ion-col class="details-col">
+                                <ion-label>Mobile</ion-label>
+                                <div class="details-label">
+                                    {{seller_details.mobile}}
+                                </div>
+                            </ion-col>
+                            <ion-col class="details-col">
+                                <ion-label>Email</ion-label>
+                                <div class="details-label">
+                                    {{seller_details.email}}
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                    </div>
                 </ion-grid>
             </div>
         </ion-content>
@@ -110,6 +174,7 @@
     import OrderStatus from '@/components/OrderStatus'
 
     import {
+        computed,
         ref
     } from '@vue/reactivity'
     import {
@@ -118,6 +183,9 @@
     import {
         onMounted
     } from '@vue/runtime-core'
+    import {
+        useStore
+    } from 'vuex'
     export default {
         components: {
             OrderStatus,
@@ -127,12 +195,18 @@
                 loadOrder()
             })
 
+            const router = useRouter()
+            const store = useStore()
+
             let order = ref({})
             let product_details = ref({})
             let ship_from_address_details = ref({})
             let ship_to_address_details = ref({})
-            const router = useRouter()
+            let customer_details = ref({})
+            let seller_details = ref({})
             const isLoading = ref(false)
+
+            let userData = computed(() => store.state.user.userData)
 
             function goBack() {
                 router.go(-1)
@@ -165,6 +239,8 @@
                             product_details.value = response.data.data.product_details
                             ship_from_address_details.value = response.data.data.ship_from_address_details
                             ship_to_address_details.value = response.data.data.ship_to_address_details
+                            customer_details.value = response.data.data.customer_details
+                            seller_details.value = response.data.data.seller_details
                         })
                         .finally(() => {
                             isLoading.value = false;
@@ -180,7 +256,10 @@
                 addressFormatt,
                 ship_from_address_details,
                 ship_to_address_details,
-                onClickUpdateStatus
+                onClickUpdateStatus,
+                customer_details,
+                seller_details,
+                userData
             }
         }
     }

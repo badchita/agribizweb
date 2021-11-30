@@ -13,7 +13,8 @@
                                 <h1>Notifications</h1>
                             </strong>
                         </ion-list-header>
-                        <ion-item v-for="(item,i) in notifications_vendor" :key="i" lines="none" button>
+                        <ion-item v-for="(item,i) in notifications_vendor" :key="i" lines="none" button
+                            @click="onClickItem(item)">
                             <ion-label v-if="item.markRead === 0" class="ion-text-wrap"
                                 style="font-size: 16px; font-weight: 700;">
                                 {{item.title}}<br>
@@ -27,7 +28,7 @@
                                 <p style="font-size: 12px;">{{item.description}}</p>
                                 <p style="font-size: 12px;">{{formatDate(item.created_at)}}</p>
                             </ion-label>
-                            <ion-icon slot="end" color="primary" size="small" name="ellipse" />
+                            <ion-icon v-if="item.markRead === 0" slot="end" color="primary" size="small" name="ellipse" />
                         </ion-item>
                     </ion-list>
                 </ion-card-content>
@@ -47,11 +48,16 @@
     import {
         useStore
     } from 'vuex'
+    import {
+        useRouter
+    } from 'vue-router'
     export default {
         setup() {
             onMounted(() => {
                 loadNotificationVendor()
             })
+
+            const router = useRouter()
             const store = useStore()
 
             let notifications_vendor = ref([])
@@ -68,8 +74,22 @@
                     notifications_vendor.value = response.data.data
                 })
             }
+
+            function onClickItem(item) {
+                let params = {
+                    id: item.id,
+                    markRead: 1,
+                }
+                if (item.order_id) {
+                    NotificationVendorAPI.markAsRead(params).then(() => {
+                        router.push(`/vendor/dashboards/detailsorders/${item.order_id}`)
+                    })
+                }
+
+            }
             return {
-                notifications_vendor
+                notifications_vendor,
+                onClickItem
             }
         }
     }
