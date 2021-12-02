@@ -153,7 +153,8 @@
         computed,
         onMounted,
         onUpdated,
-        ref
+        ref,
+        watch
     } from '@vue/runtime-core'
 
     import {
@@ -167,13 +168,16 @@
     } from '@ionic/core'
     export default {
         name: 'Order',
-        components: {OrderStatus},
+        components: {
+            OrderStatus
+        },
         setup() {
             onMounted(() => {
                 loadOrder(userData.value.id, status.value, 10)
             })
 
             onUpdated(() => {
+                render.value = true
             })
 
             const router = useRouter()
@@ -184,7 +188,12 @@
             let status = ref('O')
             let activeSelect = ref('Open')
             let searchInput = ref('')
+            let render = ref(false)
             const isLoading = ref(false)
+
+            watch(render.value, function(val) {
+                console.log(val);
+            })
 
             const userData = computed(() => store.state.user.userData)
 
@@ -255,7 +264,8 @@
                     user_id: uId,
                     status: s,
                 }
-                const api = userData.value.user_type === 'Admin' ? OrderAPI.listAdmin(params) : OrderAPI.list(params)
+                const api = userData.value.user_type === 'Admin' ? OrderAPI.listAdmin(params) : OrderAPI.list(
+                    params)
 
                 await api.then((response) => {
                     order.value = response.data.data

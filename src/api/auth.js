@@ -5,7 +5,6 @@ export default {
         return api.post('login', auth)
     },
     logout(params) {
-        console.log(params);
         return api.post('logout', params)
     },
     register(auth) {

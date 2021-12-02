@@ -135,7 +135,8 @@
         ref
     } from '@vue/reactivity'
     import {
-        onMounted
+        // onMounted,
+        onUpdated, watch
     } from '@vue/runtime-core'
     import {
         useRouter
@@ -147,8 +148,13 @@
             StarRating,
         },
         setup() {
-            onMounted(() => {
-                loadProduct()
+            // onMounted(() => {
+            //     loadProduct()
+            // })
+
+            onUpdated(() => {
+                if (router.currentRoute.value.path ===`/vendor/dashboards/detailsproduct/${router.currentRoute.value.params.id}`)
+                    loadProduct()
             })
 
             const router = useRouter()
@@ -167,6 +173,10 @@
             let product_ratings = ref({})
             let thumbnailPath = ref('')
             const isLoading = ref(false)
+
+            watch(router, function(val) {
+                console.log(val);
+            })
 
             function onClickGoToUpdate(id) {
                 router.push(`/vendor/dashboards/updateproduct/${id}`)

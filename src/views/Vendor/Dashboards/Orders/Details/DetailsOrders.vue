@@ -209,7 +209,7 @@
             let userData = computed(() => store.state.user.userData)
 
             function goBack() {
-                router.go(-1)
+                router.push(`/vendor/dashboards/orders`)
             }
 
             function addressFormatt(street, brangay, city, province) {

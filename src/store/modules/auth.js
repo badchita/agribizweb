@@ -66,7 +66,6 @@ export default {
     },
     SET_RESPONSE(state, response) {
       state.response = response
-      console.log(state.response);
     }
   },
   actions: {

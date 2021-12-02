@@ -38,7 +38,6 @@
             const store = useStore()
 
             let loginResponse = computed(() => store.state.auth.response)
-            console.log(loginResponse.value);
 
             function onClickManageAccount() {
                 router.push(`/profile`)
@@ -57,7 +56,6 @@
                     }, 500)
                 })
             }
-
             async function onToast(m) {
                 const toast = await toastController.create({
                     message: m,
