@@ -256,7 +256,10 @@
             async function onInputSearch(ev) {
                 isLoading.value = true;
                 searchInput.value = ev.target.value
-                await AddressesAPI.search(searchInput.value).then((response) => {
+
+                const api = userData.value.user_type === 'Admin' ? AddressesAPI.searchAll(searchInput.value) :  AddressesAPI.search(searchInput.value, userData.value.id)
+
+                await api.then((response) => {
                     addressesSearch.value = response.data
                 }).catch((err) => {
                     console.error(err);

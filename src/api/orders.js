@@ -31,8 +31,11 @@ export default {
     delete(id) {
         return api.delete('order', id)
     },
-    search(seller_id, order_number) {
+    search(order_number, seller_id) {
         return api.get(`order/search/${order_number}/${seller_id}`)
+    },
+    searchAll(order_number) {
+        return api.get(`order/searchall/${order_number}`)
     },
     updateStatus(payload) {
         return api.patch('/order/update_status', payload)

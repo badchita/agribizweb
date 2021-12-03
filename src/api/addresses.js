@@ -26,7 +26,10 @@ export default {
     delete(id) {
         return api.delete('address', id)
     },
-    search(name) {
-        return api.get('address/search/' + name)
+    search(name, user_Id) {
+        return api.get(`address/search/${name}/${user_Id}`)
+    },
+    searchAll(name) {
+        return api.get(`address/searchall/${name}`)
     }
 }

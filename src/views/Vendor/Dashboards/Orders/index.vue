@@ -278,7 +278,10 @@
             async function onInputSearch(ev) {
                 isLoading.value = true;
                 searchInput.value = ev.target.value
-                await OrderAPI.search(userData.value.id, searchInput.value).then((response) => {
+
+                const api = userData.value.user_type === 'Admin' ? OrderAPI.searchAll(searchInput.value) :  OrderAPI.search(searchInput.value, userData.value.id)
+
+                await api.then((response) => {
                     orderSearch.value = response.data.data
                 }).catch((err) => {
                     console.error(err);

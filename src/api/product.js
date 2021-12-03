@@ -29,7 +29,10 @@ export default {
     delete(id) {
         return api.delete('product', id)
     },
-    search(name) {
-        return api.get('product/search/' + name)
+    search(name, user_Id) {
+        return api.get(`product/search/${name}/${user_Id}`)
+    },
+    searchAll(name) {
+        return api.get(`product/searchall/${name}`)
     }
 }

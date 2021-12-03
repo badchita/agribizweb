@@ -194,7 +194,7 @@
                 // if (router.currentRoute.value.path === '/vendor/dashboards/products')
                 //     loadProduct(userData.value.id, status.value)
             })
-            watch(router, function(val) {
+            watch(router, function (val) {
                 console.log(val);
                 loadProduct(userData.value.id, status.value)
             })
@@ -270,7 +270,8 @@
                     user_id: uId,
                     status: s,
                 }
-                const api = userData.value.user_type === 'Admin' ? ProductAPI.listAdmin(params) : ProductAPI.list(params)
+                const api = userData.value.user_type === 'Admin' ? ProductAPI.listAdmin(params) : ProductAPI.list(
+                    params)
 
                 await api.then((response) => {
                     product.value = response.data
@@ -283,7 +284,10 @@
             async function onInputSearch(ev) {
                 isLoading.value = true;
                 searchInput.value = ev.target.value
-                await ProductAPI.search(searchInput.value).then((response) => {
+
+                const api = userData.value.user_type === 'Admin' ? ProductAPI.searchAll(searchInput.value) :  ProductAPI.search(searchInput.value, userData.value.id)
+
+                await api.then((response) => {
                     productSearch.value = response.data
                 }).catch((err) => {
                     console.error(err);
