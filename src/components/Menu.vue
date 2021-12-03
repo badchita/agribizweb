@@ -50,13 +50,18 @@
             const selectedIndex = ref(0);
 
             const userType = computed(() => store.state.auth.userType)
-            console.log(userType.value);
 
             const adminPages = [{
                     title: 'Users',
                     url: '/admin/dashboards/users',
                     iosIcon: 'people'
-                }, {
+                },
+                {
+                    title: 'Dashboards',
+                    url: '/admin/dashboards/dashboard',
+                    iosIcon: 'bar-chart'
+                }, 
+                {
                     title: 'Products',
                     url: '/vendor/dashboards/products',
                     iosIcon: 'cube'
@@ -84,17 +89,17 @@
             ]
 
             const appPages = [{
-                    title: 'Products',
+                    title: 'My Products',
                     url: '/vendor/dashboards/products',
                     iosIcon: 'cube'
                 },
                 {
-                    title: 'Addresses',
+                    title: 'My Addresses',
                     url: '/vendor/dashboards/addresses',
                     iosIcon: 'business'
                 },
                 {
-                    title: 'Orders',
+                    title: 'My Orders',
                     url: '/vendor/dashboards/orders',
                     iosIcon: 'receipt'
                 },

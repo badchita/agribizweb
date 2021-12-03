@@ -200,6 +200,26 @@ const routes = [{
     name: 'UsersDetail',
     component: () => import('@/views/Admin/Dashboards/Users/Details/DetailsUser'),
   },
+  {
+    path: '/admin/dashboards/dashboard',
+    name: 'Dashboard',
+    component: () => import('@/views/Admin/Dashboards/Dashboard/index'),
+  },
+  {
+    path: '/admin/dashboards/updatedashboard/:id',
+    name: 'UpdateDashboard',
+    component: () => import('@/views/Admin/Dashboards/Dashboard/Update/UpdateDashboard'),
+  },
+  {
+    path: '/admin/dashboards/updatedashboard',
+    name: 'AddDashboard',
+    component: () => import('@/views/Admin/Dashboards/Dashboard/Update/UpdateDashboard'),
+  },
+  {
+    path: '/admin/dashboards/detailsdashboard/:id',
+    name: 'DashboardDetail',
+    component: () => import('@/views/Admin/Dashboards/Dashboard/Details/DetailsDashboard'),
+  },
 ]
 
 const router = createRouter({

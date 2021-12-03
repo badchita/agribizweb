@@ -119,6 +119,7 @@ import { useStore } from 'vuex'
             }
 
             async function loadAddressDetails(id) {
+                id = router.currentRoute.value.params.id
                 if (id) {
                     isLoading.value = true;
                     await AddressesAPI.get(id)

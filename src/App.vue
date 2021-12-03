@@ -55,6 +55,7 @@
     radioButtonOn,
     radioButtonOff,
     ellipse,
+    barChart,
   } from 'ionicons/icons';
 
   addIcons({
@@ -95,6 +96,7 @@
     'radio-button-on': radioButtonOn,
     'radio-button-off': radioButtonOff,
     'ellipse': ellipse,
+    'bar-chart': barChart,
   })
   export default defineComponent({
     name: 'App',

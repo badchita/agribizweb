@@ -3,7 +3,9 @@ import helpers from '../globals/helpers'
 import AuthAPI from './auth'
 
 let api = axios.create({
-    baseURL: 'http://localhost:8000/api/',
+    // baseURL: 'http://localhost:8000/api/',
+    // baseURL: 'http://10.0.2.2:3000/api/',
+    baseURL: 'http://192.168.56.1:8000/api',
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

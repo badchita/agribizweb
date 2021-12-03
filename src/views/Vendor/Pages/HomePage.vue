@@ -3,7 +3,7 @@
     <ion-header class="ion-no-border">
       <NavBar />
     </ion-header>
-    
+
     <ion-content class="ion-padding">
       <MenuFabButton />
       <div class="container">
@@ -60,7 +60,9 @@
                 </ion-button>
               </ion-item>
               <ion-item lines="none">
-                <ion-note color="primary">₱23,450.23</ion-note>
+                <ion-note color="primary" v-if="dashboard.weekly_income">
+                  ₱{{numberWithCommaFormatt(dashboard.weekly_income)}}</ion-note>
+                <ion-note color="primary" v-else>₱0</ion-note>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -74,7 +76,9 @@
                 </ion-button>
               </ion-item>
               <ion-item lines="none">
-                <ion-note color="primary">₱500,00.00</ion-note>
+                <ion-note color="primary" v-if="dashboard.year_income">
+                  ₱{{numberWithCommaFormatt(dashboard.year_income)}}</ion-note>
+                <ion-note color="primary" v-else>₱0</ion-note>
               </ion-item>
             </ion-col>
             <ion-col class="income-rating-col">
@@ -85,7 +89,9 @@
                 </ion-button>
               </ion-item>
               <ion-item lines="none">
-                <ion-note color="primary">₱200,980.20</ion-note>
+                <ion-note color="primary" v-if="dashboard.yearly_income">
+                  ₱{{numberWithCommaFormatt(dashboard.yearly_income)}}</ion-note>
+                <ion-note color="primary" v-else>₱0</ion-note>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -99,7 +105,7 @@
                 </ion-button>
               </ion-item>
               <ion-item lines="none">
-                <ion-note color="primary">0</ion-note>
+                <ion-note color="primary">{{orders.length}}</ion-note>
               </ion-item>
             </ion-col>
             <ion-col class="income-rating-col">

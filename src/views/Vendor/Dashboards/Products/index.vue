@@ -134,8 +134,10 @@
 
     import {
         computed,
+        onMounted,
         onUpdated,
         ref,
+        watch,
     } from '@vue/runtime-core'
 
     import {
@@ -173,6 +175,9 @@
             }
         },
         setup() {
+            onMounted(() => {
+                loadProduct(userData.value.id, status.value)
+            })
             const router = useRouter()
             const store = useStore()
 
@@ -186,8 +191,12 @@
             const userData = computed(() => store.state.user.userData)
 
             onUpdated(() => {
-                if (router.currentRoute.value.path === '/vendor/dashboards/products')
-                    loadProduct(userData.value.id, status.value)
+                // if (router.currentRoute.value.path === '/vendor/dashboards/products')
+                //     loadProduct(userData.value.id, status.value)
+            })
+            watch(router, function(val) {
+                console.log(val);
+                loadProduct(userData.value.id, status.value)
             })
 
             function onClickGoToUpdate(id, ev) {
