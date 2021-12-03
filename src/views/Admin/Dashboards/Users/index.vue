@@ -204,6 +204,14 @@
 
             const user_id = computed(() => store.state.user.userData.id)
 
+            // function clear() {
+            //     users.value = {}
+            //     usersSearch.value = {}
+            //     status.value = 'O'
+            //     activeSelect.value = 'Open'
+            //     searchInput.value = ''
+            // }
+
             function onClickGoToUpdate(id, ev) {
                 ev.stopPropagation();
                 router.push(`/vendor/dashboards/updateaddresses/${id}`)

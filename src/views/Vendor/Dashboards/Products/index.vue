@@ -135,9 +135,7 @@
     import {
         computed,
         onMounted,
-        onUpdated,
         ref,
-        watch,
     } from '@vue/runtime-core'
 
     import {
@@ -171,13 +169,14 @@
                     {
                         text: 'Action'
                     },
-                ]
+                ],
             }
         },
         setup() {
             onMounted(() => {
                 loadProduct(userData.value.id, status.value)
             })
+            console.log('eneter')
             const router = useRouter()
             const store = useStore()
 
@@ -189,15 +188,6 @@
             const isLoading = ref(false)
 
             const userData = computed(() => store.state.user.userData)
-
-            onUpdated(() => {
-                // if (router.currentRoute.value.path === '/vendor/dashboards/products')
-                //     loadProduct(userData.value.id, status.value)
-            })
-            watch(router, function (val) {
-                console.log(val);
-                loadProduct(userData.value.id, status.value)
-            })
 
             function onClickGoToUpdate(id, ev) {
                 ev.stopPropagation();
@@ -285,7 +275,8 @@
                 isLoading.value = true;
                 searchInput.value = ev.target.value
 
-                const api = userData.value.user_type === 'Admin' ? ProductAPI.searchAll(searchInput.value) :  ProductAPI.search(searchInput.value, userData.value.id)
+                const api = userData.value.user_type === 'Admin' ? ProductAPI.searchAll(searchInput.value) :
+                    ProductAPI.search(searchInput.value, userData.value.id)
 
                 await api.then((response) => {
                     productSearch.value = response.data

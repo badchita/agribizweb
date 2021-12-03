@@ -3,6 +3,8 @@ import {
   createWebHistory
 } from '@ionic/vue-router';
 
+// import Products from '@/views/Vendor/Dashboards/Products/index'
+
 const routes = [{
     path: '/',
     redirect: '/vendor/'
@@ -42,6 +44,7 @@ const routes = [{
     path: '/vendor/dashboards/products',
     name: 'Products',
     component: () => import('@/views/Vendor/Dashboards/Products/index'),
+    // component: Products,
   },
   {
     path: `/vendor/dashboards/updateproduct`,
