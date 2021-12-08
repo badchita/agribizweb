@@ -2,41 +2,39 @@
     <ion-page>
         <ion-header>
             <ion-toolbar>
-                <ion-buttons slot="start">
-                    <ion-button @click="onClickOpenChatMenu">
-                        <ion-icon name="ellipsis-vertical" />
-                    </ion-button>
-                </ion-buttons>
-                <ion-label>
-                    Name
-                </ion-label>
+                <ion-avatar slot="start">
+                    <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
+                </ion-avatar>
+                <!-- <ion-title v-if="Object.keys(selectedChat).length > 0">
+                    {{selectedChat.selectedUsername}}
+                </ion-title> -->
             </ion-toolbar>
         </ion-header>
         <ion-content>
-            <!-- <MenuFabButton /> -->
             <section ref="chatArea" class="chat-area">
-                <ion-item lines="none" v-for="(message, i) in messages" :key="i">
-                    <div v-if=" message.author === 'user'" class="message-out" slot="end">
-                        <p>
-                            {{message.body}}
-                        </p>
+                <ion-item lines="none" v-for="(item, i) in conversation" :key="i">
+                    <div v-if="item.sender_id === userData.id" class="message-out" slot="end">
+                        <ion-label class="ion-text-wrap">
+                            {{item.message}}
+                        </ion-label>
                     </div>
 
-                    <ion-item lines="none" v-else-if=" message.author !== 'user'">
-
-                        <p class="message-in">
-                            {{message.body}}
-                        </p>
-                    </ion-item>
+                    <div v-else-if="item.from_id === userData.id" class="message-in">
+                        <ion-label class="ion-text-wrap">
+                            {{item.message}}
+                        </ion-label>
+                    </div>
                 </ion-item>
             </section>
         </ion-content>
         <ion-footer>
             <ion-toolbar>
                 <ion-item lines="none" colors="none">
-                    <ion-textarea autoGrow="true" :value="userMessage" maxlength="500"
+                    <ion-textarea autoGrow="true" v-model="userMessage" maxlength="500" rows="1"
                         placeholder="Type message here..."></ion-textarea>
-                    <ion-button @click.prevent="sendMessage('out')">send</ion-button>
+                    <ion-button @click="sendMessage">
+                        <ion-icon slot="icon-only" name="send-sharp" />
+                    </ion-button>
                 </ion-item>
             </ion-toolbar>
         </ion-footer>
@@ -44,74 +42,78 @@
 </template>
 
 <script>
+    import ConversationsAPI from '@/api/conversations'
+
     import {
+        computed,
         ref
     } from '@vue/reactivity'
     import {
-        menuController
-    } from '@ionic/core'
+        nextTick,
+        onMounted,
+        watch
+    } from '@vue/runtime-core'
+    import {
+        useStore
+    } from 'vuex'
     export default {
-        setup() {
-            let senderMessage = ref('')
+        props: {
+            selectedConversationId: {
+                type: Number,
+                default: 0
+            }
+        },
+        setup(props) {
+            onMounted(() => {
+                console.log(props.selectedConversationId);
+                loadConversation(props.selectedConversationId)
+            })
+            const store = useStore()
+
             let userMessage = ref('')
+            let conversation = ref([])
 
-            let messages = ref([{
-                    body: "Hello",
-                    author: "sender",
-                },
-                {
-                    body: "Hi",
-                    author: "user",
-                },
-                {
-                    body: "How are you?",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "user",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "user",
-                },
-            ], )
+            const userData = computed(() => store.state.user.userData)
 
-            async function onClickOpenChatMenu() {
-                await menuController.enable(true, 'chat-menu')
-                await menuController.open('chat-menu')
+            watch(props.selectedChat, function () {
+                loadConversation(props.selectedConversationId)
+            })
+
+            async function loadConversation(cId) {
+                const params = {
+                    id: cId
+                }
+                await ConversationsAPI.list(params).then((response) => {
+                    conversation.value = response.data.data
+                })
+            }
+            async function sendMessage() {
+                let params = {
+                    sender_id: userData.value.id,
+                    from_id: props.from_id,
+                    from_username: props.from_username,
+                    sender_username: userData.value.username,
+                    message: userMessage.value,
+                    conversation_id: props.selectedChat.conversation_id
+                }
+                await ConversationsAPI.add(params).then(() => {
+                    nextTick(() => {
+                        loadConversation(props.selectedChat.conversation_id)
+                    })
+                })
             }
 
             return {
-                senderMessage,
                 userMessage,
-                messages,
-                onClickOpenChatMenu
+                conversation,
+                sendMessage,
+                userData
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-
+    @import '@/assets/css/global.scss';
+    @import '@/assets/css/conversation.scss';
 </style>

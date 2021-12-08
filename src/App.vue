@@ -56,6 +56,7 @@
     radioButtonOff,
     ellipse,
     barChart,
+    sendSharp,
   } from 'ionicons/icons';
 
   addIcons({
@@ -97,6 +98,7 @@
     'radio-button-off': radioButtonOff,
     'ellipse': ellipse,
     'bar-chart': barChart,
+    'send-sharp': sendSharp
   })
   export default defineComponent({
     name: 'App',

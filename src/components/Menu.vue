@@ -60,7 +60,7 @@
                     title: 'Dashboards',
                     url: '/admin/dashboards/dashboard',
                     iosIcon: 'bar-chart'
-                }, 
+                },
                 {
                     title: 'Products',
                     url: '/vendor/dashboards/products',
@@ -76,11 +76,11 @@
                     url: '/vendor/dashboards/orders',
                     iosIcon: 'receipt'
                 },
-                // {
-                //     title: 'Chats',
-                //     url: '/vendor/dashboards/chats',
-                //     iosIcon: 'chatbubble-ellipses'
-                // },
+                {
+                    title: 'Chats',
+                    url: '/vendor/dashboards/chats',
+                    iosIcon: 'chatbubble-ellipses'
+                },
                 {
                     title: 'Notifications',
                     url: '/vendor/dashboards/notifications',
@@ -103,11 +103,11 @@
                     url: '/vendor/dashboards/orders',
                     iosIcon: 'receipt'
                 },
-                // {
-                //     title: 'Chats',
-                //     url: '/vendor/dashboards/chats',
-                //     iosIcon: 'chatbubble-ellipses'
-                // },
+                {
+                    title: 'Chats',
+                    url: '/vendor/dashboards/chats',
+                    iosIcon: 'chatbubble-ellipses'
+                },
                 {
                     title: 'Notifications',
                     url: '/vendor/dashboards/notifications',

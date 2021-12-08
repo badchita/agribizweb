@@ -1,0 +1,67 @@
+.split-pane-content {
+    color: black;
+    overflow-x: hidden;
+}
+
+.split-pane-content::-webkit-scrollbar-track {
+    padding: 2px 0;
+}
+
+.split-pane-content::-webkit-scrollbar {
+    overflow-y: auto;
+    width: 10px;
+}
+
+.split-pane-content::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #D3D3D3;
+}
+
+p {
+    font-size: 12px;
+}
+
+.chat-area {
+    padding-top: 16px;
+
+    .message-in {
+        background: rgb(152, 154, 162, .2);
+        color: black;
+        margin-right: 15%;
+        border-radius: 6px;
+        padding: 0.5em;
+        margin-bottom: .5em;
+        font-size: 0.8em;
+    }
+
+    .message-out {
+        background: rgb(88, 168, 157);
+        color: white;
+        margin-left: 15%;
+        border-radius: 6px;
+        padding: 0.5em;
+        margin-bottom: 1em;
+        font-size: 0.8em;
+    }
+}
+
+ion-textarea {
+    --padding-start: 10px !important;
+    --color: #696969;
+    background: rgb(220, 220, 220, .5);
+    border-radius: 16px;
+    margin: 0;
+}
+
+ion-button {
+    --background: transparent;
+    --box-shadow: transparent;
+    --color: rgb(88, 168, 157);
+    width: 40px;
+    height: 30px;
+
+    ion-icon {
+        margin: auto;
+        font-size: 28px;
+    }
+}

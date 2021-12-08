@@ -15,8 +15,11 @@
         name: 'MenuFabButton',
         setup() {
             async function onClickOpenMenu() {
-                // await menuController.enable(false, 'chat-menu')
-
+                // await menuController.enable(true, 'main-menu').then(data => {
+                //     if (!data) {
+                //         this.menuController.enable(false);
+                //     }
+                // })
                 await menuController.enable(true, 'main-menu')
                 await menuController.open('main-menu')
 

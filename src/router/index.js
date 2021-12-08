@@ -160,23 +160,31 @@ const routes = [{
     component: () => import('@/views/Vendor/Dashboards/Notifications/Details/DetailsNotification')
   },
   {
-    path: `/vendor/dashboards/chats`,
+    path: `/vendor/dashboards/chats/:id?`,
     name: 'Chats',
     meta: {
       requiresAuth: true
     },
     component: () => import('@/views/Vendor/Dashboards/Chats/index'),
-    children: [{
-      path: '',
-      redirect: '/dashboards/chats/1'
-    }, {
-      path: `/dashboards/chats/1`,
-      name: 'Conversation',
-      meta: {
-        requiresAuth: true
-      },
-      component: () => import('@/components/Chats/Conversation')
-    }, ]
+    // children: [{
+    //   path: '',
+    //   redirect: '/dashboards/chats/1'
+    // }, {
+    //   path: `/dashboards/chats/:id`,
+    //   name: 'Conversation',
+    //   meta: {
+    //     requiresAuth: true
+    //   },
+    //   component: () => import('@/components/Chats/Conversation')
+    // }, ]
+  },
+  {
+    path: `/dashboards/chats/:id`,
+    name: 'Conversation',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/components/Chats/Conversation')
   },
   {
     path: `/profile`,

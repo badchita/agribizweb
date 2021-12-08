@@ -1,66 +1,120 @@
 <template>
     <ion-page>
-        <!-- <ion-header>
+        <ion-header>
             <NavBar />
-        </ion-header> -->
-        <!-- <ion-content>
-            <MenuFabButton /> -->
-        <ion-split-pane content-id="chat-content" when="md">
-            <ion-menu content-id="chat-content" menu-id="chat-menu">
-                <ion-list id="inbox-list">
-                    <ion-list-header>
-                        <ion-label>Chats</ion-label>
-                    </ion-list-header>
-                    <ion-menu-toggle auto-hide="false" v-for="(item, i) in 20" :key="i">
-                        <ion-item class="hydrated" :class="{ selected: selectedIndex === i }" router-direction="root"
-                            router-link="/dashboards/chats/1" lines="none" button>
+        </ion-header>
+        <ion-content>
+            <MenuFabButton />
+            <ion-split-pane content-id="main">
+                <ion-content>
+                    <ion-header class="ion-no-border">
+                        <ion-toolbar>
+                            <ion-title>
+                                Chats
+                            </ion-title>
+                        </ion-toolbar>
+                        <ion-toolbar>
+                            <ion-searchbar v-model="searchUsername" mode="ios"></ion-searchbar>
+                        </ion-toolbar>
+
+                    </ion-header>
+                    <ion-list v-if="searchUsername === ''">
+                        <ion-item v-for="(item, i) in chats" :key="i"
+                            :router-link="`/vendor/dashboards/chats/${item.id}`" router-direction="root" lines="none"
+                            detail="false" class="hydrated" :class="{ selected: selectedIndex === i }" button
+                            @click="selectedItems(item, false)">
+                            <ion-avatar>
+                                <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
+                            </ion-avatar>
+                            <ion-label class="ion-margin-start" v-if="item.sender_id === userData.id">
+                                {{item.from_username}} <p class="ion-text-wrap">message</p>
+                            </ion-label>
+                            <ion-label class="ion-margin-start" v-else>{{item.sender_username}} <p
+                                    class="ion-text-wrap">message</p>
+                            </ion-label>
+                        </ion-item>
+                    </ion-list>
+                    <ion-list v-else>
+                        <ion-item v-for="(item, i) in searchedUsers" :key="i"
+                            :router-link="`/vendor/dashboards/chats/${item.id}`" router-direction="root" lines="none"
+                            detail="false" class="hydrated" :class="{ selected: selectedIndex === i }" button
+                            @click="selectedItems(item, true)">
+                            <ion-avatar>
+                                <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
+                            </ion-avatar>
+                            <ion-label class="ion-margin-start">{{item.username}} <p class="ion-text-wrap">message</p>
+                            </ion-label><br>
+                        </ion-item>
+                    </ion-list>
+                </ion-content>
+
+                <ion-page id="main">
+                    <ion-header>
+                        <ion-toolbar>
                             <ion-avatar slot="start">
                                 <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
                             </ion-avatar>
-                            <ion-row class="sender-details">
-                                <ion-col size="12">
-                                    <ion-label>
-                                        Vr Bachita
+                            <ion-title v-if="Object.keys(selectedChat).length > 0">
+                                {{selectedUsername}}
+                            </ion-title>
+                        </ion-toolbar>
+                    </ion-header>
+                    <ion-content>
+                        <section ref="chatArea" class="chat-area">
+                            <ion-item lines="none" v-for="(item, i) in conversation" :key="i">
+                                <div v-if="item.sender_id === userData.id" class="message-out" slot="end">
+                                    <ion-label class="ion-text-wrap">
+                                        {{item.message}}
                                     </ion-label>
-                                </ion-col>
-                                <ion-col>
-                                    <ion-label class="sender-message">
-                                        We admire the dedication to high-quality work and service that goes into
-                                        building a
-                                        successful freelance business on Upwork. When you’re great at what you
-                                        do,
-                                        you
-                                        only
-                                        can create a good marketing plan to show potential clients the value you
-                                        offer.
-                                    </ion-label>
-                                </ion-col>
-                            </ion-row>
-                            <div slot="end" class="unread"></div>
-                        </ion-item>
-                    </ion-menu-toggle>
-                </ion-list>
-            </ion-menu>
+                                </div>
 
-            <!-- <Conversation id="chat-content" /> -->
-            <ion-router-outlet id="chat-content" />
-        </ion-split-pane>
+                                <div v-else-if="item.from_id === userData.id" class="message-in">
+                                    <ion-label class="ion-text-wrap">
+                                        {{item.message}}
+                                    </ion-label>
+                                </div>
+                            </ion-item>
+                        </section>
+                    </ion-content>
+                    <ion-footer>
+                        <ion-toolbar>
+                            <ion-item lines="none" colors="none">
+                                <ion-textarea autoGrow="true" v-model="userMessage" maxlength="500" rows="1"
+                                    placeholder="Type message here..."></ion-textarea>
+                                <ion-button @click="sendMessage">
+                                    <ion-icon slot="icon-only" name="send-sharp" />
+                                </ion-button>
+                            </ion-item>
+                        </ion-toolbar>
+                    </ion-footer>
+                </ion-page>
+            </ion-split-pane>
+        </ion-content>
     </ion-page>
-    <!-- </ion-content> -->
-</template> 
+</template>
 
 <script>
-    // import Conversation from '@/components/Chats/Conversation'
+    import ChatsAPI from '@/api/chats'
+    import ConversationsAPI from '@/api/conversations'
 
     import {
+        computed,
         ref
     } from '@vue/reactivity';
     import {
         menuController
     } from '@ionic/core';
     import {
-        onMounted
+        nextTick,
+        onMounted,
+        watch
     } from '@vue/runtime-core';
+    import {
+        useRouter
+    } from 'vue-router';
+    import {
+        useStore
+    } from 'vuex';
 
     export default {
         components: {
@@ -68,66 +122,126 @@
         },
         setup() {
             onMounted(() => {
-                // onClickOpenChatMenu()
+                loadChats()
             })
-            const selectedIndex = ref(0)
+            const router = useRouter()
+            const store = useStore()
 
+            const routerId = ref(router.currentRoute.value.params.id)
             let senderMessage = ref('')
             let userMessage = ref('')
+            let searchUsername = ref('')
+            let searchedUsers = ref([])
+            let chats = ref([])
+            let selectedIndex = ref(0)
+            let selectedUsername = ref('')
+            let selectedChat = ref({})
+            let conversation = ref([])
 
-            let messages = ref([{
-                    body: "Hello",
-                    author: "sender",
-                },
-                {
-                    body: "Hi",
-                    author: "user",
-                },
-                {
-                    body: "How are you?",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "sender",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "user",
-                },
-                {
-                    body: "Hire TikTok part-time employees, Work easily and earn money while watching TikTok, No handling fee, the task can be completed in ten minutes, Working 1 hour a day, you can get 300-3000 PHP (20-100USDT) What are you waiting for? As long as you have a bank card, you can join our team and only hire friends who have a bank card. Hurry up and register as a Telegram user to join us and make money while playing on your phone 👉If you are interested, you can add telegram search: tiktok0220 to send messages. To join us, please reply 1 Click on the link to send the message directly Telegram ID: https://t.me/Tiktok0220",
-                    author: "user",
-                },
-            ], )
+            const userData = computed(() => store.state.user.userData)
 
-            async function onClickOpenChatMenu() {
-                await menuController.enable(true, 'chat-menu')
-                await menuController.open('chat-menu')
+            watch(searchUsername, function (val) {
+                loadUsername(val)
+            })
+
+            function selectedItems(item, n) {
+                if (n === false) {
+                    selectedChat.value = item
+                    if (item.sender_id === userData.value.id) {
+                        selectedUsername.value = item.from_username
+                    }
+                    loadConversation(selectedChat.value.conversation_id)
+                } else if (n === true) {
+                    selectedUsername.value = item.username
+                    selectedChat.value = {
+                        conversation_id: 0,
+                        from_id: item.id,
+                        from_username: item.username,
+                        sender_id: userData.value.id,
+                        sender_username: userData.value.username,
+                    }
+                    loadConversation(selectedChat.value.conversation_id)
+                }
+
+                console.log(selectedChat.value);
+            }
+
+            async function openMenu() {
+                await menuController.open();
+            }
+
+            function loadChats() {
+                let params = {
+                    id: userData.value.id
+                }
+                ChatsAPI.list(params).then((response) => {
+                    chats.value = response.data.data
+                    selectedChat.value = response.data.data[0]
+                    console.log(response.data.data[0].sender_id);
+                    if (response.data.data[0].sender_id === userData.value.id) {
+                        selectedUsername.value = response.data.data[0].from_username
+                    } else {
+                        selectedUsername.value = response.data.data[0].sender_username
+                    }
+                    loadConversation(response.data.data[0].conversation_id)
+                })
+            }
+            async function loadUsername(username) {
+                await ChatsAPI.search(username).then((response) => {
+                    searchedUsers.value = response.data.data
+                })
+            }
+            async function loadConversation(cId) {
+                const params = {
+                    id: cId
+                }
+                await ConversationsAPI.list(params).then((response) => {
+                    conversation.value = response.data.data
+                })
+            }
+            async function sendMessage() {
+                var fId
+                var fUsername
+                if (selectedChat.value.from_id === userData.value.id) {
+                    fId = selectedChat.value.sender_id
+                    fUsername = selectedChat.value.sender_username
+                } else {
+                    fId = selectedChat.value.from_id
+                    fUsername = selectedChat.value.from_username
+                }
+                let params = {
+                    sender_id: userData.value.id,
+                    from_id: fId,
+                    from_username: fUsername,
+                    sender_username: userData.value.username,
+                    message: userMessage.value,
+                    conversation_id: selectedChat.value.conversation_id
+                }
+
+                await ConversationsAPI.add(params).then(() => {
+                    userMessage.value = ''
+                    nextTick(() => {
+                        loadConversation(selectedChat.value.conversation_id)
+                        loadChats()
+                    })
+                })
             }
 
             return {
                 selectedIndex,
                 senderMessage,
                 userMessage,
-                messages,
-                onClickOpenChatMenu
+                openMenu,
+                routerId,
+                searchUsername,
+                searchedUsers,
+                chats,
+                selectedUsername,
+                selectedItems,
+                userData,
+                selectedChat,
+                conversation,
+                sendMessage
             }
         }
     }
@@ -135,5 +249,5 @@
 
 <style lang="scss" scoped>
     @import '@/assets/css/menu.scss';
-    @import '@/assets/css/chats.scss';
+    @import '@/assets/css/chat.scss';
 </style>
