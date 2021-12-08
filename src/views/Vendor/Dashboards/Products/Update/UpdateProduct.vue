@@ -137,7 +137,6 @@
             onMounted(() => {
                 loadProductDetails()
                 loadAddressesDetails(userData.value.id)
-                pageTitle
             })
 
             const data = reactive({

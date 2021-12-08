@@ -17,7 +17,7 @@
                     </ion-button>
                     <ion-item lines="none" button @click="onClickItemUser($event)">
                         <ion-avatar>
-                            <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
+                            <img :src="thumbnailPath">
                         </ion-avatar>
                         <ion-label>
                             {{userData.name}}
@@ -31,6 +31,7 @@
 
 <script>
     import NotificationVendorAPI from '@/api/notifications_vendor'
+    import ResourceURL from '@/api/resourceURL'
 
     import UserPopover from '@/popovers/UserPopover'
     import NotificationsPopover from '@/popovers/NotificationsPopover'
@@ -58,12 +59,16 @@
         setup() {
             onMounted(() => {
                 loadNotificationVendor()
+                setTimeout(() => {
+                    getThumbnail(userData.value.profile_picture)
+                }, 1500)
             })
             const router = useRouter()
             const store = useStore()
 
             let newNotification = ref([])
             let notifications_vendor = ref([])
+            let thumbnailPath = ref('')
 
             const userData = computed(() => store.state.user.userData)
             watch(newNotification, function (val) {
@@ -72,6 +77,14 @@
 
             function onClickHomeCol() {
                 router.push(`/vendor/home`)
+            }
+
+            function getThumbnail(fileName) {
+                if (fileName) {
+                    return thumbnailPath.value = ResourceURL.api + fileName
+                } else {
+                    return thumbnailPath.value = 'https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png'
+                }
             }
 
             function loadNotificationVendor() {
@@ -128,7 +141,9 @@
                 onClickItemUser,
                 onClickOpenMenu,
                 onClickNotification,
-                newNotification
+                newNotification,
+                getThumbnail,
+                thumbnailPath
             }
         }
     }

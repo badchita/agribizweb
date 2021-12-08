@@ -9,6 +9,9 @@ export default {
     get(id) {
         return api.get('user/' + id)
     },
+    update(params) {
+        return api.put('user', params)
+    },
     archive(params) {
         return api.patch('user', params)
     },

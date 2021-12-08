@@ -13,13 +13,13 @@
                         User Information
                     </ion-label>
                     <ion-buttons class="details-buttons">
-                        <ion-button color="medium" slot="end">
-                            <ion-label>Reset Password</ion-label>
+                        <ion-button color="medium" slot="end" @click="onClickUpdateProfile">
+                            <ion-label>Update Profile</ion-label>
                         </ion-button>
                     </ion-buttons>
                 </ion-item>
                 <ion-avatar>
-                    <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
+                    <img :src="thumbnailPath" style="width: 300px; height: 250px; margin:0; object-fit: fill;">
                 </ion-avatar>
                 <ion-grid class="ion-margin-bottom details-grid">
                     <ion-row>
@@ -41,7 +41,14 @@
                             </ion-label>
                             <div class="details-label">{{userData.user_type}}</div>
                         </ion-col>
-                        <ion-col class="details-col" />
+                        <ion-col class="details-col">
+                            <ion-label>
+                                Status Verification
+                            </ion-label>
+                            <div class="details-label">
+                                <StatusVerification :status_verification="userData.status_verification" />
+                            </div>
+                        </ion-col>
                     </ion-row>
                     <ion-row class="ion-margin-top">
                         <ion-col>
@@ -74,25 +81,18 @@
                         </ion-col>
                     </ion-row>
                     <ion-row>
-                        <ion-col class="details-col">
+                        <ion-col class="details-col" size="3">
                             <ion-label>
                                 Date of Birth
                             </ion-label>
                             <div class="details-label">{{userData.birthday}}</div>
                         </ion-col>
-                        <ion-col class="details-col">
+                        <ion-col class="details-col" size="3">
                             <ion-label>
-                                Join Date
+                                Date Joined
                             </ion-label>
-                            <div class="details-label">{{userData.created_at.split('T')[0]}}</div>
+                            <div class="details-label">{{formatDate(userData.created_at)}}</div>
                         </ion-col>
-                        <ion-col class="details-col">
-                            <ion-label>
-                                Modified
-                            </ion-label>
-                            <div class="details-label">{{userData.updated_at.split('T')[0]}}</div>
-                        </ion-col>
-                        <ion-col class="details-col" />
                     </ion-row>
                 </ion-grid>
             </div>
@@ -101,20 +101,57 @@
 </template>
 
 <script>
+    import ResourceURL from '@/api/resourceURL'
+
+    import StatusVerification from '@/components/Users/StatusVerification'
+
     import {
-        computed
+        computed,
+        ref
     } from '@vue/reactivity'
     import {
         useStore
     } from 'vuex'
+    import {
+        useRouter
+    } from 'vue-router'
+    import {
+        onMounted
+    } from '@vue/runtime-core'
     export default {
         name: 'ProfilePage',
+        components: {
+            StatusVerification,
+        },
         setup() {
+            onMounted(() => {
+                getThumbnail(userData.value.profile_picture)
+            })
+
+            const router = useRouter()
             const store = useStore()
+
+            let thumbnailPath = ref('')
+
             const userData = computed(() => store.state.user.userData)
 
+            function onClickUpdateProfile() {
+                router.push(`/update-profile`)
+            }
+
+            function getThumbnail(fileName) {
+                if (fileName) {
+                    return thumbnailPath.value = ResourceURL.api + fileName
+                } else {
+                    return thumbnailPath.value = 'https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png'
+                }
+            }
+
             return {
-                userData
+                userData,
+                onClickUpdateProfile,
+                getThumbnail,
+                thumbnailPath
             }
         }
     }

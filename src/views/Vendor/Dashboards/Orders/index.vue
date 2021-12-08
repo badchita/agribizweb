@@ -13,7 +13,7 @@
                         <ion-searchbar placeholder="Search by Order Number" @ionInput="onInputSearch($event)">
                         </ion-searchbar>
                     </ion-col>
-                    <ion-col size="1.8">
+                    <ion-col size="2">
                         <ion-item lines="none">
                             <ion-label position="floating">Show</ion-label>
                             <ion-select value="10" @IonChange="onIonChangeShowLimit($event)">
@@ -24,13 +24,27 @@
                             </ion-select>
                         </ion-item>
                     </ion-col>
-                    <ion-col size="2.1">
+                    <ion-col size="2">
                         <ion-item lines="none">
                             <ion-label position="floating">Status</ion-label>
                             <ion-select :value="activeSelect" @ionChange="onIonChangeGetSelectedStatus($event)">
                                 <ion-select-option value="All">All</ion-select-option>
                                 <ion-select-option value="Open">Open</ion-select-option>
                                 <ion-select-option value="Archived">Archived</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="2">
+                        <ion-item lines="none">
+                            <ion-label position="floating">Order Status</ion-label>
+                            <ion-select @ionChange="onIonChangeOrderStatus($event)">
+                                <ion-select-option value="">All</ion-select-option>
+                                <ion-select-option value="0">New</ion-select-option>
+                                <ion-select-option value="1">Accepted</ion-select-option>
+                                <ion-select-option value="2">Process</ion-select-option>
+                                <ion-select-option value="3">Delivered</ion-select-option>
+                                <ion-select-option value="4">Completed</ion-select-option>
+                                <ion-select-option value="-1">Cancelled</ion-select-option>
                             </ion-select>
                         </ion-item>
                     </ion-col>
@@ -189,6 +203,7 @@
             let activeSelect = ref('Open')
             let searchInput = ref('')
             let render = ref(false)
+            let order_status = ref('')
             const isLoading = ref(false)
 
             watch(render.value, function(val) {
@@ -225,6 +240,11 @@
                 loadOrder(userData.value.id, status.value, ev.detail.value)
             }
 
+            function onIonChangeOrderStatus(ev) {
+                order_status.value = ev.detail.value
+                loadOrder(userData.value.id, status.value, 10)
+            }
+
             async function onClickArchive(item, ev, i) {
                 ev.stopPropagation();
                 const alert = await alertController.create({
@@ -257,12 +277,14 @@
                 })
             }
             async function loadOrder(uId, s, limit) {
+                console.log(order_status.value);
                 isLoading.value = true;
                 const params = {
                     offset: 0,
                     limit: limit,
                     user_id: uId,
                     status: s,
+                    order_status: order_status.value
                 }
                 const api = userData.value.user_type === 'Admin' ? OrderAPI.listAdmin(params) : OrderAPI.list(
                     params)
@@ -302,7 +324,8 @@
                 onInputSearch,
                 searchInput,
                 orderSearch,
-                onIonChangeShowLimit
+                onIonChangeShowLimit,
+                onIonChangeOrderStatus
             }
         }
     }

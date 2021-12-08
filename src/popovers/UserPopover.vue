@@ -1,6 +1,6 @@
 <template>
     <ion-avatar>
-        <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
+        <img :src="thumbnailPath">
     </ion-avatar>
     <ion-label>
         <h2>{{userData.name}}</h2>
@@ -13,6 +13,8 @@
 
 <script>
     import AuthAPI from '@/api/auth'
+    import ResourceURL from '@/api/resourceURL'
+
     import {
         popoverController,
         toastController
@@ -24,8 +26,12 @@
         useStore
     } from 'vuex';
     import {
-        computed
+        computed,
+        ref
     } from '@vue/reactivity';
+    import {
+        onMounted
+    } from '@vue/runtime-core';
     export default {
         props: {
             userData: {
@@ -34,14 +40,28 @@
             },
         },
         setup() {
+            onMounted(() => {
+                getThumbnail(userData.value.profile_picture)
+            })
             const router = useRouter()
             const store = useStore()
 
+            let thumbnailPath = ref('')
+
+            const userData = computed(() => store.state.user.userData)
             let loginResponse = computed(() => store.state.auth.response)
 
             function onClickManageAccount() {
                 router.push(`/profile`)
                 popoverController.dismiss()
+            }
+
+            function getThumbnail(fileName) {
+                if (fileName) {
+                    return thumbnailPath.value = ResourceURL.api + fileName
+                } else {
+                    return thumbnailPath.value = 'https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png'
+                }
             }
 
             async function onClickSignOut() {
@@ -68,7 +88,9 @@
             }
             return {
                 onClickSignOut,
-                onClickManageAccount
+                onClickManageAccount,
+                getThumbnail,
+                thumbnailPath
             }
         }
     }

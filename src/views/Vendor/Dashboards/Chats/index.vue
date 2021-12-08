@@ -16,13 +16,12 @@
                         <ion-toolbar>
                             <ion-searchbar v-model="searchUsername" mode="ios"></ion-searchbar>
                         </ion-toolbar>
-
                     </ion-header>
                     <ion-list v-if="searchUsername === ''">
                         <ion-item v-for="(item, i) in chats" :key="i"
                             :router-link="`/vendor/dashboards/chats/${item.id}`" router-direction="root" lines="none"
                             detail="false" class="hydrated" :class="{ selected: selectedIndex === i }" button
-                            @click="selectedItems(item, false)">
+                            @click="selectedItems(item, false), selectedIndex = i">
                             <ion-avatar>
                                 <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
                             </ion-avatar>
@@ -38,7 +37,7 @@
                         <ion-item v-for="(item, i) in searchedUsers" :key="i"
                             :router-link="`/vendor/dashboards/chats/${item.id}`" router-direction="root" lines="none"
                             detail="false" class="hydrated" :class="{ selected: selectedIndex === i }" button
-                            @click="selectedItems(item, true)">
+                            @click="selectedItems(item, true), selectedIndex = i">
                             <ion-avatar>
                                 <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
                             </ion-avatar>
@@ -54,7 +53,7 @@
                             <ion-avatar slot="start">
                                 <img src="https://pickaface.net/gallery/avatar/unr_test_180821_0925_9k0pgs.png">
                             </ion-avatar>
-                            <ion-title v-if="Object.keys(selectedChat).length > 0">
+                            <ion-title>
                                 {{selectedUsername}}
                             </ion-title>
                         </ion-toolbar>
@@ -102,7 +101,7 @@
         ref
     } from '@vue/reactivity';
     import {
-        menuController
+        menuController,
     } from '@ionic/core';
     import {
         nextTick,
@@ -145,10 +144,13 @@
             })
 
             function selectedItems(item, n) {
+                searchUsername.value = ''
                 if (n === false) {
                     selectedChat.value = item
                     if (item.sender_id === userData.value.id) {
                         selectedUsername.value = item.from_username
+                    } else {
+                        selectedUsername.value = item.sender_username
                     }
                     loadConversation(selectedChat.value.conversation_id)
                 } else if (n === true) {
@@ -241,7 +243,7 @@
                 userData,
                 selectedChat,
                 conversation,
-                sendMessage
+                sendMessage,
             }
         }
     }

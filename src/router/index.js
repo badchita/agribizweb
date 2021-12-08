@@ -199,6 +199,11 @@ const routes = [{
     name: 'NotificationsPage',
     component: () => import('@/views/Vendor/Pages/NotificationsPage'),
   },
+  {
+    path: '/update-profile',
+    name: 'UpdateProfilePage',
+    component: () => import('@/views/Pages/UpdateProfilePage'),
+  },
 
   //admin pages
   {
