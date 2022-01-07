@@ -7,7 +7,15 @@ import {
 
 const routes = [{
     path: '/',
-    redirect: '/vendor/'
+    redirect: '/test/'
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Pages/Test'),
   },
   {
     path: '/vendor/',

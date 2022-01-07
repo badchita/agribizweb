@@ -81,11 +81,11 @@
                     url: '/vendor/dashboards/chats',
                     iosIcon: 'chatbubble-ellipses'
                 },
-                {
-                    title: 'Notifications',
-                    url: '/vendor/dashboards/notifications',
-                    iosIcon: 'notifications'
-                }
+                // {
+                //     title: 'Notifications',
+                //     url: '/vendor/dashboards/notifications',
+                //     iosIcon: 'notifications'
+                // }
             ]
 
             const appPages = [{
@@ -108,11 +108,11 @@
                     url: '/vendor/dashboards/chats',
                     iosIcon: 'chatbubble-ellipses'
                 },
-                {
-                    title: 'Notifications',
-                    url: '/vendor/dashboards/notifications',
-                    iosIcon: 'notifications'
-                }
+                // {
+                //     title: 'Notifications',
+                //     url: '/vendor/dashboards/notifications',
+                //     iosIcon: 'notifications'
+                // }
             ]
 
             function selectedItem(url) {
